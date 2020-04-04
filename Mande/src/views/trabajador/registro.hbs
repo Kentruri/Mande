@@ -1,0 +1,135 @@
+<div class="container p-4">
+    <h1 align="center"><b>Registro / Trabajador</b></h1>
+    <div class="row">
+        <div class="cold-md-4  mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/trabajador/registro" method="POST">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" name="trabajador_nombre" autofocus autocomplete="off" required>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label>Fecha de nacimiento</label>
+                                <input type="date" name="trabajador_fechaNacimiento" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-10">
+                                <label>Dirección</label>
+                                <input type="text" class="form-control" id="search_input" name="trabajador_direccion" required>
+                                <input type="hidden" name="trabajador_latitud" id="latitude" />
+                                <input type="hidden" name="trabajador_longitud" id="longitude" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label>Usuario</label>
+                                <input type="text" name="trabajador_username" class="form-control" autocomplete="off" required>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label>Contraseña</label>
+                                <input type="password" name="trabajador_password" class="form-control" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <label>Foto de perfil</label><br>
+                        <input type="file" id="img_uploader" required><br><br>
+                        <input type="hidden" id="foto" name="trabajador_foto">
+                        <div class="card" id="espacio_foto">
+                            <img id="img_preview">
+                        </div>
+                        <label>Documento</label><br>
+                        <input type="file" id="doc_uploader" required><br><br>
+                        <input type="hidden" id="documento" name="trabajador_documento">
+                        <div class="card" id="espacio_documento">
+                            <img id="doc_preview">
+                        </div>
+                        <div class="form-group col-md-10">
+                            <button class="btn btn-primary btn-block">Registrarse</button>
+                        </div>
+                        <div class="col-auto my-1">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ADDRESS
+    var searchInput = 'search_input';
+    
+    $(document).ready(function () 
+    {
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), 
+        {
+            types: ['geocode']
+        });
+            
+            google.maps.event.addListener(autocomplete, 'place_changed', function () 
+            {
+                var near_place = autocomplete.getPlace();
+                
+                document.getElementById('latitude').value = near_place.geometry.location.lat();
+                document.getElementById('longitude').value = near_place.geometry.location.lng();
+            });
+    });
+    
+    $(document).on('change', '#'+searchInput, function () 
+    {
+        document.getElementById('latitude').value = '';
+        document.getElementById('longitude').value = '';
+    });
+
+    // FOTO
+    const imagePreview=document.getElementById('img_preview');
+    const imageUploader=document.getElementById('img_uploader');
+    
+    const CLOUDINARY_URL='https://api.cloudinary.com/v1_1/mattezl/image/upload';
+    const CLOUDINARY_UPLOAD_PRESET='bz4oq8ph';
+    
+    imageUploader.addEventListener('change', async(e)=>
+    {
+        const file = e.target.files[0];
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+        const res = await axios.post(CLOUDINARY_URL, formData,
+        {
+            headers:
+            {
+                'Content-Type':'multipart/form-data'
+            }
+        });
+        console.log(res);
+        imagePreview.src=res.data.secure_url;
+        document.getElementById('foto').value=res.data.secure_url;
+
+    })
+
+    // DOCUMENTO
+    const docPreview=document.getElementById('doc_preview');
+    const docUploader=document.getElementById('doc_uploader');
+    
+    docUploader.addEventListener('change', async(e)=>
+    {
+        const file = e.target.files[0];
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+        const res = await axios.post(CLOUDINARY_URL, formData,
+        {
+            headers:
+            {
+                'Content-Type':'multipart/form-data'
+            }
+        });
+        console.log(res);
+        docPreview.src=res.data.secure_url;
+        document.getElementById('documento').value=res.data.secure_url;
+    })
+</script>
