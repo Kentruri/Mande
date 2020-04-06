@@ -1,0 +1,41 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3><b>Labor</b></h3>
+                </div>
+                <div class="card-body">
+                    <form action="/trabajador/addLabor" method="POST">
+                        <select class="form-control" id="labor" onchange="ShowSelected();">
+                            {{#each labores}}
+                            <option>{{labor_nombre}}</option>
+                            {{/each}}
+                        </select>
+                        <input type="hidden" name="nombre_labor" id="n_labor">
+                        <div class="form-group"><br>
+                            <input type="text" class="form-control" name="precioxhora" autocomplete="off" required
+                                placeholder="Precio por hora">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success btn-block">
+                                Agregar
+                            </button>
+                            <small>
+                                <a href="/trabajador/registro">Cancelar</a>
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function ShowSelected() {
+        /* Para obtener el texto */
+        var combo = document.getElementById("   ");
+        var selected = combo.options[combo.selectedIndex].text;
+        document.getElementsByName('nombre_labor').val = selected;
+    }
+</script>

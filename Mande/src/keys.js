@@ -7,4 +7,5 @@ module.exports = {
         database: 'mande',
         port: '5432'
     }
+    
 };

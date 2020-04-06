@@ -4,12 +4,14 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
-const PostgreSQLStore = require('express-pg-session');
-const passport = require('passport')
+const {database}=require('./keys');
+const passport = require('passport');
 
 // Initializations
 const app = express();
-require('./lib/passport');
+require('./lib/trabajador.passport');
+require('./lib/usuario.passport');
+
 
 // Settings
 app.set('port', process.env.PORT || 5000);
@@ -25,6 +27,15 @@ app.engine('.hbs', exphbs(
     app.set('view engine', '.hbs');
 
 // Middlewares
+app.use(session(
+    {
+        secret: 'Mande',
+        resave: false,
+        saveUninitialized: false/*,
+        store :  new (require('connect-pg-simple')(session))()*/
+    }
+))
+app.use(flash());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -34,12 +45,14 @@ app.use(passport.session());
 // Global Variables
 app.use((req, res, next)=>
 {
+    app.locals.success = req.flash('success');
+    app.locals.message = req.flash('message');
+    app.locals.employee = req.employee;
     next();
 });
 
 // Routes
 app.use(require('./routes/index.routes'));
-app.use(require('./routes/authentication'));
 app.use('/usuario',require('./routes/usuario'));
 app.use('/trabajador', require('./routes/trabajador'))
 

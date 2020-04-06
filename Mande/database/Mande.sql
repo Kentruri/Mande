@@ -1,7 +1,5 @@
 CREATE DATABASE Mande;
 
-USE Mande;
-
 -- TABLA LABOR
 CREATE TABLE labor(
     labor_nombre VARCHAR(40) PRIMARY KEY 
@@ -9,7 +7,7 @@ CREATE TABLE labor(
 
 -- TABLA TRABAJADOR
 CREATE TABLE trabajador(
-    id_trabajador SERIAL PRIMARY KEY NOT NULL,
+    id_trabajador NUMERIC PRIMARY KEY NOT NULL,
     trabajador_nombre VARCHAR(60) NOT NULL,
     trabajador_fechaNacimiento DATE NOT NULL,
     trabajador_foto TEXT NOT NULL,
@@ -26,8 +24,8 @@ CREATE TABLE trabajador(
 
 -- RELACIÓN LABOR-TRABAJADOR
 CREATE TABLE laborVStrabajador(
-    trabajador_id INTEGER REFERENCES trabajador(id_trabajador),
-    labor_nombre VARCHAR(40) REFERENCES labor(labor_nombre),
+    trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
+    nombre_labor VARCHAR(40) REFERENCES labor(labor_nombre),
     precioxhora NUMERIC NOT NULL
 );
 
@@ -51,4 +49,4 @@ INSERT INTO labor(labor_nombre) VALUES
     ('Plomero'),
     ('Cerrajero'),
     ('Profesor de Inglés'),
-    ('Paseador de perros'); 
+    ('Paseador de perros');

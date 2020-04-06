@@ -10,7 +10,11 @@ helpers.encryptNumCard = async (numCard) =>
 
 helpers.matchNumCard = async(numCard, savedNum) =>
 {
-    await bcrypt.compare(numCard, savedNum);
-}
+    try {
+        return await bcrypt.compare(numCard, savedNum);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 module.exports = helpers;

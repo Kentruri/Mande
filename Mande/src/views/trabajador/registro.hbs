@@ -1,8 +1,10 @@
 <div class="container p-4">
-    <h1 align="center"><b>Registro / Trabajador</b></h1>
     <div class="row">
         <div class="cold-md-4  mx-auto">
             <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3><b>Registro / Trabajador</b></h3>
+                </div>
                 <div class="card-body">
                     <form action="/trabajador/registro" method="POST">
                         <div class="form-row">
@@ -21,6 +23,12 @@
                                 <input type="text" class="form-control" id="search_input" name="trabajador_direccion" required>
                                 <input type="hidden" name="trabajador_latitud" id="latitude" />
                                 <input type="hidden" name="trabajador_longitud" id="longitude" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-10">
+                                <label>Número de documento de identidad</label>
+                                <input type="tel" class="form-control" name="id_trabajador" required>
                             </div>
                         </div>
                         <div class="form-row">

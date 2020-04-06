@@ -1,32 +1,40 @@
 const express = require('express');
 const router = express.Router();
-
 const passport = require('passport');
-
 const pool = require('../database');
 
-router.get('/registro', (req, res)=>
-{
+// REGISTER 
+router.get('/registro', (req, res) => {
     res.render('usuario/registro');
 });
 
-router.post('registro', passport.authenticate('usuario.signup', 
-{
-    successRedirect: '/perfil',
-    failureRedirect: '/registro',
-    failureFlash: true
-}))
+router.post('/registro', passport.authenticate('usuario.signup',
+    {
+        successRedirect: '/usuario/perfil',
+        failureRedirect: '/usuario/registro',
+        failureFlash: true
+    }));
 
-router.get('/perfil', async(req, res) =>
-{
-    res.send('hey');
+
+// SIGN-IN
+router.get('/inicio-sesion', (req, res) => {
+    res.render('usuario/inicio');
 });
 
-router.get('/', async (req, res)=>
-{
-    const users = await pool.query('SELECT * FROM usuario')
-    console.log(users);
-    res.send('perejil');    
+router.post('/inicio-sesion', (req, res, next) => {
+    passport.authenticate('usuario.signin',
+        {
+            successRedirect: '/usuario/perfil',
+            failureRedirect: '/usuario/inicio-sesion',
+            failureFlash: true
+        })(req, res, next);
+});
+
+
+// PROFILE 
+router.get('/perfil', (req, res) => {
+    console.log(req.user.numero_usuario);
+    res.send('profile');
 });
 
 module.exports = router;
