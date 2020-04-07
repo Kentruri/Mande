@@ -1,14 +1,17 @@
 <div class="container p-4">
-    <h1 align="center"><b>Registro / Usuario</b></h1>
     <div class="row">
         <div class="cold-md-4  mx-auto">
             <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h1><b>Sign Up / Usuario</b></h1>
+                </div>
                 <div class="card-body">
                     <form action="/usuario/registro" method="POST">
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" name="usuario_nombre" autofocus autocomplete="off" required>
+                                <input type="text" class="form-control" name="usuario_nombre" autofocus
+                                    autocomplete="off" required>
                             </div>
                             <div class="form-group col-md-5">
                                 <label>Fecha de nacimiento</label>
@@ -18,17 +21,20 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label>Correo electrónico</label>
-                                <input type="email" name="usuario_email" class="form-control" autocomplete="off" required>
+                                <input type="email" name="usuario_email" class="form-control" autocomplete="off"
+                                    required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Número celular</label>
-                                <input type="tel" name="numero_usuario" class="form-control" autocomplete="off" required>
+                                <input type="tel" name="numero_usuario" class="form-control" autocomplete="off"
+                                    required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-10">
                                 <label>Dirección</label>
-                                <input type="text" class="form-control" id="search_input" name="usuario_direccion" required>
+                                <input type="text" class="form-control" id="search_input" name="usuario_direccion"
+                                    required>
                                 <input type="hidden" name="usuario_latitud" id="latitude" />
                                 <input type="hidden" name="usuario_longitud" id="longitude" />
                             </div>
@@ -36,11 +42,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label>Usuario</label>
-                                <input type="text" name="usuario_username" class="form-control" autocomplete="off" required>
+                                <input type="text" name="usuario_username" class="form-control" autocomplete="off"
+                                    required>
                             </div>
                             <div class="form-group col-md-5">
                                 <label>Contraseña</label>
-                                <input type="password" name="usuario_password" class="form-control" autocomplete="off" required>
+                                <input type="password" name="usuario_password" class="form-control" autocomplete="off"
+                                    required>
                             </div>
                         </div>
                         <div class="form-row">
@@ -49,9 +57,9 @@
                                 <input type="text" class="form-control" name="usuario_numCard" required>
                             </div>
                         </div>
-                            <label>Recibo de Servicios</label><br>
-                            <input type="file" id="img_uploader" required><br><br>
-                            <input type="hidden" id="recibo" name="usuario_recibo">
+                        <label>Recibo de Servicios</label><br>
+                        <input type="file" id="img_uploader" required><br><br>
+                        <input type="hidden" id="recibo" name="usuario_recibo">
                         <div class="card" id="espacio_foto">
                             <img id="img_preview">
                         </div>
@@ -68,54 +76,50 @@
 <script>
     // ADDRESS
     var searchInput = 'search_input';
-    
-    $(document).ready(function () 
-    {
+
+    $(document).ready(function () {
         var autocomplete;
-        autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), 
-        {
-            types: ['geocode']
-        });
-            
-            google.maps.event.addListener(autocomplete, 'place_changed', function () 
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)),
             {
-                var near_place = autocomplete.getPlace();
-                
-                document.getElementById('latitude').value = near_place.geometry.location.lat();
-                document.getElementById('longitude').value = near_place.geometry.location.lng();
+                types: ['geocode']
             });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var near_place = autocomplete.getPlace();
+
+            document.getElementById('latitude').value = near_place.geometry.location.lat();
+            document.getElementById('longitude').value = near_place.geometry.location.lng();
+        });
     });
-    
-    $(document).on('change', '#'+searchInput, function () 
-    {
+
+    $(document).on('change', '#' + searchInput, function () {
         document.getElementById('latitude').value = '';
         document.getElementById('longitude').value = '';
     });
 
     // RECIBO
-    const imagePreview=document.getElementById('img_preview');
-    const imageUploader=document.getElementById('img_uploader');
-    
-    const CLOUDINARY_URL='https://api.cloudinary.com/v1_1/mattezl/image/upload';
-    const CLOUDINARY_UPLOAD_PRESET='bz4oq8ph';
-    
-    imageUploader.addEventListener('change', async(e)=>
-    {
+    const imagePreview = document.getElementById('img_preview');
+    const imageUploader = document.getElementById('img_uploader');
+
+    const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/mattezl/image/upload';
+    const CLOUDINARY_UPLOAD_PRESET = 'bz4oq8ph';
+
+    imageUploader.addEventListener('change', async (e) => {
         const file = e.target.files[0];
 
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
         const res = await axios.post(CLOUDINARY_URL, formData,
-        {
-            headers:
             {
-                'Content-Type':'multipart/form-data'
-            }
-        });
+                headers:
+                {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
         console.log(res);
-        imagePreview.src=res.data.secure_url;
-        document.getElementById('recibo').value=res.data.secure_url;
+        imagePreview.src = res.data.secure_url;
+        document.getElementById('recibo').value = res.data.secure_url;
 
     })
 </script>

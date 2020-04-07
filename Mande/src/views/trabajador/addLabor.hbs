@@ -8,6 +8,7 @@
                 <div class="card-body">
                     <form action="/trabajador/addLabor" method="POST">
                         <select class="form-control" id="labor" onchange="ShowSelected();">
+                            <option>Escoge una labor</option>
                             {{#each labores}}
                             <option>{{labor_nombre}}</option>
                             {{/each}}
@@ -22,7 +23,7 @@
                                 Agregar
                             </button>
                             <small>
-                                <a href="/trabajador/registro">Cancelar</a>
+                                <a href="/trabajador/perfil">Cancelar</a>
                             </small>
                         </div>
                     </form>
@@ -34,8 +35,8 @@
 <script>
     function ShowSelected() {
         /* Para obtener el texto */
-        var combo = document.getElementById("   ");
+        var combo = document.getElementById("labor");
         var selected = combo.options[combo.selectedIndex].text;
-        document.getElementsByName('nombre_labor').val = selected;
+        document.getElementById('n_labor').value = selected;
     }
 </script>

@@ -24,7 +24,7 @@ CREATE TABLE trabajador(
 
 -- RELACIÓN LABOR-TRABAJADOR
 CREATE TABLE laborVStrabajador(
-    trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
+    trabajador_id NUMERIC,
     nombre_labor VARCHAR(40) REFERENCES labor(labor_nombre),
     precioxhora NUMERIC NOT NULL
 );

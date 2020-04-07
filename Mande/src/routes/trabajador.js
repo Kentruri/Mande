@@ -3,19 +3,19 @@ const router = express.Router();
 const passport = require('passport');
 const pool = require('../database');
 
-// REGISTER
+// REGISTRO
 router.get('/registro', (req, res) => {
     res.render('trabajador/registro');
 });
 
 router.post('/registro', passport.authenticate('trabajador.signup',
     {
-        successRedirect: '/trabajador/inicio-sesion',
+        successRedirect: '/trabajador/addLabor',
         failureRedirect: '/trabajador/registro',
         failureFlash: true
     }))
 
-// SIGN-IN
+// INCIO DE SESIÓN
 router.get('/inicio-sesion', (req, res) => {
     res.render('trabajador/inicio');
 });
@@ -29,7 +29,7 @@ router.post('/inicio-sesion', (req, res, next) => {
         })(req, res, next);
 });
 
-// ADD LABOR
+// AÑADIR LABOR
 router.get('/addLabor', async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
     //console.log(id_trabajador);
@@ -40,15 +40,21 @@ router.get('/addLabor', async (req, res) => {
 });
 
 router.post('/addLabor', async (req, res) => {
-    console.log(req.body);
-    /*const id_trabajador = req.user.id_trabajador;
-    const {id_trabajador, nombre_labor, precioxhora} = req.body;*/
+    const {nombre_labor, precioxhora}=req.body;
+    const id_trabajador = req.user.id_trabajador;
+    const newLabor = {nombre_labor, id_trabajador, precioxhora};
+    await pool.query('INSERT INTO laborvstrabajador VALUES($1, $2, $3)', [id_trabajador, nombre_labor, precioxhora]);
+    res.redirect('/trabajador/addLabor');
 });
 
+
+// PERFIL
 router.get('/perfil', (req, res) => {
     res.send('this is your profile');
 });
 
+
+// LISTA DE LABORES
 router.get('/labores', async (req, res) => {
     await pool.query('')
     const labores = await (await pool.query('SELECT labor_nombre FROM labor LEFT JOIN laborvstrabajador ON labor_nombre = nombre_labor WHERE nombre_labor =$1')).rows;

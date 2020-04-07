@@ -4,7 +4,6 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
-const {database}=require('./keys');
 const passport = require('passport');
 
 // Initializations
