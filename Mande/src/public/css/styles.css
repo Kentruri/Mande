@@ -413,16 +413,19 @@
  .testimonios{
      width: 100%;
      margin-top: 120px;
-     background: ;
+     background: url(/img/Banner4.jpg);
  }
  .testimonios .testimonios-title{
-     width: 50%;
-     margin:auto;
-     text-align: center;
+    border:2px solid #000000;
+    padding:10px;
+    text-align: center;
+    width: 50%;
+    margin: auto;
  }
  .testimonios .testimonios-title h2{
      font-size: 50px;
      font-weight: normal;
+     font-color: #000000;
      color: var(--black);
      margin-bottom: 10px;
  }
@@ -456,7 +459,7 @@
      cursor: pointer;
  }
  .testimonios .box-testimonio .card-testimonio .testimonio-text{
-     border: 2px solid var(--red);
+     border: 2px solid #D8C4C0;
      padding:20px;
      border-radius: 20px;
      transition: 0.1s;
@@ -465,7 +468,7 @@
  .testimonios .box-testimonio .card-testimonio .testimonio-text h4{
      font-size: 30px;
      font-weight: 400;
-     color: var(--red);
+     color: #D8C4C0;
      text-align: center;
      margin-bottom: 10px;
      transition: 0.1s;
@@ -474,7 +477,7 @@
      font-size: 20px;
      text-align: center;
      line-height: 40px;
-     color: var(--black);
+     color:#D8C4C0;
  }
  .testimonios .box-testimonio .card-testimonio .testimonio-text:hover{
      border: 2px solid var(--blue);
