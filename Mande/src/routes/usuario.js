@@ -38,7 +38,8 @@ router.get('/solicitar-servicio', async (req, res) => {
 
 router.post('/solicitar-servicio', async (req, res) => {
     const { nombre_labor } = req.body;
-    const trabajadores = await (await pool.query('SELECT id_trabajador, trabajador_nombre, trabajador_foto, trabajador_latitud, trabajador_longitud, trabajador_calificaciones, trabajador_trabajosHechos FROM trabajador RIGHT JOIN (SELECT trabajador_id FROM laborvstrabajador WHERE nombre_labor=$1) AS laboresOf ON id_trabajador = trabajador_id', [nombre_labor])).rows;
+    const trabajadores = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM laborvstrabajador WHERE nombre_labor=$1) AS L ON id_trabajador = trabajador_id ORDER BY trabajador_puntaje DESC', [nombre_labor])).rows;
+    //const precios = await (await pool.query('SELECT precioxhora FROM laborvstrabajador WHERE nombre_labor=$1', [nombre_labor])).rows;
     res.render('usuario/trabajadores', {trabajadores});
 })
 

@@ -18,6 +18,7 @@ CREATE TABLE trabajador(
     trabajador_disponibilidad BOOLEAN NOT NULL DEFAULT 'true',
     trabajador_calificaciones NUMERIC NOT NULL DEFAULT 0,
     trabajador_trabajosHechos NUMERIC NOT NULL DEFAULT 0,
+    trabajador_puntaje NUMERIC NOT NULL DEFAULT 0,
     trabajador_username VARCHAR(40) UNIQUE,
     trabajador_password VARCHAR(40)
 );
