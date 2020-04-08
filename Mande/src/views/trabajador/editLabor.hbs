@@ -6,9 +6,9 @@
                     <h3><b>Labor</b></h3>
                 </div>
                 <div class="card-body">
-                    <form action="/trabajador/addLabor" method="POST">
+                    <form action="/trabajador/editar-labor/{{labor.id_traba}}" method="POST">
                         <select class="form-control" id="labor" onchange="ShowSelected();">
-                            <option>Escoge una labor</option>
+                            <option value="{{labor.nombre_labor}}">{{labor.nombre_labor}}</option>
                             {{#each labores}}
                             <option>{{labor_nombre}}</option>
                             {{/each}}
@@ -20,11 +20,15 @@
                                     <div class="input-group-text">$</div>
                                 </div>
                                 <input type="text" class="form-control" name="precioxhora" autocomplete="off" required
-                                    placeholder="Precio por hora">
+                                    placeholder="Precio por hora" value="{{labor.precioxhora}}">
                             </div>
                         </div>
-                            <a href="/trabajador/mis-labores" class="btn btn-secondary">Cancelar</a>
-                            <button class="btn btn-success">Agregar</button>
+                        <div class="form-group">
+                            <button class="btn btn-success btn-block">Guardar</button>
+                            <small>
+                                <a href="/trabajador/mis-labores">Cancelar</a>
+                            </small>
+                        </div>
                     </form>
                 </div>
             </div>

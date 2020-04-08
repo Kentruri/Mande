@@ -24,6 +24,7 @@ CREATE TABLE trabajador(
 
 -- RELACIÓN LABOR-TRABAJADOR
 CREATE TABLE laborVStrabajador(
+    id_traba SERIAL,
     trabajador_id NUMERIC,
     nombre_labor VARCHAR(40) REFERENCES labor(labor_nombre),
     precioxhora NUMERIC NOT NULL
@@ -42,6 +43,16 @@ CREATE TABLE usuario(
     usuario_username VARCHAR(40) UNIQUE,
     usuario_password VARCHAR(40),
     usuario_numCard TEXT
+);
+
+CREATE TABLE servicio(
+    id_servicio SERIAL,
+    servicio_descipcion TEXT,
+    servicio_estado BOOLEAN NOT NULL DEFAULT 'true',
+    usuario_numero NUMERIC,
+    trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
+    nombre_labor VARCHAR(40)
+    -- CONTINUARÁ
 );
 
 -- LISTA PREDEFINIDA DE LABORES

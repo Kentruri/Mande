@@ -1,0 +1,25 @@
+<div class="container p-4">
+    <div class="row">
+        {{#each labores}}
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title text-uppercase">
+                            {{nombre_labor}}
+                        </h3>
+                        <p class="m-2">Precio por hora: {{precioxhora}}</p>
+                        <a href="/trabajador/borrar-labor/{{id_traba}}" class="btn btn-danger">Borrar</a>
+                        <a href="/trabajador/editar-labor/{{id_traba}}" class="btn btn-secondary">Editar</a>
+                    </div>
+                </div>
+            </div>
+        {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No tienes ninguna labor asociada.</p>
+                    <a href="/trabajador/addLabor">¡Añade una!</a>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
