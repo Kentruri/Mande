@@ -77,7 +77,7 @@
  }
  
  
- /** Skew **/
+ /** Skew  esto es para los cortes **/
  .skew-abajo{
      position: absolute;
      bottom: 0;
@@ -96,109 +96,6 @@
      z-index: 10;
  }
  
- /** Navegation Menu **/
- #header{
-     position: relative;
-     width: 100%;
- }
- .menu{
-     position: fixed;
-     top:0;
-     left: 0;
-     width: 100%;
-     height: 60px;
-     background: #fff;;
- 
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     z-index: 9999;
- }
- .menu .logo-box{margin-left: 20px;}
- .menu .logo-box h1 a{
-     text-decoration: none;
-     font-size: var(--title);
-     font-weight: 400;
-     color:var(--black);
- }
- .menu .list-container{margin-right: 20px;}
- .menu .list-container ul{display: flex;}
- .menu .list-container ul li{list-style: none;}
- .menu .list-container ul li a{
-     text-decoration: none;
-     margin: 0px 10px;
-     padding:8px;
-     color: var(--black);
-     border-radius: 24px;
-     transition: 0.3s;
-     font-size: 16px;
- }
- .menu .list-container ul li a.active{
-     background: var(--red);
-     color:#fff;
- }
- .menu .list-container ul li a:hover{
-     background: var(--red);
-     color:#fff;
- }
- 
- .btn-menu > .fa-bars{
-     display: none;
- }
- 
- @media only screen and (max-width:900px){
-     .btn-menu > .fa-bars{
-         display: block;
-         position:absolute;
-         right: 30px;
-         top: 20px;
-         font-size: 28px;
-         color: var(--black);
-         transition: 0.5s;
-         cursor: pointer;
-     }
-     .btn-menu > .fa-times{color: var(--red);}
-     .btn-menu > .fa-bars:hover{color:var(--red);}
-     .menu .logo-box{margin-left: 30px;}
-     .menu .list-container{
-         position: fixed;
-         top:60px;
-         left:-100%;
-         background:#fff;
-         width: 100%;
-         height: calc(100vh - 60px);
-     }
-     .menu .list-container .lists{
-         width: 100%;
-         height: 100%;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         flex-direction: column;
-         border-top:4px solid var(--red);
-     }
-     .menu .list-container ul li{
-         width: 90%;
-         border-bottom: 2px solid var(--black);
-         display: flex;
-         justify-content: center;
-     }
-     .menu .list-container ul li a{
-         font-size: 20px;
-         text-align: center;
-         padding:12px 0px;
-     }
-     .menu .list-container ul li a.active{
-         background: none;
-         color:var(--red);
-     }
-     .menu .list-container ul li a:hover{
-         background: none;
-         color:var(--red);
-     }
- }
- 
- /** Navegation Menu **/
  
  /** IMG Header **/
  .img-header{
@@ -255,9 +152,7 @@
      cursor: pointer;
      transition: 0.5s;
  }
- .img-header .welcome > button:hover{
-     background:var(--blue);
- }
+
  
  @media only screen and (max-width:773px ){
      .img-header .welcome h1{font-size: 40px;}
@@ -340,7 +235,7 @@
      .acerca-de .info-container p{font-size: 15px;}
  }
  
- /** Nuestros proyectos **/
+ /**aqui ira lo de los testimonios **/
  .our-projects{
      position: relative;
      width: 100%;
@@ -409,7 +304,6 @@
      .our-projects .container-project .project-title h2{font-size: 30px;}
  }
  
- /** Testimonios **/
  .testimonios{
      width: 100%;
      margin-top: 120px;
@@ -425,7 +319,6 @@
  .testimonios .testimonios-title h2{
      font-size: 50px;
      font-weight: normal;
-     font-color: #000000;
      color: var(--black);
      margin-bottom: 10px;
  }
@@ -486,164 +379,21 @@
      color: var(--blue);
  }
  
- @media only screen and (max-width:890px){
+ @media only screen and (max-width:890px)
+ {
      .testimonios .box-testimonio .card-testimonio .card-img img{width: 200px; height: 200px;}
      .testimonios .box-testimonio .card-testimonio{width: 100%;}
      .testimonios .box-testimonio .card-testimonio .testimonio-text h4{font-size: 25px;}
      .testimonios .box-testimonio .card-testimonio .testimonio-text p{font-size: 17px; line-height: 35px;}
- }
- 
- /** Footer **/
- .footer{
-     position: relative;
-     width: 100%;
-     height: 100%;
-     background: url(../img/footer.jpg);
-     background-attachment: fixed;
-     background-position: center;
-     background-size: cover;
- }
- .footer .deg-footer{
-     position: absolute;
-     top: 0;
-     left: 0;
-     width: 100%;
-     height: 100%;
-     background: rgba(0,0,0,0.6);
- }
- .footer .ejeZfooter{
-     position: relative;
-     width: 100%;
-     height: 100%;
- }
- .footer .footer-content{
-     padding-top: 100px;
-     width: 90%;
-     margin: auto;
-     padding-bottom: 100px;
- }
- .footer .footer-content .footer-title{
-     width: 50%;
-     margin: auto;
-     border:2px solid #fff;
-     padding:15px;
- }
- .footer .footer-content .footer-title h2{
-     font-size: 35px;
-     font-weight: 400;
-     color: #fff;
-     text-align: center;
-     margin-bottom: 5px;
- }
- .footer .footer-content .footer-title hr{
-     background: #fff;
-     height: 2px;
-     width: 80%;
-     margin:auto;
- }
- .footer .formulario-content{
-     width: 60%;
-     margin: 50px auto;
-     background: #fff;
-     padding:30px;
-     border-radius: 50px;
-     border: 1.5px solid var(--red);
- }
- .footer .formulario-content #formulario{
-     display: flex;
-     justify-content: center;
-     flex-direction: column;
- }
- .footer .formulario-content #formulario label{
-     font-size: 20px;
-     text-align: center;
-     color: var(--black);
-     margin: 30px 0px 10px 0px;
- }
- .footer .formulario-content #formulario input{
-     width: 90%;
-     height: 40px;
-     margin:auto;
-     border-radius: 24px;
-     outline: none;
-     border:1.5px solid var(--red);
-     text-align: center;
-     font-size: 18px;
-     color: var(--black);
- }
- .footer .formulario-content #formulario textarea{
-     width: 90%;
-     height: 200px;
-     margin:auto;
-     padding: 20px;
-     border-radius: 24px;
-     outline: none;
-     border:1.5px solid var(--red);
-     font-size: 15px;
-     color: var(--black);
- }
- .footer .formulario-content #formulario .send{
-     margin: 30px;
-     display: flex;
-     justify-content: center;
- }
- .footer .formulario-content #formulario button{
-     width: 120px;
-     height: 40px;
-     text-align: center;
-     line-height: 40px;
-     font-size: 20px;
-     background: var(--red);
-     border: none;
-     outline: none;
-     border-radius: 20px;
-     color: #fff;
-     cursor: pointer;
-     transition: 0.5s;
- }
- .footer .formulario-content #formulario button:hover{
-     background: var(--blue);
- }
- .footer .formulario-content #formulario .mensaje-form{
-     width: 100%;
-     margin:auto;
-     padding:20px;
- }
- .footer .formulario-content #formulario .mensaje-form p{
-     font-size:19px;
-     color: var(--black);
-     line-height: 35px;
- }
- .footer .footer-text{
-     position:absolute;
-     bottom: 0;
-     left: 0;
-     width: 100%;
-     height: 70px;
-     background:rgba(0,0,0,0.8);
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     border-top: 2px solid #fff;
- }
- .footer .footer-text p{
-     font-size: 20px;
-     text-align: center;
-     color: #fff;
- }
- 
- @media only screen and (max-width:900px){
-     .footer .formulario-content{width: 85%; padding:20px;}
-     .footer .formulario-content #formulario input{width: 100%;}
-     .footer .formulario-content #formulario textarea{width: 100%;}
- }
- @media only screen and (max-width:590px){
-     .footer .formulario-content{width: 95%; padding:20px;}
-     .footer .formulario-content #formulario label{font-size: 17px;}
-     .footer .formulario-content #formulario input{width: 100%; font-size: 17px;}
-     .footer .formulario-content #formulario textarea{width: 100%;}
-     .footer .formulario-content #formulario .mensaje-form p{font-size: 17px;}
-     .footer .footer-text{width: 100%; padding: 0px 30px;}
-     .footer .footer-text p{font-size: 17px;}
- }
- 
+    }
+
+
+
+
+
+
+
+
+
+
+   
