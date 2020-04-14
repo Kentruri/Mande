@@ -31,12 +31,12 @@ router.post('/inicio-sesion', (req, res, next) => {
 });
 
 // ESCOGER TIPO DE SERVICIO
-router.get('/solicitar-servicio', async (req, res) => {
+router.get('/tipo-servicio', async (req, res) => {
     const labores = await (await pool.query('SELECT * FROM labor')).rows;
     res.render('usuario/tipoServicio', { labores });
 });
 
-router.post('/solicitar-servicio', async (req, res) => {
+router.post('/tipo-servicio', async (req, res) => {
     const { nombre_labor } = req.body;
     const numUser = req.user.numero_usuario;
     const userUbication = await (await pool.query('SELECT usuario_latitud, usuario_longitud FROM usuario WHERE numero_usuario=$1', [numUser])).rows;
