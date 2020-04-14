@@ -1,28 +1,40 @@
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-4 mx-auto">
-            <div class="card">
-                <div class="card-header" style="text-align: center;">
-                    <h1><b>Sign In / Trabajador</b></h1>
+<link rel="stylesheet" type="text/css" href="/css/LoginTrabajador.css">
+<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+
+<img class="wave" src="/img/waveVino.png">
+<div class="containers">
+    <div class="img">
+        <img src="/img/loginTrabajador.png">
+    </div>
+    <div class="login-content">
+        <form action="/trabajador/inicio-sesion" method="POST">
+            <img src="/img/avatarTrabajador.png">
+            <h2 class="title">Bienvenido</h2>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-user"></i>
                 </div>
-                <div class="card-body">
-                    <form action="/trabajador/inicio-sesion" method="POST">
-                            <div class="form-group">
-                                <label>Usuario</label>
-                                <input type="text" name="trabajador_username" class="form-control" autocomplete="off" required autofocus>
-                            </div>
-                            <div class="form-group">
-                                <label>Contraseña</label>
-                                <input type="password" name="trabajador_password" class="form-control" autocomplete="off" required>
-                            </div>
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block">
-                                Ingresar
-                            </button>
-                        </div>
-                    </form>
+                <div class="div">
+                    <h5>Nombre de usuario</h5>
+                    <input type="text" name="trabajador_username" class="input" required>
                 </div>
             </div>
-        </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Contraseña</h5>
+                    <input type="password" name="trabajador_password" class="input" required>
+                </div>
+            </div>
+            <a href="/trabajador/registro">¿No tienes cuenta? Trabaja con nosotros</a>
+            <div class="form-group">
+                <button class="btn btn-success btn-block">
+                    Iniciar Sesion
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+<script type="text/javascript" src="/js/Login.js"></script>
