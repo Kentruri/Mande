@@ -1,0 +1,61 @@
+<div class="container p-4">
+    <div class="row">
+        {{servicio_descipcion}}
+        {{#each trabajadores}}
+        <div class="text-center">
+            <img src={{trabajador_foto}} class="rounded mx-auto d-block " width="130" height="130"><br>
+            <h3 class="card-title text-uppercase">{{trabajador_nombre}}</h3>
+            <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{trabajador_nombre}}/{{nombre_labor}}/{{servicio_descipcion}}" class="btn btn-success">Contratar</a>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <p class="m-2">Distancia: <br> En proceso</p>
+                    <p class="m-2">Califiación: <br> {{trabajador_puntaje}} ★</p>
+                    <p class="m-2">Precio por hora: <br> {{precioxhora}}</p>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>Por el momento no tenemos trabajadores que presenten ese servicio</p>
+                <a href="/usuario/tipo-servicio">¡Selecciona otro!</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+{{!DESCRIPCIÓN DEL TRABAJO}}
+<input type="hidden" value="{{servicio_descipcion}}" name="servicio_descipcion">
+
+{{!COORDENADAS DEL USUARIO}}
+<input type="hidden" value="{{userUbication.usuario_latitud}}" id="usuario_latitud" name="usuario_latitud">
+<input type="hidden" value="{{userUbication.usuario_longitud}}" id="usuario_longitud" name="usuario_longitud">
+
+<script type="text/javascript">
+
+    var latU = document.getElementById('usuario_latitud');
+    var lonU = document.getElementById('usuario_longitud');
+    /*var latT = ;
+    var lonT = ;*/
+
+    Distancia = Dist(latT, lonT);   //Retorna numero en Km
+    alert(Distancia);
+
+    function Dist(latT, lonT) {
+        rad = function (x) { return x * Math.PI / 180; }
+
+        var R = 6378.137;                          //Radio de la tierra en km
+        var dLat = rad(latT - latU);
+        var dLong = rad(lonT - lonU);
+
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(latU)) * Math.cos(rad(latT)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+
+        return d.toFixed(3);                      //Retorna tres decimales
+    }
+
+</script>

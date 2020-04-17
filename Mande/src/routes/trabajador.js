@@ -84,8 +84,16 @@ router.post('/editar-labor/:id', async(req, res) => {
 });
 
 // PERFIL
-router.get('/perfil', (req, res) => {
-    res.send('this is your profile');
+router.get('/perfil', async (req, res) => {
+    const id_trabajador = req.user.id_trabajador;
+    const trabajo = await (await pool.query('SELECT trabajador_id FROM servicio WHERE trabajador_id=$1', [id_trabajador])).rows; 
+    if(trabajo.length > 0)
+        {
+            done(null, req.flash('success','Tienes trabajo'));
+        }else
+        {
+            done(null, false, req.flash('message','Usuario o contraseña inválida'));
+        }
 });
 
 

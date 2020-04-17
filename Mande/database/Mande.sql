@@ -48,12 +48,13 @@ CREATE TABLE usuario(
 
 CREATE TABLE servicio(
     id_servicio SERIAL,
+    nombre_labor VARCHAR(40),
     servicio_descipcion TEXT,
-    servicio_estado BOOLEAN NOT NULL DEFAULT 'true',
     usuario_numero NUMERIC,
     trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
-    nombre_labor VARCHAR(40)
-    -- CONTINUARÁ
+    trabajador_nombre VARCHAR(40),
+    servicio_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    servicio_estado BOOLEAN NOT NULL DEFAULT 'true'
 );
 
 -- LISTA PREDEFINIDA DE LABORES
