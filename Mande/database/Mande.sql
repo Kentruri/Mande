@@ -54,7 +54,7 @@ CREATE TABLE servicio(
     trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
     trabajador_nombre VARCHAR(40),
     servicio_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    servicio_estado BOOLEAN NOT NULL DEFAULT 'true'
+    servicio_estado INTEGER NOT NULL DEFAULT 1
 );
 
 -- LISTA PREDEFINIDA DE LABORES

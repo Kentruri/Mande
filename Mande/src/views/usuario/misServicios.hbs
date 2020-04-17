@@ -10,18 +10,33 @@
                     <p class="m-2">Trabajador: <br>{{trabajador_nombre}}</p>
                     <p class="m-2">Descripción: <br>{{servicio_descipcion}}</p>
                     <p class="m-2">Fecha: {{servicio_fecha}}</p>
-                    <a href="" class="btn btn-danger">Borrar</a>
-                    <a href="" class="btn btn-secondary">Editar</a>
+                    <a href="" class="btn btn-success">Pagar</a>
+                    {{!{{ifCond servicio_estado}}
                 </div>
             </div>
         </div>
         {{else}}
-            <div class="col-md-4 mx-auto">
-                <div class="card card-body text-center">
-                    <p>No tienes ninguna servicio en este momento.</p>
-                    <a href="/usuario/tipo-servicio">¡Solicita uno!</a>
-                </div>
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No tienes ninguna servicio en este momento.</p>
+                <a href="/usuario/tipo-servicio">¡Solicita uno!</a>
             </div>
+        </div>
         {{/each}}
     </div>
 </div>
+<script>
+    Handlebars.registerHelper('ifCond', function (v1) {
+        var estado = Handlebars.Utils.escapeExpression(v1);
+        var pago;
+        switch (estado) {
+            case '1':
+                pago = <a href="" class="btn btn-secondary">Pagar</a>
+            case '2':
+                pago = <a href="" class="btn btn-success">Pagar</a>
+            case '3':
+                pago = <a href="" class="btn btn-secondary">Pagado</a>
+        }
+        return new Handlebars.SafeString(pago);
+    });
+</script>

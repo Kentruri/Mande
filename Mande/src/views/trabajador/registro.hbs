@@ -1,71 +1,86 @@
 <link href="/css/registro.css" rel="stylesheet">
 
-<div class="row no-gutters bg-dark">
-    <div class="col-xl-5 col-lg-12 register-bg">
+    <div class="row no-gutters bg-dark">
+        <div class="col-xl-5 col-lg-12 register-bg">
 
-    </div>
-    <div class="col-xl-7 col-lg-12 d-flex">
-        <div class="container align-self-center p-6">
-            <h1 class="font-weight-bold mb-3">Registrate</h1>
+        </div>
+        <div class="col-xl-7 col-lg-12 d-flex">
+            <div class="container align-self-center p-6">
+                <h1 class="font-weight-bold mb-3">Registrate</h1>
 
-            <p class="text-muted mb-5">Ingresa la siguiente información para registrarte.</p>
+                <p class="text-muted mb-5">Ingresa la siguiente información para registrarte.</p>
 
-            <form action="/trabajador/registro" method="POST">
+                <form action="/trabajador/registro" method="POST">
 
-                <div class="form-row mb-2">
+                    <div class="form-row mb-2">
 
-                    <div class="form-group col-md-7">
-                        <label class="font-weight-bold">Nombre </label>
-                        <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required
-                            placeholder="Tu nombre">
+                        <div class="form-group col-md-7">
+                            <label class="font-weight-bold">Nombre </label>
+                            <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required
+                                placeholder="Tu nombre">
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label>Fecha de nacimiento</label>
+                            <input type="date" name="trabajador_fechaNacimiento" class="form-control" required>
+                        </div>
+
                     </div>
 
-                    <div class="form-group col-md-5">
-                        <label>Fecha de nacimiento</label>
-                        <input type="date" name="trabajador_fechaNacimiento" class="form-control" required>
+                    <div class="form-group mb-3">
+                        <label>Dirección</label>
+                        <input type="text" class="form-control" id="search_input" name="trabajador_direccion" required>
+                        <input type="hidden" name="trabajador_latitud" id="latitude" />
+                        <input type="hidden" name="trabajador_longitud" id="longitude" />
                     </div>
 
-                </div>
-
-                <div class="form-group mb-3">
-                    <label>Dirección</label>
-                    <input type="text" class="form-control" id="search_input" name="trabajador_direccion" required>
-                    <input type="hidden" name="trabajador_latitud" id="latitude" />
-                    <input type="hidden" name="trabajador_longitud" id="longitude" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label>No. Documento</label>
-                    <input type="text" class="form-control" name="id_trabajador" required
-                        placeholder="Tu direccion de domicilio">
-                </div>
-
-
-                <div class="form-row mb-2">
-
-                    <div class="form-group col-md-5">
-                        <label class="font-weight-bold">Usuario</label>
-                        <input type="text" class="form-control" name="trabajador_username" autocomplete="off" required
-                            placeholder="Tu nombre de usuario">
+                    <div class="form-group mb-3">
+                        <label>No. Documento</label>
+                        <input type="text" class="form-control" name="id_trabajador" required
+                            placeholder="Tu direccion de domicilio">
                     </div>
 
-                    <div class="form-group col-md-7">
-                        <label class="font-weight-bold">Contraseña </label>
-                        <input type="password" class="form-control" name="trabajador_password" autocomplete="off"
-                            required placeholder="tu contraseña">
+
+                    <div class="form-row mb-2">
+
+                        <div class="form-group col-md-5">
+                            <label class="font-weight-bold">Usuario</label>
+                            <input type="text" class="form-control" name="trabajador_username" autocomplete="off" required
+                                placeholder="Tu nombre de usuario">
+                        </div>
+
+                        <div class="form-group col-md-7">
+                            <label class="font-weight-bold">Contraseña </label>
+                            <input type="password" class="form-control" name="trabajador_password" autocomplete="off"
+                                required placeholder="tu contraseña">
+                        </div>
+
                     </div>
 
-                </div>
+                   <label>Documento</label><br>
+                        <input type="file" id="doc_uploader" required><br><br>
+                        <input type="hidden" id="documento" name="trabajador_documento">
+                        <div class="card" id="espacio_documento">
+                            <img id="doc_preview">
+                        </div>
+                  
+                      <label>Foto de perfil</label><br>
+                        <input type="file" id="img_uploader" required><br><br>
+                        <input type="hidden" id="foto" name="trabajador_foto">
+                        <div class="card" id="espacio_foto">
+                            <img id="img_preview">
+                        </div>
+                    
+                     
 
+                   
 
-
-
-                <button class="btn btn-primary width-100">Regístrate</button>
-            </form>
-            <small class="d-inline-block text-muted mt-5">© Mande Corp 2020</small>
+                    <button class="btn btn-primary width-100">Regístrate</button>
+                </form>
+                <small class="d-inline-block text-muted mt-5">© Mande Corp 2020</small>
+            </div>
         </div>
     </div>
-</div>
 
 <script>
     // ADDRESS

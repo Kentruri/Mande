@@ -23,7 +23,7 @@ router.get('/inicio-sesion', (req, res) => {
 router.post('/inicio-sesion', (req, res, next) => {
     passport.authenticate('trabajador_signin',
         {
-            successRedirect: '/trabajador/mis-labores',
+            successRedirect: '/trabajador/perfil',
             failureRedirect: '/trabajador/inicio-sesion',
             failureFlash: true
         })(req, res, next);
@@ -84,16 +84,19 @@ router.post('/editar-labor/:id', async(req, res) => {
 });
 
 // PERFIL
-router.get('/perfil', async (req, res) => {
+router.get('/perfil', async (req, res, done) => {
     const id_trabajador = req.user.id_trabajador;
     const trabajo = await (await pool.query('SELECT trabajador_id FROM servicio WHERE trabajador_id=$1', [id_trabajador])).rows; 
+    const rows = await (await pool.query('SELECT * FROM trabajador WHERE id_trabajador=$1', [id_trabajador])).rows;
+    const employee = rows[0];
     if(trabajo.length > 0)
-        {
-            done(null, req.flash('success','Tienes trabajo'));
-        }else
-        {
-            done(null, false, req.flash('message','Usuario o contraseña inválida'));
-        }
+    {
+        done(null, employee, req.flash('success','¡' + employee.trabajador_username + '! Tienes trabajo activo'));
+    }else
+    {
+        done(null, employee, req.flash('success','Bienvenido ' + employee.trabajador_username));
+    }
+    res.redirect('/trabajador/mis-labores');
 });
 
 
