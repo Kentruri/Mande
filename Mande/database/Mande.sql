@@ -13,6 +13,7 @@ CREATE TABLE trabajador(
     trabajador_foto TEXT NOT NULL,
     trabajador_documento TEXT NOT NULL,
     trabajador_direccion TEXT NOT NULL,
+    trabajador_localidad TEXT NOT NULL,
     trabajador_latitud NUMERIC NOT NULL,
     trabajador_longitud NUMERIC NOT NULL,
     trabajador_disponibilidad BOOLEAN NOT NULL DEFAULT 'true',
@@ -37,6 +38,7 @@ CREATE TABLE usuario(
     usuario_nombre VARCHAR(60) NOT NULL,
     usuario_fechaNacimiento DATE NOT NULL,
     usuario_direccion TEXT NOT NULL,
+    usuario_localidad TEXT NOT NULL,
     usuario_latitud NUMERIC NOT NULL,
     usuario_longitud NUMERIC NOT NULL,
     usuario_recibo TEXT NOT NULL,
@@ -47,7 +49,7 @@ CREATE TABLE usuario(
 );
 
 CREATE TABLE servicio(
-    id_servicio SERIAL,
+    id_servicio SERIAL PRIMARY KEY,
     nombre_labor VARCHAR(40),
     servicio_descipcion TEXT,
     usuario_numero NUMERIC,
@@ -56,6 +58,14 @@ CREATE TABLE servicio(
     trabajador_nombre VARCHAR(40),
     servicio_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     servicio_estado INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE pago(
+    id_pago SERIAL PRIMARY KEY,
+    servicio_id INTEGER REFERENCES servicio(id_servicio),
+    pago_valor NUMERIC,
+    pago_estado BOOLEAN NOT NULL DEFAULT 'FALSE',
+    pago_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- LISTA PREDEFINIDA DE LABORES

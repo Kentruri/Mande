@@ -10,10 +10,10 @@ passport.use('usuario.signup', new LocalStrategy(
         passReqToCallback: true
     }, async (req, username, password, done) => 
     {
-        const {numero_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_username, usuario_password, usuario_numCard} = req.body;
-        const newUser = {numero_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_username, usuario_password, usuario_numCard};
+        const {numero_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_username, usuario_password, usuario_numCard} = req.body;
+        const newUser = {numero_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_username, usuario_password, usuario_numCard};
         newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
-        const result = await pool.query('INSERT INTO usuario VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [numero_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_username, usuario_password, newUser.usuario_numCard]);
+        const result = await pool.query('INSERT INTO usuario VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)', [numero_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_username, usuario_password, newUser.usuario_numCard]);
         return done(null, newUser);
     }
 ));

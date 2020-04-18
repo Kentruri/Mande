@@ -1,0 +1,45 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3><b>{{servicio.nombre_labor}}</b></h3>
+                </div>
+                <div class="card-body">
+                    <p class="m-2"><b>Cliente:</b> <br>{{servicio.usuario_nombre}}</p>
+                    <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
+                    <p class="m-2"><b>Fecha:</b> <br>{{servicio.servicio_fecha}}</p>
+                    <form action="/trabajador/culminar-trabajo/{{servicio.id_servicio}}/{{servicio.nombre_labor}}" method="POST">
+                        <input type="number" class="form-control" min="0" step="1" id="horas" autocomplete="off" required placeholder="Horas trabajadas" onchange="CalculateValue();">
+                        <div class="form-group"><br>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">$</div>
+                                </div>
+                                <input type="number" class="form-control" placeholder="Valor" id="valor" disabled>
+                                <input type="hidden" name="pago_valor" id="truevalor">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success btn-block">Terminar </button>
+                            <small>
+                                <a href="/trabajador/trabajos-activos">Cancelar</a>
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="{{precio}}" id="precioxhora">
+<script>
+    function CalculateValue() {
+        // Para obtener el texto
+        var horas = parseInt(document.getElementById('horas').value);
+        var precioxhora = document.getElementById('precioxhora').value;
+        
+        document.getElementById('valor').value = parseInt(horas * precioxhora);
+        document.getElementById('truevalor').value = parseInt(horas * precioxhora);
+    }
+</script>

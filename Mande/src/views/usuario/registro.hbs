@@ -52,6 +52,7 @@
                         placeholder="Tu direccion de domicilio">
                     <input type="hidden" name="usuario_latitud" id="latitude" />
                     <input type="hidden" name="usuario_longitud" id="longitude" />
+                    <input type="hidden" name="usuario_localidad" id="localidad" />
                 </div>
 
 
@@ -97,6 +98,12 @@
 <script>
     // ADDRESS
     var searchInput = 'search_input';
+
+        var componentForm = {
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name'
+    };
     $(document).ready(function () {
         var autocomplete;
         autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)),
@@ -105,8 +112,17 @@
             });
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             var near_place = autocomplete.getPlace();
+            var all = "";
             document.getElementById('latitude').value = near_place.geometry.location.lat();
             document.getElementById('longitude').value = near_place.geometry.location.lng();
+            for (var i = 0; i < near_place.address_components.length; i++) {
+                var addressType = near_place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                    var val = near_place.address_components[i][componentForm[addressType]];
+                    all = all.concat(" ", val);
+                }
+            }
+            document.getElementById('localidad').value=all;
         });
     });
     $(document).on('change', '#' + searchInput, function () {

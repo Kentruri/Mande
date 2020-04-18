@@ -1,0 +1,38 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3><b>{{servicio.nombre_labor}}</b></h3>
+                </div>
+                <div class="card-body">
+                    <p class="m-2"><b>Cliente:</b> <br>{{servicio.usuario_nombre}}</p>
+                    <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
+                    <p class="m-2"><b>Fecha:</b> <br>{{servicio.servicio_fecha}}</p>
+                    <p class="m-2"><b>Valor:</b> <br>{{servicio.pago_valor}}</p>
+                    <p class="m-2"><b>Calificación: </b> (1 - 5)</p>
+                    <form action="/usuario/pagar-servicio/{{servicio.id_servicio}}/{{servicio.id_pago}}/{{servicio.trabajador_id}}"
+                        method="POST">
+                        <input type="range" class="form-control" min="1" max="5" step="1" id="get" required
+                            onchange="getValue();">
+                        <input type="hidden" name="calificacion" id="put">
+                        <div class="form-group">
+                            <button class="btn btn-success btn-block">Pagar </button>
+                            <small>
+                                <a href="/usuario/servicios-pagar">Cancelar</a>
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getValue() {
+        // OBTENER CALIFIACIÓN
+        var get = parseInt(document.getElementById('get').value);
+
+        document.getElementById('put').value = get;
+    }
+</script>

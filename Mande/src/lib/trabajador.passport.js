@@ -9,9 +9,9 @@ passport.use('trabajador.signup', new LocalStrategy(
         passReqToCallback: true
     }, async (req, username, password, done) => 
     {
-        const {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
-        const newEmployee = {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password };
-        const result = await pool.query('INSERT INTO trabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password]);
+        const {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+        const newEmployee = {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password };
+        const result = await pool.query('INSERT INTO trabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password]);
         //console.log(newEmployee);
         return done(null, newEmployee);
     }
