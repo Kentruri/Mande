@@ -1,3 +1,8 @@
+#map {
+    height: 400px;
+    width: 100%;
+  }
+
 #espacio_foto{
     border: 1px solid #D8C4C0;
     height: 30rem;

@@ -51,6 +51,7 @@ CREATE TABLE servicio(
     nombre_labor VARCHAR(40),
     servicio_descipcion TEXT,
     usuario_numero NUMERIC,
+    usuario_nombre VARCHAR(40),
     trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
     trabajador_nombre VARCHAR(40),
     servicio_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

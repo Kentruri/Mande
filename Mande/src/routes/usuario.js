@@ -56,7 +56,8 @@ router.get('/mis-servicios', async (req, res) => {
 router.get('/contratar-trabajador/:trabajador_id/:trabajador_nombre/:nombre_labor/:servicio_descipcion', async (req, res) => {
     const {trabajador_id, nombre_labor, trabajador_nombre, servicio_descipcion}=req.params;
     const usuario_numero = req.user.numero_usuario;
-    await pool.query('INSERT INTO servicio (nombre_labor, servicio_descipcion, usuario_numero, trabajador_id, trabajador_nombre) VALUES ($1, $2, $3, $4, $5)', [nombre_labor, servicio_descipcion, usuario_numero, trabajador_id, trabajador_nombre]);
+    const nombre_usuario = await (await pool.query('SELECT usuario_nombre FROM usuario WHERE numero_usuario=$1', [usuario_numero])).rows[0].usuario_nombre;
+    await pool.query('INSERT INTO servicio (nombre_labor, servicio_descipcion, usuario_numero, usuario_nombre, trabajador_id, trabajador_nombre) VALUES ($1, $2, $3, $4, $5, $6)', [nombre_labor, servicio_descipcion, usuario_numero, nombre_usuario, trabajador_id, trabajador_nombre]);
     const trabajitos = await (await pool.query('SELECT trabajador_trabajosHechos FROM trabajador WHERE id_trabajador=$1', [trabajador_id])).rows;
     const trabajotes = parseInt(trabajitos[0].trabajador_trabajoshechos)+1;
     await pool.query('UPDATE trabajador SET trabajador_disponibilidad=false, trabajador_trabajosHechos=$1 WHERE id_trabajador=$2', [trabajotes, trabajador_id]);

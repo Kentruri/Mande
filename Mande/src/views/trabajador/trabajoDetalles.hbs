@@ -1,0 +1,77 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3><b>{{servicio.nombre_labor}}</b></h3>
+                </div>
+                <div class="card-body text-center">
+                        <p class="m-2"><b>Cliente:</b> {{servicio.usuario_nombre}}</p>
+                        <p class="m-2"><b>Descripción:</b> {{servicio.servicio_descipcion}}</p>
+                        <p class="m-2"><b>Fecha:</b> {{servicio.servicio_fecha}}</p>
+                        <p class="m-2"><b>Dirección del cliente:</b> {{servicio.usuario_direccion}}</p>
+                        <div id="map"></div><br>
+                        <a href="/trabajador/trabajos-activos" class="btn btn-secondary">Volver</a>
+                        <a href="/trabajador/culminar-trabajo/{{servicio.id_servicio}}" class="btn btn-success">Culminar trabajo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="{{employeeUbication.trabajador_latitud}}" id="latT">
+<input type="hidden" value="{{employeeUbication.trabajador_longitud}}" id="lonT">
+<input type="hidden" value="{{servicio.usuario_latitud}}" id="latU">
+<input type="hidden" value="{{servicio.usuario_longitud}}" id="lonU">
+
+<script>
+    //COORDENADAS DEL TRABAJADRO
+    var latT = parseFloat(document.getElementById('latT').value);
+    var lonT = parseFloat(document.getElementById('lonT').value);
+    var coordT = { lat: latT, lng: lonT };
+
+    //COORDENADAS DEL USUARIO
+    var latU = parseFloat(document.getElementById('latU').value);
+    var lonU = parseFloat(document.getElementById('lonU').value);
+    var coordU = { lat: latU, lng: lonU };
+
+    window.onload = function loadMap() {
+        //VARIBALES QUE CARGAN Y TRAZAN LA RUTA RESPECTIVAMENTE
+        var directionsService = new google.maps.DirectionsService;
+        var directionsRenderer = new google.maps.DirectionsRenderer;
+
+        // TRABAJADOR
+        origin = coordT;
+        // USUARIO
+        destination = coordU;
+
+        // MAPA
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: this.origin,
+            zoom: 15
+        });
+
+        // TRAZAR LA RUTA EN EL MAPA
+        directionsRenderer.setMap(map);
+
+        // UNA VEZ EL MAPA CARGUE DEBE:
+        google.maps.event.addListenerOnce(map, 'idle', () => {
+            calculateAndDisplayRoute(directionsService, directionsRenderer);
+        });
+    }
+
+    // FUNCIÓN QUE CALCULA E IMPRIME LA MEJOR RUTA
+    function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+        directionsService.route({
+            origin: coordT,
+            destination: coordU,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+</script>
