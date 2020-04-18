@@ -5,6 +5,7 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const hbs = require('handlebars');
 
 // Initializations
 const app = express();
@@ -24,6 +25,23 @@ app.engine('.hbs', exphbs(
         helpers: require('./lib/handlebars')
     }));
     app.set('view engine', '.hbs');
+
+hbs.registerHelper("Dist",function(latT, lonT,latU,lonU){
+    
+    rad = function (x) { return x * Math.PI / 180; }
+
+    var R = 6378.137;                          //Radio de la tierra en km
+    var dLat = rad(latT - latU);
+    var dLong = rad(lonT - lonU);
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(latU)) * Math.cos(rad(latT)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+
+    return d.toFixed(3);                      //Retorna tres decimales
+
+
+});
 
 // Middlewares
 app.use(session(
