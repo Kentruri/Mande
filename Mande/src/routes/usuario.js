@@ -92,6 +92,8 @@ router.get('/perfil', async (req, res, done) => {
     const deuda = await (await pool.query('SELECT servicio_estado FROM servicio WHERE usuario_numero=$1 AND servicio_estado=2', [usuario_numero])).rows; 
     const rows = await (await pool.query('SELECT * FROM usuario WHERE numero_usuario=$1', [usuario_numero])).rows;
     const user = rows[0];
+   
+    
     if(deuda.length > 0)
     {
         done(null, user, req.flash('success','¡' + user.usuario_nombre + '! Tienes un pago pendiente'));
@@ -100,6 +102,7 @@ router.get('/perfil', async (req, res, done) => {
         done(null, user, req.flash('success','Bienvenido ' + user.usuario_nombre));
     }
     res.redirect('/usuario/servicios-activos');
+    
 });
 
 module.exports = router;

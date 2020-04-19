@@ -1,5 +1,19 @@
 <link href="/css/registro.css" rel="stylesheet">
-
+{{> navigation}}
+{{#if success}}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="=alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>  
+    </div>
+    {{/if}}
 <div class="row no-gutters bg-dark">
     <div class="col-xl-5 col-lg-12 register-bg">
 
@@ -38,7 +52,7 @@
                 <div class="form-group mb-3">
                     <label>No. Documento</label>
                     <input type="text" class="form-control" name="id_trabajador" required
-                        placeholder="Tu direccion de domicilio" autocomplete="off">
+                        placeholder="Tu numero de identificacion" autocomplete="off">
                 </div>
 
 
