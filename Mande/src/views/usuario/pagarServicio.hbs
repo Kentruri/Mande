@@ -1,5 +1,6 @@
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/estrellas.css">
 {{> navigationUser}}
-
 {{#if success}}
     <div class="container p-4">
         <div class="row">
@@ -26,14 +27,24 @@
                     <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
                     <p class="m-2"><b>Fecha:</b> <br>{{servicio.servicio_fecha}}</p>
                     <p class="m-2"><b>Valor:</b> <br>{{servicio.pago_valor}}</p>
-                    <p class="m-2"><b>Calificación: </b> (1 - 5)</p>
+                    <p class="m-2"><b>Calificación:  <input type="text" id="rating-value" name="calificacion" class="sinborde">  </b></p>
                     <form action="/usuario/pagar-servicio/{{servicio.id_servicio}}/{{servicio.id_pago}}/{{servicio.trabajador_id}}"
                         method="POST">
 
+                        
+                     <div class="rating-box">
+                     
+                     <div class="ratings" >
+                         <span class="far fa-star"></span>
+                         <span class="far fa-star"></span>
+                         <span class="far fa-star"></span>
+                         <span class="far fa-star"></span>
+                         <span class="far fa-star"></span>
+                     </div>
+                       
+                      </div>
 
-                        <input type="range" class="form-control" min="1" max="5" step="1" id="get" required
-                            onchange="getValue();">
-                        <input type="hidden" name="calificacion" id="put">
+
                         <div class="form-group">
                             <button class="btn btn-success btn-block">Pagar </button>
                             <small>
@@ -46,11 +57,60 @@
         </div>
     </div>
 </div>
-<script>
-    function getValue() {
-        // OBTENER CALIFIACIÓN
-        var get = parseInt(document.getElementById('get').value);
 
-        document.getElementById('put').value = get;
-    }
+
+
+<script>
+
+    const stars=document.querySelector(".ratings").children;
+    const ratingValue=document.querySelector("#rating-value");
+    let fijo;
+    let index;
+    for(let i=0; i<stars.length; i++){
+        stars[i].addEventListener("mouseover",function(){
+           
+           for(let j=0; j<stars.length; j++){
+               stars[j].classList.remove("fas");
+               stars[j].classList.remove("fa-star");
+               stars[j].classList.add("far");
+               stars[j].classList.add("fa-star");
+           }
+
+           for(let j=0; j<=i; j++){
+               stars[j].classList.remove("far");
+               stars[j].classList.remove("fa-star");
+               stars[j].classList.add("fas");
+               stars[j].classList.add("fa-star");
+           }
+
+        })
+
+        stars[i].addEventListener("click",function(){
+           
+           
+          ratingValue.value=i+1; 
+          fijo=i; 
+        })
+
+
+     stars[i].addEventListener("mouseout",function(){
+           
+           for(let j=0; j<stars.length; j++){
+               stars[j].classList.remove("fas");
+               stars[j].classList.remove("fa-star");
+               stars[j].classList.add("far");
+               stars[j].classList.add("fa-star");
+           }
+
+           for(let j=0; j<=fijo; j++){
+               stars[j].classList.remove("far");
+               stars[j].classList.remove("fa-star");
+               stars[j].classList.add("fas");
+               stars[j].classList.add("fa-star");
+           }
+
+        })
+
+    } 
+
 </script>

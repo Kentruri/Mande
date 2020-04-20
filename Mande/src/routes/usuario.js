@@ -68,10 +68,12 @@ router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id', async (req, r
 });
 
 router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id', async (req, res) => {
+    res.redirect('/usuario/servicios-pagar');
     const {id_servicio, id_pago, trabajador_id} = req.params;
     const {calificacion} = req.body;
+
     console.log(calificacion);
-    res.redirect('/usuario/servicios-pagar');
+   
 });
 
 // CONTRATAR TRABAJADOR
