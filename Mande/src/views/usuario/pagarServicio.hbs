@@ -26,8 +26,8 @@
                     <p class="m-2"><b>Cliente:</b> <br>{{servicio.usuario_nombre}}</p>
                     <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
                     <p class="m-2"><b>Fecha:</b> <br>{{servicio.servicio_fecha}}</p>
-                    <p class="m-2"><b>Valor:</b> <br>{{servicio.pago_valor}}</p>
-                    <p class="m-2"><b>Calificación:  <input type="text" id="rating-value" name="calificacion" class="sinborde">  </b></p>
+                    <p class="m-2"><b>Valor:</b> {{servicio.pago_valor}}</p>
+                   
                     <form action="/usuario/pagar-servicio/{{servicio.id_servicio}}/{{servicio.id_pago}}/{{servicio.trabajador_id}}"
                         method="POST">
 
@@ -40,8 +40,9 @@
                          <span class="far fa-star"></span>
                          <span class="far fa-star"></span>
                          <span class="far fa-star"></span>
+                         <br>
                      </div>
-                       
+                        <p class="m-2"><b>Calificación:  <input type="text" id="rating-value" name="calificacion" class="sinborde">  </b></p>
                       </div>
 
 
