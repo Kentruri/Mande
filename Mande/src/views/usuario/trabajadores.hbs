@@ -1,60 +1,34 @@
-
 <link rel="stylesheet" href="/css/detalles.css">
 <link rel="stylesheet" href="/css/background.css">
 {{> navigationUser}}
 
- {{#if success}}
-
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-md-4 mx-auto">
-                <div class="alert alert-success alert-dismissible fade show" role="=alert">
-                    {{success}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+<div class="container">
+    <div class="row">
+        {{#each trabajadores}}
+        <div class="card">
+            <img src={{trabajador_foto}} class="rounded mx-auto d-block "><br>
+            <div class="card-header" style="text-align: center;">
+                <h4><b>{{trabajador_nombre}}</b></h4>
             </div>
-        </div>  
-    </div>
-    
-    {{/if}}
-    
+            <p class="m-2">Distancia: <br> A
+                {{Dist direccion_latitud direccion_longitud ../userUbication.direccion_latitud ../userUbication.direccion_longitud}}
+                km's de ti<br> </p>
+            <p class="m-2">Califiación: <br> {{promedio}} ★</p>
+            <p class="m-2">Precio por hora: <br> {{precioxhora}}</p>
 
-    
-    <div class="container">
-            
-          <div class="row">
-              {{#each trabajadores}}
-              <div class="card">
-    
-    
-                   <img src={{trabajador_foto}} class="rounded mx-auto d-block "><br>
-                  <div class="card-header" style="text-align: center;">
-                   <h4><b>{{trabajador_nombre}}</b></h4>
-                   </div>
-                  <p class="m-2">Distancia: <br> A {{Dist trabajador_latitud trabajador_longitud ../userUbication.usuario_latitud ../userUbication.usuario_longitud}}
-                    km's de ti<br> </p>
-                  <p class="m-2">Califiación: <br> {{trabajador_puntaje}} ★</p>
-                  <p class="m-2">Precio por hora: <br> {{precioxhora}}</p>
-    
-                  <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{trabajador_nombre}}/{{nombre_labor}}/{{../servicio_descipcion}}"
-                    >Contratar</a>
-              </div>
-               
-      
-    
-    
-               {{else}}
-                <div class="col-md-4 mx-auto">
-                        <div class="card-message card-body text-center">
-                            <p>Por el momento no tenemos trabajadores que presenten ese servicio</p>
-                            <a href="/usuario/tipo-servicio">¡Selecciona otro!</a>
-                        </div>
-                 </div>
-               {{/each}}
-          </div>
-  </div>
+            <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}">Contratar</a>
+            <a href="/usuario/trabajador-perfil/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}">Perfil</a>
+        </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card-message card-body text-center">
+                <p>Por el momento no tenemos trabajadores que presenten ese servicio</p>
+                <a href="/usuario/tipo-servicio">¡Selecciona otro!</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
 
 {{!DESCRIPCIÓN DEL TRABAJO}}
 <input type="hidden" value="{{servicio_descipcion}}" name="servicio_descipcion">

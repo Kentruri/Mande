@@ -24,7 +24,7 @@
                         <p class="m-2"><b>Cliente:</b> {{servicio.usuario_nombre}}</p>
                         <p class="m-2"><b>Descripción:</b> {{servicio.servicio_descipcion}}</p>
                         <p class="m-2"><b>Fecha:</b> {{servicio.servicio_fecha}}</p>
-                        <p class="m-2"><b>Dirección del cliente:</b> {{servicio.usuario_direccion}}</p>
+                        <p class="m-2"><b>Dirección del cliente:</b> {{servicio.direccion_address}}</p>
                         <div id="map"></div><br>
                         <div class="text-center">
                         <a href="/trabajador/trabajos-activos" class="btn btn-secondary">Volver</a>
@@ -36,10 +36,10 @@
     </div>
 </div>
 
-<input type="hidden" value="{{employeeUbication.trabajador_latitud}}" id="latT">
-<input type="hidden" value="{{employeeUbication.trabajador_longitud}}" id="lonT">
-<input type="hidden" value="{{servicio.usuario_latitud}}" id="latU">
-<input type="hidden" value="{{servicio.usuario_longitud}}" id="lonU">
+<input type="hidden" value="{{employeeUbication.direccion_latitud}}" id="latT">
+<input type="hidden" value="{{employeeUbication.direccion_longitud}}" id="lonT">
+<input type="hidden" value="{{servicio.direccion_latitud}}" id="latU">
+<input type="hidden" value="{{servicio.direccion_longitud}}" id="lonU">
 
 <script>
     //COORDENADAS DEL TRABAJADRO

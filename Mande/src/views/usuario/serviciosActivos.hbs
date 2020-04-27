@@ -1,6 +1,7 @@
 {{> navigationUser}}
-<link rel="stylesheet" href="/css/detalles.css">
+
 {{#if success}}
+
     <div class="container p-4">
         <div class="row">
             <div class="col-md-4 mx-auto">
@@ -15,25 +16,25 @@
     </div>
     {{/if}}
 <div class="container p-4">
-    
     <div class="row">
         {{#each servicios}}
         <div class="col-md-3">
-            <div class="cardActiv">
+            <div class="card text-center">
                 <div class="card-body">
                     <h3 class="card-title text-uppercase">
                         {{nombre_labor}}
                     </h3>
-                    <p class="m-2"><b>Trabajador:</b> <br>{{trabajador_nombre}}</p>
-                    <p class="m-2"><b>Descripción:</b> <br>{{servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha:</b> {{servicio_fecha}}</p>
+                    <img src={{trabajador_foto}} width="158px" height="204px" class="rounded mx-auto d-block "><br>
+                    <p class="m-2"><b> Trabajador:</b> <br>{{trabajador_nombre}}</p>
+                    <p class="m-2"><b>Descripción: </b><br>{{servicio_descipcion}}</p>
+                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{servicio_fecha}}</p>
                 </div>
             </div>
         </div>
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card card-body text-center">
-                <p>No tienes ninguna servicio en este momento.</p>
+                <p>No tienes ningun servicio activo en este momento.</p>
                 <a href="/usuario/tipo-servicio">¡Solicita uno!</a>
             </div>
         </div>

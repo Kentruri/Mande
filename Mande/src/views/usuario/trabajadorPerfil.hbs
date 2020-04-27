@@ -1,0 +1,60 @@
+{{> navigationTrabajador}}
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3><b>{{nombre_labor}}</b></h3>
+                </div>
+                <div class="card-body">
+                    <img src={{trabajador.trabajador_foto}} width="158px" height="204px"
+                        class="rounded mx-auto d-block "><br>
+                    <p class="m-2"><b>Nombre:</b> {{trabajador.trabajador_nombre}}</p>
+                    <p class="m-2"><b>Fecha de nacimiento:</b> {{trabajador.trabajador_fechanacimiento}}</p>
+                    <p class="m-2"><b>Experiencia como {{nombre_labor}}:</b> {{trabajador.trabajoshechos}} trabajos realizados con éxito</p>
+                    <p class="m-2"><b>Calificación:</b> {{trabajador.promedio}}</p>
+                    <p class="m-2"><b>Ubicación de {{trabajador.trabajador_nombre}}:</b></p>
+                    <div id="map"></div><br>
+                    <div class="text-center">
+                        <a class="btn btn-secondary" onclick="volver()">Volver</a>
+                        <a href="/usuario/contratar-trabajador/{{trabajador.id_trabajador}}/{{nombre_labor}}/{{servicio_descipcion}}"
+                            class="btn btn-success">Contratar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="{{trabajador.direccion_latitud}}" id="latT">
+<input type="hidden" value="{{trabajador.direccion_longitud}}" id="lonT">
+<input type="hidden" value="{{userUbication.direccion_latitud}}" id="latU">
+<input type="hidden" value="{{userUbication.direccion_longitud}}" id="lonU">
+
+<script>
+    //COORDENADAS DEL TRABAJADRO
+    var latT = parseFloat(document.getElementById('latT').value);
+    var lonT = parseFloat(document.getElementById('lonT').value);
+    var coordT = { lat: latT, lng: lonT };
+
+    //COORDENADAS DEL USUARIO
+    var latU = parseFloat(document.getElementById('latU').value);
+    var lonU = parseFloat(document.getElementById('lonU').value);
+    var coordU = { lat: latU, lng: lonU };
+
+    window.onload = function loadMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: coordT
+        });
+            var marker = new google.maps.Marker({
+            position: coordT,
+            map: map
+        });
+    }
+
+    //VOLVER A LA LISTA LOS LABORES
+    function volver() {
+        window.history.back();
+    }
+</script>

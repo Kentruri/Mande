@@ -10,8 +10,9 @@ passport.use('trabajador.signup', new LocalStrategy(
     }, async (req, username, password, done) => 
     {
         const {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
-        const newEmployee = {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password };
-        const result = await pool.query('INSERT INTO trabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password]);
+        const newEmployee = {id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password };
+        await pool.query('INSERT INTO trabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password) VALUES ($1, $2, $3, $4, $5, $6, $7)', [id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password]);
+        await pool.query('INSERT INTO direccion VALUES ($1, $2, $3, $4, $5)', [id_trabajador, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud]);
         //console.log(newEmployee);
         return done(null, newEmployee);
     }

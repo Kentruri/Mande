@@ -1,5 +1,4 @@
-{{> navigationUser}}
-
+{{> navigationTrabajador}}
 {{#if success}}
     <div class="container p-4">
         <div class="row">
@@ -23,21 +22,19 @@
                     <h3 class="card-title text-uppercase">
                         {{nombre_labor}}
                     </h3>
-                    <img src={{trabajador_foto}} width="158px" height="204px" class="rounded mx-auto d-block "><br>
-                    <p class="m-2"><b> Trabajador:</b> <br>{{trabajador_nombre}}</p>
+                    <p class="m-2"><b>Cliente: </b><br> {{usuario_nombre}}</p>
                     <p class="m-2"><b>Descripción: </b><br>{{servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{servicio_fecha}}</p>
-                    <p class="m-2"><b>Fecha de culminación:</b> <br> {{pago_fecha}}</p>
-                    <p class="m-2"><b>Valor a pagar:</b> <br> {{pago_valor}}</p>
-                    <a href="/usuario/pagar-servicio/{{id_servicio}}/{{id_pago}}/{{trabajador_id}}" class="btn btn-success">Pagar</a>
+                    <p class="m-2"><b>Fecha de inicio: </b>{{servicio_fecha}}</p>
+                    <p class="m-2"><b>Fecha de culminación: </b>{{pago_fecha}}</p>
+                    <p class="m-2"><b>Valor: </b>{{pago_valor}}</p>
+                    <p class="m-2"><b><i>Pago realizado</i></b></p>
                 </div>
             </div>
         </div>
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card card-body text-center">
-                <p>No tienes ningun pago pendiente en este momento.</p>
-                <a href="/usuario/tipo-servicio">¡Solicita un servicio!</a>
+                <p>No tienes ninguna trabajo activo en este momento.</p>
             </div>
         </div>
         {{/each}}
