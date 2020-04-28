@@ -24,9 +24,11 @@
                     </h3>
                     <p class="m-2"><b>Cliente: </b><br> {{usuario_nombre}}</p>
                     <p class="m-2"><b>Descripción: </b><br>{{servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha de inicio: </b>{{servicio_fecha}}</p>
-                    <p class="m-2"><b>Fecha de culminación: </b>{{pago_fecha}}</p>
+                    <p class="m-2"><b>Fecha de inicio: </b>{{servicio_inicio}}</p>
+                    <p class="m-2"><b>Fecha de culminación: </b>{{servicio_final}}</p>
+                    <p class="m-2"><b>Fecha de pago: </b>{{pago_fecha}}</p>
                     <p class="m-2"><b>Valor: </b>{{pago_valor}}</p>
+                    <p class="m-2"><b>Calificación: </b>{{servicio_calificacion}}☆</p>
                     <p class="m-2"><b><i>Pago realizado</i></b></p>
                 </div>
             </div>
@@ -34,7 +36,8 @@
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card card-body text-center">
-                <p>No tienes ninguna trabajo activo en este momento.</p>
+                <p>Aún no has culminado ningún servico :(</p>
+                <p>Pero no te desanimes!</p>
             </div>
         </div>
         {{/each}}

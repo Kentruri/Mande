@@ -127,7 +127,7 @@ router.get('/culminar-trabajo/:id_servicio/:nombre_labor', isLoggedInEmployee, a
 router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, done) => {
     const {id_servicio} = req.params;
     const {pago_valor} = req.body;
-    await pool.query('UPDATE servicio SET servicio_estado=2 WHERE id_servicio=$1', [id_servicio]);
+    await pool.query('UPDATE servicio SET servicio_estado=2, servicio_final=CURRENT_TIMESTAMP WHERE id_servicio=$1', [id_servicio]);
     await pool.query('UPDATE trabajador SET trabajador_disponibilidad=true WHERE id_trabajador=$1', [req.user.id_trabajador]);
     await pool.query('INSERT INTO pago(servicio_id, pago_valor) VALUES ($1, $2)', [id_servicio, pago_valor]);
     done(null, req.flash('success','El trabajo se culminó con éxito!'));

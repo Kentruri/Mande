@@ -21,7 +21,7 @@ CREATE TABLE trabajador(
 CREATE TABLE laborvstrabajador(
     id_traba SERIAL PRIMARY KEY,
     trabajador_id NUMERIC,
-    nombre_labor VARCHAR(40) REFERENCES labor(labor_nombre),
+    nombre_labor VARCHAR(40),
     precioxhora NUMERIC NOT NULL,
     calificaciones NUMERIC NOT NULL DEFAULT 0,
     trabajoshechos NUMERIC NOT NULL DEFAULT 0,
@@ -53,8 +53,10 @@ CREATE TABLE servicio(
     servicio_descipcion TEXT,
     usuario_numero NUMERIC,
     trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
-    servicio_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    servicio_estado INTEGER NOT NULL DEFAULT 1
+    servicio_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    servicio_final TIMESTAMP,
+    servicio_estado INTEGER NOT NULL DEFAULT 1,
+    servicio_calificacion NUMERIC
 );
 
 CREATE TABLE pago(
@@ -62,7 +64,7 @@ CREATE TABLE pago(
     servicio_id INTEGER REFERENCES servicio(id_servicio),
     pago_valor NUMERIC,
     pago_estado BOOLEAN NOT NULL DEFAULT 'FALSE',
-    pago_fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    pago_fecha TIMESTAMP
 );
 
 -- LISTA PREDEFINIDA DE LABORES

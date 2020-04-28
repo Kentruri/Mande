@@ -94,8 +94,8 @@ router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id', async (req, 
     const trabajador_trabajosHechos=parseInt(numeros.trabajoshechos);
     const trabajador_promedio = (trabajador_calificaciones/trabajador_trabajosHechos).toFixed(1);
     await pool.query('UPDATE laborvstrabajador SET promedio=$1, calificaciones=$2 WHERE trabajador_id=$3', [trabajador_promedio, trabajador_calificaciones, trabajador_id]);
-    await pool.query('UPDATE servicio SET servicio_estado=3 WHERE id_servicio=$1', [id_servicio]);
-    await pool.query('UPDATE pago SET pago_estado=true WHERE servicio_id=$1', [id_servicio]);
+    await pool.query('UPDATE servicio SET servicio_estado=3, servicio_calificacion=$1 WHERE id_servicio=$2', [calificacion, id_servicio]);
+    await pool.query('UPDATE pago SET pago_estado=true, pago_fecha=CURRENT_TIMESTAMP WHERE servicio_id=$1', [id_servicio]);
     done(null, req.flash('success','Pago exitoso!'));
     res.redirect('/usuario/servicios-historial');
 });

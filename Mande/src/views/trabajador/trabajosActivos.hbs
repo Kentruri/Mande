@@ -24,7 +24,7 @@
                     </h3>
                     <p class="m-2">Cliente: <br> {{usuario_nombre}}</p>
                     <p class="m-2">Descripción: <br>{{servicio_descipcion}}</p>
-                    <p class="m-2">Fecha: {{servicio_fecha}}</p>
+                    <p class="m-2">Fecha: {{servicio_inicio}}</p>
                     <a href="/trabajador/detalles/{{id_servicio}}" class="btn btn-primary">Detalles</a>
                     <a href="/trabajador/culminar-trabajo/{{id_servicio}}/{{nombre_labor}}" class="btn btn-success">Culminar</a>
                 </div>
@@ -33,7 +33,7 @@
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card card-body text-center">
-                <p>No tienes ninguna trabajo activo en este momento.</p>
+                <p>No tienes ningun trabajo activo en este momento.</p>
             </div>
         </div>
         {{/each}}
