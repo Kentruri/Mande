@@ -80,20 +80,20 @@ router.get('/servicios-pagar', isLoggedInUser, async (req, res) => {
 });
 
 // PAGAR SERVICIO
-router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id', isLoggedInUser, async (req, res) => {
+router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', isLoggedInUser, async (req, res) => {
     const {id_servicio, id_pago, trabajador_id} = req.params;
     const servicio = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON servicio_id = id_servicio WHERE usuario_numero=$1 AND id_servicio=$2)AS S ON id_trabajador=trabajador_id', [req.user.numero_usuario, id_servicio])).rows[0];
     res.render('usuario/pagarServicio', {servicio});
 });
 
-router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id', async (req, res, done) => {
-    const {id_servicio, id_pago, trabajador_id} = req.params;
+router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', async (req, res, done) => {
+    const {id_servicio, id_pago, trabajador_id, nombre_labor} = req.params;
     const {calificacion} = req.body;
-    const numeros = await (await pool.query('SELECT calificaciones, trabajoshechos FROM laborvstrabajador WHERE trabajador_id=$1', [trabajador_id])).rows[0];
+    const numeros = await (await pool.query('SELECT calificaciones, trabajoshechos FROM laborvstrabajador WHERE trabajador_id=$1 AND nombre_labor=$2', [trabajador_id, nombre_labor])).rows[0];
     const trabajador_calificaciones=parseInt(numeros.calificaciones)+parseInt(calificacion);
     const trabajador_trabajosHechos=parseInt(numeros.trabajoshechos);
     const trabajador_promedio = (trabajador_calificaciones/trabajador_trabajosHechos).toFixed(1);
-    await pool.query('UPDATE laborvstrabajador SET promedio=$1, calificaciones=$2 WHERE trabajador_id=$3', [trabajador_promedio, trabajador_calificaciones, trabajador_id]);
+    await pool.query('UPDATE laborvstrabajador SET promedio=$1, calificaciones=$2 WHERE trabajador_id=$3 AND nombre_labor=$4', [trabajador_promedio, trabajador_calificaciones, trabajador_id, nombre_labor]);
     await pool.query('UPDATE servicio SET servicio_estado=3, servicio_calificacion=$1 WHERE id_servicio=$2', [calificacion, id_servicio]);
     await pool.query('UPDATE pago SET pago_estado=true, pago_fecha=CURRENT_TIMESTAMP WHERE servicio_id=$1', [id_servicio]);
     done(null, req.flash('success','Pago exitoso!'));
