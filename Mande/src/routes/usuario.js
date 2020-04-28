@@ -56,11 +56,11 @@ router.get('/trabajador-perfil/:trabajador_id/:nombre_labor/:servicio_descipcion
 router.get('/contratar-trabajador/:trabajador_id/:nombre_labor/:servicio_descipcion', isLoggedInUser, async (req, res, done) => {
     const {trabajador_id, nombre_labor, servicio_descipcion}=req.params;
     const usuario_numero = req.user.numero_usuario;
-    const trabajosHastaElMomento = await (await pool.query('SELECT trabajoshechos FROM laborvstrabajador WHERE trabajador_id=$1', [trabajador_id])).rows;
+    const trabajosHastaElMomento = await (await pool.query('SELECT trabajoshechos FROM laborvstrabajador WHERE trabajador_id=$1 AND nombre_labor=$2', [trabajador_id, nombre_labor])).rows;
     const trabajosActualizado = parseInt(trabajosHastaElMomento[0].trabajoshechos)+1;
     await pool.query('INSERT INTO servicio (nombre_labor, servicio_descipcion, usuario_numero, trabajador_id) VALUES ($1, $2, $3, $4)', [nombre_labor, servicio_descipcion, usuario_numero, trabajador_id]);
     await pool.query('UPDATE trabajador SET trabajador_disponibilidad=false WHERE id_trabajador=$1', [trabajador_id]);
-    await pool.query('UPDATE laborvstrabajador SET trabajoshechos=$1 WHERE trabajador_id=$2', [trabajosActualizado, trabajador_id]);
+    await pool.query('UPDATE laborvstrabajador SET trabajoshechos=$1 WHERE trabajador_id=$2 AND nombre_labor=$3', [trabajosActualizado, trabajador_id, nombre_labor]);
     done(null, req.flash('success','Trabajador contratado!'));
     res.redirect('/usuario/servicios-activos');
 });
