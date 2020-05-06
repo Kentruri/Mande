@@ -1,15 +1,18 @@
 <link rel="stylesheet" href="/css/detalles.css">
 <link rel="stylesheet" href="/css/background.css">
+<link rel="stylesheet" href="/css/Fondo.css">
 {{> navigationUser}}
-
+<div class="imagenActivos"></div>
 <div class="container">
     <div class="row">
         {{#each trabajadores}}
         <div class="card">
-            <img src={{trabajador_foto}} class="rounded mx-auto d-block "><br>
-            <div class="card-header" style="text-align: center;">
+            <img src={{trabajador_foto}} class="rounded mx-auto d-block ">
+            <div>
+                <b>ㅤ</b>
                 <h4><b>{{trabajador_nombre}}</b></h4>
-            </div>
+                <hr>
+                </div>
             <p class="m-2">Distancia: <br> A
                 {{Dist direccion_latitud direccion_longitud ../userUbication.direccion_latitud ../userUbication.direccion_longitud}}
                 km's de ti<br> </p>

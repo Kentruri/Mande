@@ -51,10 +51,25 @@ body {
 }
 
 .register-bg {
-    background-image: url('/img/Banner4.jpg');
+      
+    background-image: url('/img/registro3.jpg');
+    background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     min-height: 100vh;
+    
+    
+}
+
+.opaco{
+    position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(12, 29, 43, 0.5);
+ 
+    
 }
 
 .testiomonial {
