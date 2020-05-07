@@ -1,27 +1,53 @@
-<link rel="stylesheet" href="/css/detalles.css">
-<link rel="stylesheet" href="/css/background.css">
+<link rel="stylesheet" href="/css/Tarjetas.css">
 <link rel="stylesheet" href="/css/Fondo.css">
+<div class="imagenActivos">
+
+</div>
 {{> navigationUser}}
-<div class="imagenActivos"></div>
 <div class="container">
     <div class="row">
+        <div class="cards">
         {{#each trabajadores}}
-        <div class="card">
-            <img src={{trabajador_foto}} class="rounded mx-auto d-block ">
-            <div>
-                <b>ㅤ</b>
-                <h4><b>{{trabajador_nombre}}</b></h4>
-                <hr>
-                </div>
-            <p class="m-2">Distancia: <br> A
-                {{Dist direccion_latitud direccion_longitud ../userUbication.direccion_latitud ../userUbication.direccion_longitud}}
-                km's de ti<br> </p>
-            <p class="m-2">Califiación: <br> {{promedio}} ✩</p>
-            <p class="m-2">Precio por hora: <br> {{precioxhora}}</p>
+        
 
-            <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}">Contratar</a>
-            <a href="/usuario/trabajador-perfil/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}">Perfil</a>
+    <div class="card">
+        <div class="card__image-holder">
+            <img src={{trabajador_foto}}>
         </div>
+        <div class="card-title">
+            <a href="#" class="toggle-info btn">
+                <span class="left"></span>
+                <span class="right"></span>
+            </a>
+            <h2>
+            {{trabajador_nombre}}
+            </h2>
+            
+        </div>
+        <div class="card-flap flap1">
+            <div class="card-description">
+
+                
+                <h3>
+                    Precio U/H : {{precioxhora}}$
+                </h3>
+                <h3>
+                    Calificacion : {{promedio}} ✩
+                </h3>
+                <h3>
+                A {{Dist direccion_latitud direccion_longitud ../userUbication.direccion_latitud ../userUbication.direccion_longitud}}
+                km's de ti
+                </h3>
+
+            </div>
+            <div class="card-flap flap2">
+                <div class="card-actions">
+                    <a href="/usuario/trabajador-perfil/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}" class="btn">Ver perfil</a>
+                    <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}" class="btn">Contratar</a>
+                </div>
+            </div>
+        </div>
+    </div>
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card-message card-body text-center">
@@ -46,3 +72,5 @@
     var lonU = parseFloat(document.getElementById('usuario_longitud').value);
 
 </script>
+
+<script src="/js/Tarjetas.js"></script>

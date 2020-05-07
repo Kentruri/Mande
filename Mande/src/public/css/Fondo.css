@@ -14,11 +14,11 @@
 
 .imagenActivos{
 	position: fixed;
-	background:url(/img/prueba8.jpg);
+	background:url(/img/prueba7.jpg);
 	bottom: 10;
 	left: 0;
 	width: 100%;
-    height: calc(100vh - 54px);
+	height: 100%;
 	z-index: -1;
 	background-attachment: fixed;
     background-size: cover;
