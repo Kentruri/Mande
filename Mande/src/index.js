@@ -47,8 +47,8 @@ hbs.registerHelper("Dist",function(latT, lonT,latU,lonU){
 app.use(session(
     {
         secret: 'Mande',
-        resave: false,
-        saveUninitialized: false/*,
+        resave: true,
+        saveUninitialized: true/*,
         store :  new (require('connect-pg-simple')(session))()*/
     }
 ))

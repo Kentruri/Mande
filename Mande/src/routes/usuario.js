@@ -131,7 +131,7 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
 });
 
 router.get('/perfil', isLoggedInUser, async (req, res, done) => {
-    const user = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON id_usuario=id_direccion WHERE id_usuario=$1', [req.user.id_usuario])).rows[0];
+    const user = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON id_usuario=id_direccion WHERE usuario_numero=$1', [req.user.id_usuario])).rows[0];
     console.log(user);
     res.render('usuario/perfil', { user });
 });
@@ -141,10 +141,9 @@ router.post('/perfil', async (req, res, done) => {
     const { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body;
     const newUser = {usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard};
     newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
-    console.log(usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard);
-    await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_numcard=$6, usuario_recibo=$7 WHERE id_usuario=$8', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard, usuario_recibo, id_usuario]);
+    await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_numCard=$6, usuario_recibo=$7 WHERE id_usuario=$8', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard, usuario_recibo, id_usuario]);
     await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, id_usuario]);
-    done(null, req.flash('success', 'Edición exitosa!'));
+    done(null, req.flash('success', 'Actualización exitosa!'));
     res.redirect('/usuario/perfil');
 });
 

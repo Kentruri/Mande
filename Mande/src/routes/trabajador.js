@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const pool = require('../database');
-const helpers = require('../lib/helpers');
 const {isLoggedInEmployee, isNotLoggedInEmployee} = require('../lib/auth');
 
 // REGISTRO
@@ -25,7 +24,7 @@ router.get('/inicio-sesion', isNotLoggedInEmployee, (req, res) => {
 router.post('/inicio-sesion', (req, res, next) => {
     passport.authenticate('trabajador_signin',
         {
-            successRedirect: '/trabajador/ingreso',
+            successRedirect: '/trabajador/perfil',
             failureRedirect: '/trabajador/inicio-sesion',
             failureFlash: true
         })(req, res, next);
@@ -86,7 +85,7 @@ router.post('/editar-labor/:id', async(req, res) => {
 });
 
 // PERFIL
-router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
+router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
     const id_trabajador = req.user.id_trabajador;
     const trabajo = await (await pool.query('SELECT trabajador_disponibilidad FROM trabajador WHERE id_trabajador=$1 AND trabajador_disponibilidad=false', [id_trabajador])).rows; 
     const rows = await (await pool.query('SELECT * FROM trabajador WHERE id_trabajador=$1', [id_trabajador])).rows;
@@ -98,7 +97,7 @@ router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
     {
         done(null, employee, req.flash('success','Bienvenido ' + employee.trabajador_username));
     }
-    res.redirect('/trabajador/perfil');
+    res.redirect('/trabajador/mis-labores');
 });
 
 // TRABAJOS ACTIVOS
@@ -147,25 +146,6 @@ router.get('/trabajos-historial', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
     const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON usuario_numero=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=3', [id_trabajador])).rows;
     res.render('trabajador/trabajosHistorial', {servicios}); 
-});
-
-// PERFIL 
-router.get('/perfil', isLoggedInEmployee, async (req, res) => {
-    const employee = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM direccion) AS D ON id_trabajador=id_direccion WHERE id_trabajador=$1', [req.user.id_trabajador])).rows[0];
-    console.log(employee);
-    res.render('trabajador/perfil', { employee });
-});
-
-router.post('/perfil', async (req, res, done) => {
-    /*const id_usuario = req.user.id_usuario;
-    const { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body;
-    const newUser = {usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard};
-    newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
-    console.log(usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard);
-    await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_numcard=$6, usuario_recibo=$7 WHERE id_usuario=$8', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard, usuario_recibo, id_usuario]);
-    await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, id_usuario]);
-    done(null, req.flash('success', 'Edición exitosa!'));
-    res.redirect('/usuario/perfil');*/
 });
 
 // CERRAR SESIÓN
