@@ -103,7 +103,7 @@ router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
 // TRABAJOS ACTIVOS
 router.get('/trabajos-activos', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
-    const servicios = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario) AS U ON numero_usuario=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=1', [id_trabajador])).rows;
+    const servicios = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario) AS U ON usuario_numero=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=1', [id_trabajador])).rows;
     res.render('trabajador/trabajosActivos', {servicios}); 
 });
 
@@ -111,7 +111,7 @@ router.get('/trabajos-activos', isLoggedInEmployee, async (req, res) => {
 router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
     const {id_servicio}=req.params;
     const id_trabajador = req.user.id_trabajador;
-    const servicio = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON numero_usuario=id_direccion) AS S ON numero_usuario=usuario_numero WHERE id_servicio=$1', [id_servicio])).rows[0];
+    const servicio = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON usuario_numero=id_direccion) AS S ON usuario_numero=usuario_numero WHERE id_servicio=$1', [id_servicio])).rows[0];
     const employeeUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [id_trabajador])).rows;
     res.render('trabajador/trabajoDetalles', {servicio, employeeUbication: employeeUbication[0]});
 });
@@ -120,7 +120,7 @@ router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
 router.get('/culminar-trabajo/:id_servicio/:nombre_labor', isLoggedInEmployee, async (req, res) => {
     const {id_servicio, nombre_labor} = req.params;
     const precio = await (await pool.query('SELECT precioxhora FROM laborvstrabajador WHERE trabajador_id=$1 AND nombre_labor=$2', [req.user.id_trabajador, nombre_labor])).rows[0].precioxhora;
-    const servicio = await (await pool.query ('SELECT * FROM servicio JOIN (SELECT * FROM usuario)AS U ON usuario_numero=numero_usuario WHERE id_servicio=$1', [id_servicio])).rows[0];
+    const servicio = await (await pool.query ('SELECT * FROM servicio JOIN (SELECT * FROM usuario)AS U ON usuario_numero=usuario_numero WHERE id_servicio=$1', [id_servicio])).rows[0];
     res.render('trabajador/trabajoTerminar', {servicio: servicio, precio: precio});
 });
 
@@ -137,14 +137,14 @@ router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, don
 // TRABAJOS PENDIENTES DE PAGO
 router.get('/trabajos-pendientes', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
-    const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON numero_usuario=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=2', [id_trabajador])).rows;
+    const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON usuario_numero=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=2', [id_trabajador])).rows;
     res.render('trabajador/trabajosPendientes', {servicios}); 
 });
 
 //HISTORIAL DE TRABAJOS
 router.get('/trabajos-historial', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
-    const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON numero_usuario=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=3', [id_trabajador])).rows;
+    const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON usuario_numero=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=3', [id_trabajador])).rows;
     res.render('trabajador/trabajosHistorial', {servicios}); 
 });
 

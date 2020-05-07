@@ -1,6 +1,6 @@
 <!-- Bootstrap CSS -->
 <link href="/css/registro.css" rel="stylesheet">
-{{> navigation}}
+{{> navigationUser}}
 {{#if success}}
 <div class="container p-4">
     <div class="row">
@@ -21,23 +21,23 @@
     </div>
     <div class="col-xl-7 col-lg-12 d-flex">
         <div class="container align-self-center p-6">
-            <h1 class="font-weight-bold mb-3">Registrate</h1>
+            <h1 class="font-weight-bold mb-3">Perfil</h1>
 
-            <p class="text-muted mb-5">Ingresa la siguiente información para registrarte.</p>
+            <p class="text-muted mb-5">Estos son tus datos.</p>
 
-            <form action="/usuario/registro" method="POST">
+            <form action="/usuario/perfil" method="POST">
 
                 <div class="form-row mb-2">
 
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Nombre </label>
                         <input type="text" class="form-control" name="usuario_nombre" autocomplete="off" required
-                            placeholder="Tu nombre">
+                            value="{{user.usuario_nombre}}">
                     </div>
 
                     <div class="form-group col-md-5">
                         <label>Fecha de nacimiento</label>
-                        <input type="date" name="usuario_fechaNacimiento" class="form-control" required>
+                        <input type="text" class="form-control" disabled value="{{user.usuario_fechanacimiento}}">
                     </div>
 
                 </div>
@@ -48,13 +48,13 @@
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Correo electronico<span class="text-danger">*</span></label>
                         <input type="email" class="form-control" name="usuario_email" autocomplete="off" required
-                            placeholder="Tu correo electronico">
+                            value="{{user.usuario_email}}">
                     </div>
 
                     <div class="form-group col-md-5">
                         <label class="font-weight-bold">Numero de celular <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" name="usuario_numero" autocomplete="off" required
-                            placeholder="Tu numero de celular">
+                            value="{{user.usuario_numero}}">
                     </div>
 
                 </div>
@@ -65,10 +65,10 @@
                 <div class="form-group mb-3">
                     <label>Dirección</label>
                     <input type="text" class="form-control" id="search_input" name="usuario_direccion" required
-                        placeholder="Tu direccion de domicilio">
-                    <input type="hidden" name="usuario_latitud" id="latitude" />
-                    <input type="hidden" name="usuario_longitud" id="longitude" />
-                    <input type="hidden" name="usuario_localidad" id="localidad" />
+                        value="{{user.direccion_address}}">
+                    <input type="hidden" name="usuario_latitud" id="latitude" value="{{user.direccion_latitud}}"/>
+                    <input type="hidden" name="usuario_longitud" id="longitude" value="{{user.direccion_longitud}}"/>
+                    <input type="hidden" name="usuario_localidad" id="localidad" value="{{user.direccion_localidad}}"/>
                 </div>
 
 
@@ -77,13 +77,13 @@
                     <div class="form-group col-md-5">
                         <label class="font-weight-bold">Usuario</label>
                         <input type="text" class="form-control" name="usuario_username" autocomplete="off" required
-                            placeholder="Tu nombre de usuario">
+                            value="{{user.usuario_username}}">
                     </div>
 
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Contraseña </label>
                         <input type="password" class="form-control" name="usuario_password" autocomplete="off" required
-                            placeholder="tu contraseña">
+                            value="{{user.usuario_password}}">
                     </div>
 
                 </div>
@@ -98,23 +98,23 @@
 
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Documento de identidad </label>
-                        <input type="number" class="form-control" name="id_usuario" autocomplete="off" required
-                            placeholder="Número de documento">
+                        <input type="number" class="form-control" disabled value="{{user.id_usuario}}">
                     </div>
 
                 </div>
 
                 <div class="form-group mb-4"></div>
                 <label>Recibo de Servicios</label><br>
-                <input type="file" id="img_uploader" required><br><br>
-                <input type="hidden" id="recibo" name="usuario_recibo">
+                <input type="file" id="img_uploader"><br><br>
+                <input type="hidden" id="recibo" name="usuario_recibo" value="{{user.usuario_recibo}}">
                 <div class="card" id="espacio_foto">
-                    <img id="img_preview">
+                    <img src="{{user.usuario_recibo}}" id="img_preview">
 
                 </div>
 
 
                 <button class="btn btn-primary width-100">Regístrate</button>
+                <a href="/usuario/borrar-cuenta" class="btn btn-danger width-100">Eliminar cuenta</a>
             </form>
             <small class="d-inline-block text-muted mt-5">© Mande Corp 2020</small>
         </div>

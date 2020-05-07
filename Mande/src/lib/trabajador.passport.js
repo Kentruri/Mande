@@ -25,7 +25,7 @@ passport.use('trabajador_signin', new LocalStrategy(
         passReqToCallback: true
     }, async (req, trabajador_username, trabajador_password, done) =>
     {
-        const rows = await (await pool.query('SELECT * FROM trabajador WHERE trabajador_username=$1 AND trabajador_password=$2', [trabajador_username, trabajador_password])).rows;
+        const rows = await (await pool.query('SELECT * FROM trabajador WHERE trabajador_username=$1 AND trabajador_password=$2 AND eliminado=false', [trabajador_username, trabajador_password])).rows;
         if(rows.length > 0)
         {
             const employee = rows[0];

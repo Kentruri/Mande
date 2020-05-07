@@ -14,7 +14,8 @@ CREATE TABLE trabajador(
     trabajador_documento TEXT NOT NULL,
     trabajador_disponibilidad BOOLEAN NOT NULL DEFAULT 'true',
     trabajador_username VARCHAR(40) UNIQUE,
-    trabajador_password VARCHAR(40)
+    trabajador_password VARCHAR(40),
+    eliminado BOOLEAN NOT NULL DEFAULT 'false'
 );
 
 -- RELACIÓN LABOR-TRABAJADOR
@@ -38,20 +39,23 @@ CREATE TABLE direccion(
 
 -- TABLA USUARIO 
 CREATE TABLE usuario(
-    numero_usuario NUMERIC PRIMARY KEY,
+    id_usuario NUMERIC PRIMARY KEY,
     usuario_nombre VARCHAR(60) NOT NULL,
     usuario_fechaNacimiento DATE NOT NULL,
     usuario_email VARCHAR NOT NULL UNIQUE,
+    usuario_numero NUMERIC UNIQUE,
     usuario_username VARCHAR(40) UNIQUE,
     usuario_password VARCHAR(40),
-    usuario_numCard TEXT
+    usuario_numCard TEXT,
+    usuario_recibo TEXT NOT NULL,
+    eliminado BOOLEAN NOT NULL DEFAULT 'false'
 );
 
 CREATE TABLE servicio(
     id_servicio SERIAL PRIMARY KEY,
     nombre_labor VARCHAR(40),
     servicio_descipcion TEXT,
-    usuario_numero NUMERIC,
+    usuario_id NUMERIC,
     trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
     servicio_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     servicio_final TIMESTAMP,
@@ -72,4 +76,5 @@ INSERT INTO labor(labor_nombre) VALUES
     ('Plomero'),
     ('Cerrajero'),
     ('Profesor de Inglés'),
-    ('Paseador de perros');
+    ('Paseador de perros'),
+    ('Cocinero');
