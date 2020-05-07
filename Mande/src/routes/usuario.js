@@ -130,9 +130,10 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
 
 });
 
+
+// PERFIL
 router.get('/perfil', isLoggedInUser, async (req, res, done) => {
-    const user = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON id_usuario=id_direccion WHERE usuario_numero=$1', [req.user.id_usuario])).rows[0];
-    console.log(user);
+    const user = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON id_usuario=id_direccion WHERE id_usuario=$1', [req.user.id_usuario])).rows[0];
     res.render('usuario/perfil', { user });
 });
 

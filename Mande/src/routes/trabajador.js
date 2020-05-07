@@ -24,7 +24,7 @@ router.get('/inicio-sesion', isNotLoggedInEmployee, (req, res) => {
 router.post('/inicio-sesion', (req, res, next) => {
     passport.authenticate('trabajador_signin',
         {
-            successRedirect: '/trabajador/perfil',
+            successRedirect: '/trabajador/ingreso',
             failureRedirect: '/trabajador/inicio-sesion',
             failureFlash: true
         })(req, res, next);
@@ -49,7 +49,6 @@ router.post('/addLabor', async (req, res) => {
 router.get('/mis-labores', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
     const labores = await (await pool.query('SELECT * FROM laborvstrabajador WHERE trabajador_id=$1', [id_trabajador])).rows;
-    console.log(labores);
     res.render('trabajador/misLabores', { labores });
 });
 
@@ -84,8 +83,8 @@ router.post('/editar-labor/:id', async(req, res) => {
     
 });
 
-// PERFIL
-router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
+// INGRESO
+router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
     const id_trabajador = req.user.id_trabajador;
     const trabajo = await (await pool.query('SELECT trabajador_disponibilidad FROM trabajador WHERE id_trabajador=$1 AND trabajador_disponibilidad=false', [id_trabajador])).rows; 
     const rows = await (await pool.query('SELECT * FROM trabajador WHERE id_trabajador=$1', [id_trabajador])).rows;
@@ -93,11 +92,12 @@ router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
     if(trabajo.length > 0)
     {
         done(null, employee, req.flash('success','¡' + employee.trabajador_nombre + '! Tienes trabajo activo'));
+        res.redirect('/trabajador/trabajos-activos')
     }else
     {
         done(null, employee, req.flash('success','Bienvenido ' + employee.trabajador_username));
+        res.redirect('/trabajador/mis-labores');
     }
-    res.redirect('/trabajador/mis-labores');
 });
 
 // TRABAJOS ACTIVOS
@@ -146,6 +146,29 @@ router.get('/trabajos-historial', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
     const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON usuario_numero=usuario_numero WHERE trabajador_id=$1 AND servicio_estado=3', [id_trabajador])).rows;
     res.render('trabajador/trabajosHistorial', {servicios}); 
+});
+
+
+// PERFIL
+router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
+    const employee = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM direccion) AS D ON id_trabajador=id_direccion WHERE id_trabajador=$1', [req.user.id_trabajador])).rows[0];
+    console.log(employee);
+    res.render('trabajador/perfil', { employee });
+});
+
+router.post('/perfil', async (req, res, done) => {
+    const id_trabajador = req.user.id_trabajador;
+    const {trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+    await pool.query('UPDATE trabajador SET trabajador_nombre=$1, trabajador_foto=$2, trabajador_documento=$3, trabajador_username=$4, trabajador_password=$5 WHERE id_trabajador=$6', [trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password, id_trabajador]);
+    await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, id_trabajador]);
+    done(null, req.flash('success', 'Actualización exitosa!'));
+    res.redirect('/trabajador/perfil');
+});
+
+router.get('/borrar-cuenta', isLoggedInEmployee, async (req, res, done) => {
+    await pool.query('UPDATE trabajador SET eliminado=true WHERE id_trabajador=$1', [req.user.id_trabajador]);
+    console.log(req.user.fechanacimiento);
+    res.redirect('/trabajador/cerrar-sesion');
 });
 
 // CERRAR SESIÓN
