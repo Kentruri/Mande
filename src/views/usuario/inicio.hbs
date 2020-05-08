@@ -1,0 +1,54 @@
+<link rel="stylesheet" type="text/css" href="/css/LoginUsuario.css">
+<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+{{> navigation}}
+{{#if success}}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="=alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>  
+    </div>
+    {{/if}}
+<img class="wave" src="/img/waveAzul.png">
+<div class="containers">
+    <div class="img">
+        <img src="/img/login.png">
+    </div>
+    <div class="login-content">
+        <form action="/usuario/inicio-sesion" method="POST">
+            <img src="/img/avatar.svg">
+            <h2 class="title">Bienvenido</h2>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Nombre de usuario</h5>
+                    <input type="text" name="usuario_username" class="input">
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Contraseña</h5>
+                    <input type="password" name="usuario_password" class="input">
+                </div>
+            </div>
+            <a href="/usuario/registro">¿No tienes cuenta? Registrate</a>
+            <div class="form-group">
+                <button class="btn btn-success btn-block">
+                    Iniciar Sesion
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/Login.js"></script>

@@ -1,0 +1,46 @@
+{{> navigationUser}}
+
+{{#if success}}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="=alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>  
+    </div>
+    {{/if}}
+<div class="container p-4">
+    <div class="row">
+        {{#each servicios}}
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="card-title text-uppercase">
+                        {{nombre_labor}}
+                    </h3>
+                    <img src={{trabajador_foto}} width="158px" height="204px" class="rounded mx-auto d-block "><br>
+                    <p class="m-2"><b>Trabajador:</b> <br>{{trabajador_nombre}}</p>
+                    <p class="m-2"><b>Descripción: </b><br>{{servicio_descipcion}}</p>
+                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{servicio_inicio}}</p>
+                    <p class="m-2"><b>Fecha de culminación:</b> <br> {{servicio_final}}</p>
+                    <p class="m-2"><b>Fecha del pago:</b> <br> {{pago_fecha}}</p>
+                    <p class="m-2"><b>Valor:</b> <br> {{pago_valor}}</p>
+                    <p class="m-2"><b>Calificación:</b> <br> {{servicio_calificacion}} ✩</p>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No tienes ningun pago pendiente en este momento.</p>
+                <a href="/usuario/tipo-servicio">¡Solicita un servicio!</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

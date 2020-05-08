@@ -1,0 +1,41 @@
+{{> navigationTrabajador}}
+{{#if success}}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="=alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>  
+    </div>
+    {{/if}}
+<div class="container p-4">
+    <div class="row">
+        {{#each servicios}}
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="card-title text-uppercase">
+                        {{nombre_labor}}
+                    </h3>
+                    <p class="m-2">Cliente: <br> {{usuario_nombre}}</p>
+                    <p class="m-2">Descripción: <br>{{servicio_descipcion}}</p>
+                    <p class="m-2">Fecha: {{servicio_inicio}}</p>
+                    <a href="/trabajador/detalles/{{id_servicio}}" class="btn btn-primary">Detalles</a>
+                    <a href="/trabajador/culminar-trabajo/{{id_servicio}}/{{nombre_labor}}" class="btn btn-success">Culminar</a>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No tienes ningun trabajo activo en este momento.</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
