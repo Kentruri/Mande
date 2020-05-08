@@ -111,7 +111,7 @@ router.get('/trabajos-activos', isLoggedInEmployee, async (req, res) => {
 router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
     const {id_servicio}=req.params;
     const id_trabajador = req.user.id_trabajador;
-    const servicio = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON usuario_numero=id_direccion) AS S ON usuario_numero=usuario_numero WHERE id_servicio=$1', [id_servicio])).rows[0];
+    const servicio = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON id_usuario=id_direccion) AS S ON id_usuario=usuario_id WHERE id_servicio=$1', [id_servicio])).rows[0];
     const employeeUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [id_trabajador])).rows;
     res.render('trabajador/trabajoDetalles', {servicio, employeeUbication: employeeUbication[0]});
 });
