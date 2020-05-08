@@ -21,9 +21,9 @@
     </div>
     <div class="col-xl-7 col-lg-12 d-flex">
         <div class="container align-self-center p-6">
-            <h1 class="font-weight-bold mb-3">Registrate</h1>
+            <h1 class="font-weight-bold mb-3">Perfil</h1>
 
-            <p class="text-muted mb-5">Ingresa la siguiente información para registrarte.</p>
+            <p class="text-muted mb-5">Actualiza tus datos.</p>
 
             <form action="/trabajador/perfil" method="POST">
 
@@ -31,7 +31,7 @@
 
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Nombre </label>
-                        <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required
+                        <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" oninvalid="this.setCustomValidity('Solo se permiten letras')"
                            value="{{employee.trabajador_nombre}}">
                     </div>
 

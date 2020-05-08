@@ -75,6 +75,6 @@ CREATE TABLE pago(
 INSERT INTO labor(labor_nombre) VALUES
     ('Plomero'),
     ('Cerrajero'),
-    ('Profesor de Inglés'),
+    ('Profesor de Ingles'),
     ('Paseador de perros'),
     ('Cocinero');

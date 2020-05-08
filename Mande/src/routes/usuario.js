@@ -46,9 +46,10 @@ router.get('/tipo-servicio', isLoggedInUser, async (req, res, done) => {
 router.post('/tipo-servicio', async (req, res) => {
     const { nombre_labor, servicio_descipcion } = req.body;
     const userLocation = await (await pool.query('SELECT direccion_localidad FROM direccion WHERE id_direccion=$1', [req.user.id_usuario])).rows[0].direccion_localidad;
-    const userUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [req.user.usuario_numero])).rows;
+    const userUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [req.user.id_usuario])).rows;
     const trabajadores = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM laborvstrabajador JOIN (SELECT * FROM direccion) AS D ON trabajador_id=id_direccion WHERE nombre_labor=$1) AS L ON id_trabajador = trabajador_id WHERE trabajador_disponibilidad=true AND direccion_localidad=$2 ORDER BY promedio DESC', [nombre_labor, userLocation])).rows;
     res.render('usuario/trabajadores', { nombre_labor: nombre_labor, servicio_descipcion: servicio_descipcion, userUbication: userUbication[0], trabajadores });
+    console.log(req.user.id_usuario);
 });
 
 //PERFIL DE UN TRABAJADOR
