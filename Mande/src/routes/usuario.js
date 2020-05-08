@@ -45,7 +45,7 @@ router.get('/tipo-servicio', isLoggedInUser, async (req, res, done) => {
 
 router.post('/tipo-servicio', async (req, res) => {
     const { nombre_labor, servicio_descipcion } = req.body;
-    const userLocation = await (await pool.query('SELECT direccion_localidad FROM direccion WHERE id_direccion=$1', [req.user.usuario_numero])).rows[0].direccion_localidad;
+    const userLocation = await (await pool.query('SELECT direccion_localidad FROM direccion WHERE id_direccion=$1', [req.user.id_usuario])).rows[0].direccion_localidad;
     const userUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [req.user.usuario_numero])).rows;
     const trabajadores = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM laborvstrabajador JOIN (SELECT * FROM direccion) AS D ON trabajador_id=id_direccion WHERE nombre_labor=$1) AS L ON id_trabajador = trabajador_id WHERE trabajador_disponibilidad=true AND direccion_localidad=$2 ORDER BY promedio DESC', [nombre_labor, userLocation])).rows;
     res.render('usuario/trabajadores', { nombre_labor: nombre_labor, servicio_descipcion: servicio_descipcion, userUbication: userUbication[0], trabajadores });
@@ -115,9 +115,9 @@ router.get('/servicios-historial', isLoggedInUser, async (req, res) => {
 
 // PERFIL 
 router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
-    const usuario_numero = req.user.id_usuario;
-    const deuda = await (await pool.query('SELECT servicio_estado FROM servicio WHERE usuario_id=$1 AND servicio_estado=2', [usuario_numero])).rows;
-    const rows = await (await pool.query('SELECT * FROM usuario WHERE usuario_numero=$1', [usuario_numero])).rows;
+    const id_usuario = req.user.id_usuario;
+    const deuda = await (await pool.query('SELECT servicio_estado FROM servicio WHERE usuario_id=$1 AND servicio_estado=2', [id_usuario])).rows;
+    const rows = await (await pool.query('SELECT * FROM usuario WHERE id_usuario=$1', [id_usuario])).rows;
     const user = rows[0];
 
     if (deuda.length > 0) {

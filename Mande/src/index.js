@@ -21,8 +21,7 @@ app.engine('.hbs', exphbs(
         defaultLayout: 'main',
         layoutsDir: path.join(app.get('views'),'layouts'),
         partialsDir: path.join(app.get('views'), 'partials'),
-        extname: '.hbs',
-        helpers: require('./lib/handlebars')
+        extname: '.hbs'
     }));
     app.set('view engine', '.hbs');
 
@@ -38,7 +37,7 @@ hbs.registerHelper("Dist",function(latT, lonT,latU,lonU){
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
 
-    return d.toFixed(1);                      //Retorna tres decimales
+    return d.toFixed(1);                      //Retorna un decimal
 
 
 });
