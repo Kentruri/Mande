@@ -185,6 +185,7 @@
     opacity: 0.94;
     transform: scale(0.92);
   }
+
   div.card.show {
     opacity: 1 !important;
     transform: scale(1) !important;
@@ -211,4 +212,5 @@
   div.card.show div.flap2 {
     transition: all 0.3s 0.2s ease-out;
   }
+  
   

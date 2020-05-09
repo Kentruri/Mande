@@ -1,5 +1,7 @@
 {{> navigationUser}}
 <link rel="stylesheet" href="/css/Fondo.css">
+<link rel="stylesheet" href="/css/mensaje.css">
+<link rel="stylesheet" href="/css/Tarjetas_pagar.css">
  <div class="imagenTipo"></div>
 {{#if success}}
     <div class="container p-4">
@@ -17,6 +19,7 @@
     {{/if}}
 <div class="container p-4">
     <div class="row">
+        
         {{#each servicios}}
         <div class="col-md-3">
             <div class="card text-center">
@@ -36,7 +39,7 @@
         </div>
         {{else}}
         <div class="col-md-4 mx-auto">
-            <div class="card card-body text-center">
+            <div class="tarjeta_mensaje card-body bg-light mb-3 text-center">
                 <p>No tienes ningun pago pendiente en este momento.</p>
                 <a href="/usuario/tipo-servicio">¡Solicita un servicio!</a>
             </div>

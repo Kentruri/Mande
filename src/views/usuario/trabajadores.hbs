@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="/css/Tarjetas.css">
 <link rel="stylesheet" href="/css/Fondo.css">
+<link rel="stylesheet" href="/css/mensaje.css">
+
 <div class="imagenActivos">
 
 </div>
@@ -7,53 +9,63 @@
 <div class="container">
     <div class="row">
         <div class="cards">
-        {{#each trabajadores}}
-        
+            {{#each trabajadores}}
 
-    <div class="card">
-        <div class="card__image-holder">
-            <img src={{trabajador_foto}}>
-        </div>
-        <div class="card-title">
-            <a href="#" class="toggle-info btn">
-                <span class="left"></span>
-                <span class="right"></span>
-            </a>
-            <h2>
-            {{trabajador_nombre}}
-            </h2>
-            
-        </div>
-        <div class="card-flap flap1">
-            <div class="card-description">
 
-                
-                <h3>
-                    Precio U/H : {{precioxhora}}$
-                </h3>
-                <h3>
-                    Calificacion : {{promedio}} ✩
-                </h3>
-                <h3>
-                A {{Dist direccion_latitud direccion_longitud ../userUbication.direccion_latitud ../userUbication.direccion_longitud}}
-                km's de ti
-                </h3>
+            <div class="card">
+                <div class="card__image-holder">
+                    <img src={{trabajador_foto}}>
+                </div>
+                <div class="card-title">
+                    <a href="#" class="toggle-info btn">
+                        <span class="left"></span>
+                        <span class="right"></span>
+                    </a>
+                    <h2>
+                        {{trabajador_nombre}}
+                    </h2>
 
-            </div>
-            <div class="card-flap flap2">
-                <div class="card-actions">
-                    <a href="/usuario/trabajador-perfil/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}" class="btn">Ver perfil</a>
-                    <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}" class="btn">Contratar</a>
+                </div>
+                <div class="card-flap flap1">
+                    <div class="card-description">
+
+
+                        <h3>
+                            Precio U/H : {{precioxhora}}$
+                        </h3>
+                        <h3>
+                            Calificacion : {{promedio}} ✩
+                        </h3>
+                        <h3>
+                            A
+                            {{Dist direccion_latitud direccion_longitud ../userUbication.direccion_latitud ../userUbication.direccion_longitud}}
+                            km's de ti
+                        </h3>
+
+                    </div>
+                    <div class="card-flap flap2">
+                        <div class="card-actions">
+                            <a href="/usuario/trabajador-perfil/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}"
+                                class="btn">Ver perfil</a>
+                            <a href="/usuario/contratar-trabajador/{{id_trabajador}}/{{nombre_labor}}/{{../servicio_descipcion}}"
+                                class="btn">Contratar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
         {{else}}
+       
         <div class="col-md-4 mx-auto">
-            <div class="card-message card-body text-center">
-                <p>Por el momento no tenemos trabajadores que presenten ese servicio</p>
+            
+            <div class="tarjeta_mensaje_dos card-body text-center">
+                <p>Por el momento no tenemos trabajadores que presenten este servicio</p>
+                
                 <a href="/usuario/tipo-servicio">¡Selecciona otro!</a>
+                
             </div>
+            
+            
+            
         </div>
         {{/each}}
     </div>
