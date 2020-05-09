@@ -1,6 +1,8 @@
 {{> navigationUser}}
 
 <link rel="stylesheet" href="/css/Tarjetas.css">
+<link rel="stylesheet" href="/css/Fondo.css">
+ <div class="imagenActivos"></div>
 <div class="container">
     <div class="row">
         <div class="cards">
@@ -14,25 +16,30 @@
                         <span class="left"></span>
                         <span class="right"></span>
                     </a>
-                    <h2>
-                        {{nombre_labor}}
+                     <h2>
+                        {{trabajador_nombre}}
+                       
                         <br>
-                        <small>{{trabajador_nombre}}</small>
+                        <small> {{nombre_labor}}</small>
                     </h2>
                 </div>
                 <div class="card-flap flap1">
                     <div class="card-description">
 
                         <h3>
-                            Fecha de inicio: {{servicio_inicio}}
+                            Fecha de inicio: {{NormalDate servicio_inicio}}
                         </h3>
 
                         <h3>
-                        Fecha de culminación: {{pago_fecha}}
+                        Fecha de culminación: {{NormalDate servicio_final}}
+                        </h3>
+                        
+                        <h3>
+                        Fecha de pago: {{NormalDate pago_fecha}}
                         </h3>
 
                         <h3>
-                            Valor a pagar: {{pago_valor}}
+                            Costo: ${{pago_valor}}
                         </h3>
 
                         <h3>

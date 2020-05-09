@@ -1,4 +1,5 @@
-{{> navigationTrabajador}}
+{{> navigationUser}}
+
 <div class="container p-4">
     <div class="row">
         <div class="col-md-8 mx-auto">
@@ -26,6 +27,8 @@
     </div>
 </div>
 
+<input type="hidden" value="{{trabajador.trabajador_fechanacimiento}}" id="birth">
+
 <input type="hidden" value="{{trabajador.direccion_latitud}}" id="latT">
 <input type="hidden" value="{{trabajador.direccion_longitud}}" id="lonT">
 <input type="hidden" value="{{userUbication.direccion_latitud}}" id="latU">
@@ -50,10 +53,15 @@
             var marker = new google.maps.Marker({
             position: coordT,
             map: map
-        });
+        });  
+        }
+    }, function calculateAge(){
+        var date = new Date(document.getElementById("birth")),
+            age = date.getFullYear()-date.ge
     }
+          
 
-    //VOLVER A LA LISTA LOS LABORES
+    //VOLVER A LA LISTA LOS TRABAJADORES
     function volver() {
         window.history.back();
     }

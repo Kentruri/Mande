@@ -19,14 +19,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs(
     {
         defaultLayout: 'main',
-        layoutsDir: path.join(app.get('views'),'layouts'),
+        layoutsDir: path.join(app.get('views'), 'layouts'),
         partialsDir: path.join(app.get('views'), 'partials'),
         extname: '.hbs'
     }));
-    app.set('view engine', '.hbs');
+app.set('view engine', '.hbs');
 
-hbs.registerHelper("Dist",function(latT, lonT,latU,lonU){
-    
+// Helpers
+hbs.registerHelper("Dist", function (latT, lonT, latU, lonU) { //Calcular la distancia entre el usuario y el trabajador
+
     rad = function (x) { return x * Math.PI / 180; }
 
     var R = 6378.137;                          //Radio de la tierra en km
@@ -37,9 +38,16 @@ hbs.registerHelper("Dist",function(latT, lonT,latU,lonU){
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
 
-    return d.toFixed(1);                      //Retorna tres decimales
+    return d.toFixed(1);                      //Retorna un decimal
+});
 
-
+hbs.registerHelper("NormalDate", function (str) { // Convertir la fecha a un formata más legible
+    var date = new Date(str),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+        hor = ("0" + date.getHours()).slice(-2)-5;
+        min = ("0" + date.getMinutes()).slice(-2);
+    return [day, "-", mnth, "-", date.getFullYear(), " a las ",hor, ":", min].join("");
 });
 
 // Middlewares
@@ -53,14 +61,13 @@ app.use(session(
 ))
 app.use(flash());
 app.use(morgan('dev'));
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Global Variables
-app.use((req, res, next)=>
-{
+app.use((req, res, next) => {
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
     app.locals.employee = req.employee;
@@ -69,7 +76,7 @@ app.use((req, res, next)=>
 
 // Routes
 app.use(require('./routes/index.routes'));
-app.use('/usuario',require('./routes/usuario'));
+app.use('/usuario', require('./routes/usuario'));
 app.use('/trabajador', require('./routes/trabajador'))
 
 
@@ -77,7 +84,6 @@ app.use('/trabajador', require('./routes/trabajador'))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Starting the sever
-app.listen(app.get('port'),()=>
-{
+app.listen(app.get('port'), () => {
     console.log('Server on port', app.get('port'));
 });

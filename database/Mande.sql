@@ -58,7 +58,7 @@ CREATE TABLE servicio(
     usuario_id NUMERIC,
     trabajador_id NUMERIC REFERENCES trabajador(id_trabajador),
     servicio_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    servicio_final TIMESTAMP,
+    servicio_final TIMESTAMP, 
     servicio_estado INTEGER NOT NULL DEFAULT 1,
     servicio_calificacion NUMERIC
 );
