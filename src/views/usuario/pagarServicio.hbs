@@ -25,8 +25,8 @@
                 <div class="card-body">
                     <p class="m-2"><b>Trabajador:</b> <br>{{servicio.trabajador_nombre}}</p>
                     <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{servicio.servicio_inicio}}</p>
-                    <p class="m-2"><b>Fecha de culminación:</b> <br>{{servicio.servicio_final}}</p>
+                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{NormalDate servicio.servicio_inicio}}</p>
+                    <p class="m-2"><b>Fecha de culminación:</b> <br>{{NormalDate servicio.servicio_final}}</p>
                     <p class="m-2"><b>Valor:</b> {{servicio.pago_valor}}</p>
                    
                     <form action="/usuario/pagar-servicio/{{servicio.id_servicio}}/{{servicio.id_pago}}/{{servicio.trabajador_id}}/{{servicio.nombre_labor}}"

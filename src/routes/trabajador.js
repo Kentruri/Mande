@@ -53,10 +53,11 @@ router.get('/mis-labores', isLoggedInEmployee, async (req, res) => {
 });
 
 // BORAR LABOR
-router.get('/borrar-labor/:id', isLoggedInEmployee, async(req, res) => {
+router.get('/borrar-labor/:id', isLoggedInEmployee, async(req, res, done) => {
     const {id}=req.params;
     await pool.query('DELETE FROM laborvstrabajador WHERE id_traba=$1', [id]);
-    res.redirect('/trabajador/mis-labores')
+    done(null, req.flash('success','Labor eliminada con éxito'));
+    res.redirect('/trabajador/mis-labores');
 });
 
 // EDITAR LABOR

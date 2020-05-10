@@ -45,7 +45,7 @@ hbs.registerHelper("NormalDate", function (str) { // Convertir la fecha a un for
     var date = new Date(str),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
         day = ("0" + date.getDate()).slice(-2);
-        hor = ("0" + date.getHours()).slice(-2)-5;
+        hor = ("0" + date.set()).slice(-2);
         min = ("0" + date.getMinutes()).slice(-2);
     return [day, "-", mnth, "-", date.getFullYear(), " a las ",hor, ":", min].join("");
 });

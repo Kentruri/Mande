@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <p class="m-2"><b>Cliente:</b> <br>{{servicio.usuario_nombre}}</p>
                     <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha:</b> <br>{{servicio.servicio_inicio}}</p>
+                    <p class="m-2"><b>Fecha:</b> <br>{{NormalDate servicio.servicio_inicio}}</p>
                     <form action="/trabajador/culminar-trabajo/{{servicio.id_servicio}}/{{servicio.nombre_labor}}" method="POST">
                         <input type="number" class="form-control" min="0" step="1" id="horas" autocomplete="off" required placeholder="Horas trabajadas" onchange="CalculateValue();">
                         <div class="form-group"><br>

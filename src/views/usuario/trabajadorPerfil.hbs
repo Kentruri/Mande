@@ -11,7 +11,7 @@
                     <img src={{trabajador.trabajador_foto}} width="158px" height="204px"
                         class="rounded mx-auto d-block "><br>
                     <p class="m-2"><b>Nombre:</b> {{trabajador.trabajador_nombre}}</p>
-                    <p class="m-2"><b>Fecha de nacimiento:</b> {{trabajador.trabajador_fechanacimiento}}</p>
+                    <p class="m-2"><b>Edad:</b><a class="m-2" id="age"></a></p>
                     <p class="m-2"><b>Experiencia como {{nombre_labor}}:</b> {{trabajador.trabajoshechos}} trabajos realizados con éxito</p>
                     <p class="m-2"><b>Calificación:</b> {{trabajador.promedio}}</p>
                     <p class="m-2"><b>Ubicación de {{trabajador.trabajador_nombre}}:</b></p>
@@ -53,13 +53,22 @@
             var marker = new google.maps.Marker({
             position: coordT,
             map: map
-        });  
+        });
+
+        var birth = new Date(document.getElementById("birth").value);
+        var birthYear = birth.getFullYear();
+        var birthMonth = birth.getMonth();
+
+        var today = new Date();
+        var currentYear = today.getFullYear();
+        var currentmonth = today.getMonth();
+        if(currentmonth>birthMonth)
+        {
+            document.getElementById("age").innerText=(currentYear-birthYear);
+        }else{
+            document.getElementById("age").innerText=(currentYear-birthYear)-1;
         }
-    }, function calculateAge(){
-        var date = new Date(document.getElementById("birth")),
-            age = date.getFullYear()-date.ge
-    }
-          
+    }          
 
     //VOLVER A LA LISTA LOS TRABAJADORES
     function volver() {

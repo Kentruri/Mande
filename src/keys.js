@@ -8,7 +8,7 @@ module.exports = {
         // database: 'mande',
         // port: '5432'
 
-        //BSE DE DATOS CLEVER CLOUD
+        //BASE DE DATOS CLEVER CLOUD
         host: 'b7dlzbcosixp4ritgqny-postgresql.services.clever-cloud.com',
         user: 'ulno8vkkxiz86dqlu6g3',
         password: 'N7FtfQfgxYDwgcBuTRZQ',
