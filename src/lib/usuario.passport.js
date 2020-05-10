@@ -26,7 +26,7 @@ passport.use('usuario.signin', new LocalStrategy(
         passReqToCallback: true
     }, async(req, usuario_username, usuario_password, done) =>
     {
-        const filas = await (await pool.query('SELECT * FROM usuario WHERE usuario_username=$1 AND eliminado=false OR usuario_numero=$2 AND usuario_password=$3 AND eliminado=false ', [usuario_username, parseInt(usuario_username), usuario_password])).rows;
+        const filas = await (await pool.query('SELECT * FROM usuario WHERE usuario_username=$1 AND usuario_password=$2 AND eliminado=false OR usuario_numero=$3 AND usuario_password=$4 AND eliminado=false ', [usuario_username, usuario_password, parseInt(usuario_username), usuario_password])).rows;
         if(filas.length>0)
         {
             const user=filas[0];
