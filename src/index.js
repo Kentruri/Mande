@@ -41,22 +41,26 @@ hbs.registerHelper("Dist", function (latT, lonT, latU, lonU) { //Calcular la dis
     return d.toFixed(1);                      //Retorna un decimal
 });
 
-hbs.registerHelper("NormalDate", function (str) { // Convertir la fecha a un formata más legible
+hbs.registerHelper("NormalDate", function (str) { // Formatear fecha
     var date = new Date(str),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
         day = ("0" + date.getDate()).slice(-2);
-        hor = ("0" + date.getHours()).slice(-2);
-        min = ("0" + date.getMinutes()).slice(-2);
-    return [day, "-", mnth, "-", date.getFullYear(), " a las ",hor, ":", min].join("");
+    hor = ("0" + date.getHours()).slice(-2);
+    min = ("0" + date.getMinutes()).slice(-2);
+    return [day, "-", mnth, "-", date.getFullYear(), " a las ", hor, ":", min].join("");
+});
+
+hbs.registerHelper("FormatPrice", function format(number) { // Formatear precio
+    price = new Intl.NumberFormat().format(number);
+    return price;
 });
 
 // Middlewares
 app.use(session(
     {
         secret: 'Mande',
-        resave: false,
-        saveUninitialized: false/*,
-        store :  new (require('connect-pg-simple')(session))()*/
+        resave: true,
+        saveUninitialized: true
     }
 ))
 app.use(flash());

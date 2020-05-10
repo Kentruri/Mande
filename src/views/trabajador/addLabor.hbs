@@ -1,23 +1,37 @@
 {{> navigationTrabajador}}
 <link rel="stylesheet" href="/css/Fondo.css">
 <link rel="stylesheet" href="/css/detalles.css">
- <div class="imagenActivos"></div>
+<div class="imagenActivos"></div>
 {{#if success}}
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-md-4 mx-auto">
-                <div class="alert alert-success alert-dismissible fade show" role="=alert">
-                    {{success}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="alert alert-success alert-dismissible fade show" role="=alert">
+                {{success}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </div>  
+        </div>
     </div>
-    {{/if}}
+</div>
+{{/if}}
+{{#if message}}
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="alert alert-danger alert-dismissable fade show" role="alert">
+                {{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
 
-    
+
 <div class="container p-4">
     <div class="row">
         <div class="col-md-4 mx-auto">
@@ -39,13 +53,13 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">$</div>
                                 </div>
-                                <input type=type="number" min="0" step="1" class="form-control" name="precioxhora" autocomplete="off" required
-                                    placeholder="Precio por hora">
+                                <input type="number" min="0" step="1" class="form-control" name="precioxhora"
+                                    autocomplete="off" required placeholder="Precio por hora">
                             </div>
                         </div>
                         <br>
-                            <a href="/trabajador/mis-labores" class="btn btn-secondary">Cancelar</a>
-                            <button class="btn btn-success">Agregar</button>
+                        <a href="/trabajador/mis-labores" class="btn btn-secondary">Cancelar</a>
+                        <button class="btn btn-success">Agregar</button>
                     </form>
                 </div>
             </div>

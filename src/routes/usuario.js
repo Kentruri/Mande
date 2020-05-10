@@ -49,7 +49,6 @@ router.post('/tipo-servicio', async (req, res) => {
     const userUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [req.user.id_usuario])).rows;
     const trabajadores = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM laborvstrabajador JOIN (SELECT * FROM direccion) AS D ON trabajador_id=id_direccion WHERE nombre_labor=$1) AS L ON id_trabajador = trabajador_id WHERE trabajador_disponibilidad=true AND direccion_localidad=$2 ORDER BY promedio DESC', [nombre_labor, userLocation])).rows;
     res.render('usuario/trabajadores', { nombre_labor: nombre_labor, servicio_descipcion: servicio_descipcion, userUbication: userUbication[0], trabajadores });
-    console.log(req.user.id_usuario);
 });
 
 //PERFIL DE UN TRABAJADOR
@@ -113,7 +112,7 @@ router.get('/servicios-historial', isLoggedInUser, async (req, res) => {
     res.render('usuario/serviciosHistorial', { servicios });
 });
 
-// PERFIL 
+// INGRESO 
 router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
     const id_usuario = req.user.id_usuario;
     const deuda = await (await pool.query('SELECT servicio_estado FROM servicio WHERE usuario_id=$1 AND servicio_estado=2', [id_usuario])).rows;
@@ -138,13 +137,19 @@ router.get('/perfil', isLoggedInUser, async (req, res, done) => {
 });
 
 router.post('/perfil', async (req, res, done) => {
-    const id_usuario = req.user.id_usuario;
-    const { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body;
-    const newUser = {usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard};
-    newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
-    await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_numCard=$6, usuario_recibo=$7 WHERE id_usuario=$8', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard, usuario_recibo, id_usuario]);
-    await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, id_usuario]);
-    done(null, req.flash('success', 'Actualización exitosa!'));
+    try {
+        const id_usuario = req.user.id_usuario;
+        const { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body;
+        const newUser = { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard };
+        newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
+        await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_numCard=$6, usuario_recibo=$7 WHERE id_usuario=$8', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard, usuario_recibo, id_usuario]);
+        await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, id_usuario]);
+        done(null, req.flash('success', 'Actualización exitosa!'));
+    } catch (error) {
+        var restriccion = error.constraint;
+        restriccion=='usuario_usuario_username_key'? done(null, req.flash('message', 'Ya hay alguien registrado con ese usario')) : 
+        restriccion=='usuario_usuario_numero_keydone' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
+    }
     res.redirect('/usuario/perfil');
 });
 

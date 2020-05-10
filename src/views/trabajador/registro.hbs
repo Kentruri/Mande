@@ -1,11 +1,11 @@
 <link href="/css/registro.css" rel="stylesheet">
 {{> navigation}}
-{{#if success}}
-<div class="container p-4">
+{{#if message}}
+<div class="container p-2">
     <div class="row">
-        <div class="col-md-4 mx-auto">
-            <div class="alert alert-success alert-dismissible fade show" role="=alert">
-                {{success}}
+        <div class="col-md-6 mx-auto">
+            <div class="alert alert-danger alert-dismissable fade show" role="alert">
+                {{message}}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -31,13 +31,15 @@
 
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Nombre </label>
-                        <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required pattern="^[a-zA-Z ]+$"
-                            placeholder="Tu nombre">
+                        <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required
+                            pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
+                            oninvalid="this.setCustomValidity('Solo se permiten letras')" placeholder="Tu nombre">
                     </div>
 
                     <div class="form-group col-md-5">
                         <label>Fecha de nacimiento</label>
-                        <input type="date" name="trabajador_fechaNacimiento" class="form-control" required min="1920-01-01" max="2002-01-01">
+                        <input type="date" name="trabajador_fechaNacimiento" class="form-control" required
+                            min="1920-01-01" max="2002-01-01">
                     </div>
 
                 </div>
@@ -47,12 +49,12 @@
                     <input type="text" class="form-control" id="search_input" name="trabajador_direccion" required>
                     <input type="hidden" name="trabajador_latitud" id="latitude" />
                     <input type="hidden" name="trabajador_longitud" id="longitude" />
-                    <input type="hidden" name="trabajador_localidad" id="localidad" />
+                    <input type="hidden" name="trabajador_localidad" id="localidad" required />
                 </div>
 
                 <div class="form-group mb-3">
                     <label>No. Documento</label>
-                    <input type="text" class="form-control" name="id_trabajador" required
+                    <input type="number" class="form-control" name="id_trabajador" required min="1"
                         placeholder="Tu numero de identificacion" autocomplete="off">
                 </div>
 
@@ -99,7 +101,7 @@
 </div>
 
 <script>
-    // ADDRESS
+    // DIRECCIÓN
     var searchInput = 'search_input';
 
     var componentForm = {
@@ -118,16 +120,21 @@
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             var near_place = autocomplete.getPlace();
             var all = "";
-            document.getElementById('latitude').value = near_place.geometry.location.lat();
-            document.getElementById('longitude').value = near_place.geometry.location.lng();
-            for (var i = 0; i < near_place.address_components.length; i++) {
-                var addressType = near_place.address_components[i].types[0];
-                if (componentForm[addressType]) {
-                    var val = near_place.address_components[i][componentForm[addressType]];
-                    all = all.concat(" ", val);
+            try {
+                document.getElementById('latitude').value = near_place.geometry.location.lat();
+                document.getElementById('longitude').value = near_place.geometry.location.lng();
+                for (var i = 0; i < near_place.address_components.length; i++) {
+                    var addressType = near_place.address_components[i].types[0];
+                    if (componentForm[addressType]) {
+                        var val = near_place.address_components[i][componentForm[addressType]];
+                        all = all.concat(" ", val);
+                    }
                 }
+                document.getElementById('localidad').value = all;
+            } catch (error) {
+                document.getElementById('search_input').setCustomValidity("Dirección inválida");
             }
-            document.getElementById('localidad').value = all;
+
         });
     });
 
@@ -182,5 +189,5 @@
         console.log(res);
         docPreview.src = res.data.secure_url;
         document.getElementById('documento').value = res.data.secure_url;
-    })
+    });
 </script>

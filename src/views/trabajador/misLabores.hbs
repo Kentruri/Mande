@@ -1,9 +1,7 @@
 <link rel="stylesheet" href="/css/mensaje.css">
 <link rel="stylesheet" href="/css/Fondo.css">
 {{> navigationTrabajador}}
-<div class="imagenActivos">
-
-</div>
+<div class="imagenActivos"></div>
 {{#if success}}
 <div class="container p-4">
     <div class="row">
@@ -28,7 +26,7 @@
                     <h3 class="card-title text-uppercase">
                         {{nombre_labor}}
                     </h3>
-                    <p class="m-2">Precio por hora: {{precioxhora}}</p>
+                    <p class="m-2">Precio por hora: ${{FormatPrice precioxhora}}</p>
                     <a href="/trabajador/borrar-labor/{{id_traba}}" class="btn btn-danger">Borrar</a>
                     <a href="/trabajador/editar-labor/{{id_traba}}" class="btn btn-secondary">Editar</a>
                 </div>

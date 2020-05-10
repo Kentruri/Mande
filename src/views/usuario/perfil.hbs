@@ -15,6 +15,20 @@
     </div>
 </div>
 {{/if}}
+{{#if message}}
+<div class="container p-2">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="alert alert-danger alert-dismissable fade show" role="alert">
+                {{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
 <div class="row no-gutters bg-dark">
     <div class="col-xl-5 col-lg-12 register-bg">
         <div class="opaco"> </div>
@@ -32,7 +46,8 @@
                     <div class="form-group col-md-7">
                         <label class="font-weight-bold">Nombre </label>
                         <input type="text" class="form-control" name="usuario_nombre" autocomplete="off" required
-                            value="{{user.usuario_nombre}}">
+                            pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
+                            oninvalid="this.setCustomValidity('Solo se permiten letras')" value="{{user.usuario_nombre}}">
                     </div>
 
                     <div class="form-group col-md-5">
@@ -54,7 +69,7 @@
                     <div class="form-group col-md-5">
                         <label class="font-weight-bold">Numero de celular <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" name="usuario_numero" autocomplete="off" required
-                            value="{{user.usuario_numero}}">
+                            min="0" step="1" value="{{user.usuario_numero}}">
                     </div>
 
                 </div>
@@ -138,16 +153,21 @@
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             var near_place = autocomplete.getPlace();
             var all = "";
-            document.getElementById('latitude').value = near_place.geometry.location.lat();
-            document.getElementById('longitude').value = near_place.geometry.location.lng();
-            for (var i = 0; i < near_place.address_components.length; i++) {
-                var addressType = near_place.address_components[i].types[0];
-                if (componentForm[addressType]) {
-                    var val = near_place.address_components[i][componentForm[addressType]];
-                    all = all.concat(" ", val);
+            try {
+                document.getElementById('latitude').value = near_place.geometry.location.lat();
+                document.getElementById('longitude').value = near_place.geometry.location.lng();
+                for (var i = 0; i < near_place.address_components.length; i++) {
+                    var addressType = near_place.address_components[i].types[0];
+                    if (componentForm[addressType]) {
+                        var val = near_place.address_components[i][componentForm[addressType]];
+                        all = all.concat(" ", val);
+                    }
                 }
+                document.getElementById('localidad').value = all;
+            } catch (error) {
+                document.getElementById('search_input').setCustomValidity("Dirección inválida");
             }
-            document.getElementById('localidad').value = all;
+
         });
     });
     $(document).on('change', '#' + searchInput, function () {
@@ -174,5 +194,5 @@
         console.log(res);
         imagePreview.src = res.data.secure_url;
         document.getElementById('recibo').value = res.data.secure_url;
-    })
+    });
 </script>

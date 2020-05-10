@@ -33,7 +33,7 @@ passport.use('usuario.signin', new LocalStrategy(
             done(null, user, req.flash('success','Bienvenido ' + user.usuario_username));
         }else
         {
-            done(null, false, req.flash('message','Cuenta inválida'));
+            done(null, false, req.flash('message','Usuario o contraseña inválida'));
         }
     }
 ));

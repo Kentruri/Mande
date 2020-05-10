@@ -22,7 +22,7 @@ CREATE TABLE trabajador(
 CREATE TABLE laborvstrabajador(
     id_traba SERIAL PRIMARY KEY,
     trabajador_id NUMERIC,
-    nombre_labor VARCHAR(40),
+    nombre_labor VARCHAR(40) NOT NULL,
     precioxhora NUMERIC NOT NULL,
     calificaciones NUMERIC NOT NULL DEFAULT 0,
     trabajoshechos NUMERIC NOT NULL DEFAULT 0,
