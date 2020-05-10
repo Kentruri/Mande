@@ -1,8 +1,9 @@
-{{> navigationUser}}
 <link rel="stylesheet" href="/css/Fondo.css">
 <link rel="stylesheet" href="/css/mensaje.css">
-<link rel="stylesheet" href="/css/Tarjetas_pagar.css">
+<link rel="stylesheet" href="/css/Tarjetas.css">
  <div class="imagenActivos"></div>
+{{> navigationUser}}
+
 {{#if success}}
     <div class="container p-4">
         <div class="row">
@@ -17,29 +18,57 @@
         </div>  
     </div>
     {{/if}}
-<div class="container p-4">
+<div class="container">
     <div class="row">
-        
-        {{#each servicios}}
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h3 class="card-title text-uppercase">
-                        {{nombre_labor}}
-                    </h3>
-                    <img src={{trabajador_foto}} width="158px" height="204px" class="rounded mx-auto d-block "><br>
-                    <p class="m-2"><b> Trabajador:</b> <br>{{trabajador_nombre}}</p>
-                    <p class="m-2"><b>Descripción: </b><br>{{servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{NormalDate servicio_inicio}}</p>
-                    <p class="m-2"><b>Fecha de culminación:</b> <br> {{NormalDate servicio_final}}</p>
-                    <p class="m-2"><b>Valor a pagar:</b> <br> {{pago_valor}}</p>
-                    <a href="/usuario/pagar-servicio/{{id_servicio}}/{{id_pago}}/{{trabajador_id}}/{{nombre_labor}}" class="btn btn-success">Pagar</a>
+        <div class="cards">
+            {{#each servicios}}
+            <div class="card">
+                <div class="card__image-holder">
+                    <img src={{trabajador_foto}} class="card__image" />
+                </div>
+                <div class="card-title">
+                    <a href="#" class="toggle-info btn">
+                        <span class="left"></span>
+                        <span class="right"></span>
+                    </a>
+                     <h2>
+                        {{trabajador_nombre}}
+                       
+                        <br>
+                        <small> {{nombre_labor}}</small>
+                    </h2>
+                </div>
+                <div class="card-flap flap1">
+                    <div class="card-description">
+
+                        <h3>
+                            Fecha de inicio: {{NormalDate servicio_inicio}}
+                        </h3>
+
+                        <h3>
+                        Fecha de culminación: {{NormalDate servicio_final}}
+                        </h3>
+                        
+                        <h3>
+                            Valor total: ${{pago_valor}}
+                        </h3>
+
+                        <h3>
+                            Descripcion: {{servicio_descipcion}}
+                        </h3>
+
+                    </div>
+                    <div class="card-flap flap2">
+                        <div class="card-actions">
+                            <a href="/usuario/pagar-servicio/{{id_servicio}}/{{id_pago}}/{{trabajador_id}}/{{nombre_labor}}" class="btn btn-success">Pagar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        
         {{else}}
         <div class="col-md-4 mx-auto">
-            <div class="tarjeta_mensaje card-body bg-light mb-3 text-center">
+            <div class="tarjeta_mensaje_dos card-body bg-light mb-3 text-center">
                 <p>No tienes ningun pago pendiente en este momento.</p>
                 <a href="/usuario/tipo-servicio">¡Solicita un servicio!</a>
             </div>
@@ -47,3 +76,5 @@
         {{/each}}
     </div>
 </div>
+
+<script src="/js/Tarjetas.js"></script>
