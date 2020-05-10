@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const pool = require('../database');
+const querys = require('../lib/querys');
 const { isLoggedInEmployee, isNotLoggedInEmployee } = require('../lib/auth');
 
 // REGISTRO
@@ -32,16 +33,14 @@ router.post('/inicio-sesion', (req, res, next) => {
 
 // AÑADIR LABOR
 router.get('/addLabor', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador;
-    const labores = await (await pool.query('SELECT labor_nombre FROM labor LEFT JOIN (SELECT nombre_labor FROM laborvstrabajador WHERE trabajador_id=$1) AS laboresOf ON labor_nombre = nombre_labor WHERE nombre_labor is null', [id_trabajador])).rows;
+    const labores = await querys.laboresSinAgregar(req.user.id_trabajador);
     res.render('trabajador/addLabor', { labores });
 });
 
 router.post('/addLabor', async (req, res, done) => {
     const { nombre_labor, precioxhora } = req.body;
-    const id_trabajador = req.user.id_trabajador;
     if (nombre_labor!='') {
-        await pool.query('INSERT INTO laborvstrabajador(trabajador_id, nombre_labor, precioxhora) VALUES($1, $2, $3)', [id_trabajador, nombre_labor, precioxhora]);
+        querys.addLabor(req.user.id_trabajador, nombre_labor, precioxhora);
         done(null, req.flash('success', 'Labor añadida exitosamente. Agrega otra!'));
     }else {
         done(null, req.flash('message', 'Debes escoger una labor'));
@@ -51,87 +50,76 @@ router.post('/addLabor', async (req, res, done) => {
 
 // LISTA DE LABORES
 router.get('/mis-labores', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador;
-    const labores = await (await pool.query('SELECT * FROM laborvstrabajador WHERE trabajador_id=$1', [id_trabajador])).rows;
+    const labores = await querys.misLabores(req.user.id_trabajador);
     res.render('trabajador/misLabores', { labores });
 });
 
 // BORAR LABOR
 router.get('/borrar-labor/:id', isLoggedInEmployee, async (req, res, done) => {
     const { id } = req.params;
-    await pool.query('DELETE FROM laborvstrabajador WHERE id_traba=$1', [id]);
+    querys.borrarLabor(id);
     done(null, req.flash('success', 'Labor eliminada con éxito'));
     res.redirect('/trabajador/mis-labores');
 });
 
 // EDITAR LABOR
 router.get('/editar-labor/:id', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador;
     const { id } = req.params;
-    const labor = await (await pool.query('SELECT * FROM laborvstrabajador WHERE id_traba=$1', [id])).rows;
-    const labores = await (await pool.query('SELECT labor_nombre FROM labor LEFT JOIN (SELECT nombre_labor FROM laborvstrabajador WHERE trabajador_id=$1) AS laboresOf ON labor_nombre = nombre_labor WHERE nombre_labor is null', [id_trabajador])).rows;
+    const labor = await querys.laborParaEditar(id);
+    const labores = await querys.laboresSinAgregar(req.user.id_trabajador);
     res.render('trabajador/editLabor', { labor: labor[0], labores });
 });
 
 router.post('/editar-labor/:id', async (req, res) => {
     const { id } = req.params;
     const { nombre_labor, precioxhora } = req.body;
-    const newLabor = { nombre_labor, precioxhora };
-    const laborActual = await (await pool.query('SELECT nombre_labor FROM laborvstrabajador WHERE id_traba=$1', [id])).rows;
+    const laborActual = await querys.laborParaEditar(id);
     if (nombre_labor == '') {
-        pool.query('UPDATE laborvstrabajador SET nombre_labor=$1, precioxhora=$2 WHERE id_traba=$3', [laborActual[0].nombre_labor, precioxhora, id]);
+        querys.editarLabor(laborActual[0].nombre_labor, precioxhora, id);
     } else {
-        pool.query('UPDATE laborvstrabajador SET nombre_labor=$1, precioxhora=$2 WHERE id_traba=$3', [nombre_labor, precioxhora, id]);
+        querys.editarLabor(nombre_labor, precioxhora, id);
     }
     res.redirect('/trabajador/mis-labores');
-
 });
 
 // INGRESO
 router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
-    const id_trabajador = req.user.id_trabajador;
-    const trabajo = await (await pool.query('SELECT trabajador_disponibilidad FROM trabajador WHERE id_trabajador=$1 AND trabajador_disponibilidad=false', [id_trabajador])).rows;
-    const rows = await (await pool.query('SELECT * FROM trabajador WHERE id_trabajador=$1', [id_trabajador])).rows;
-    const employee = rows[0];
-    if (trabajo.length > 0) {
-        done(null, employee, req.flash('success', '¡' + employee.trabajador_nombre + '! Tienes trabajo activo'));
-        res.redirect('/trabajador/trabajos-activos')
-    } else {
+    const employee = await querys.trabajadorDisponibilidad(req.user.id_trabajador);
+    if (employee.trabajador_disponibilidad) {
         done(null, employee, req.flash('success', 'Bienvenido ' + employee.trabajador_username));
         res.redirect('/trabajador/mis-labores');
+    } else {
+        done(null, employee, req.flash('success', '¡' + employee.trabajador_nombre + '! Tienes trabajo activo'));
+        res.redirect('/trabajador/trabajos-activos');
     }
 });
 
 // TRABAJOS ACTIVOS
 router.get('/trabajos-activos', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador;
-    const servicios = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario) AS U ON usuario_id=id_usuario WHERE trabajador_id=$1 AND servicio_estado=1', [id_trabajador])).rows;
+    const servicios = await querys.trabajosActivos(req.user.id_trabajador);
     res.render('trabajador/trabajosActivos', { servicios });
 });
 
 // DETALLES DE UN TRABAJO
 router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
     const { id_servicio } = req.params;
-    const id_trabajador = req.user.id_trabajador;
-    const servicio = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario JOIN (SELECT * FROM direccion) AS D ON id_usuario=id_direccion) AS S ON id_usuario=usuario_id WHERE id_servicio=$1', [id_servicio])).rows[0];
-    const employeeUbication = await (await pool.query('SELECT direccion_latitud, direccion_longitud FROM direccion WHERE id_direccion=$1', [id_trabajador])).rows;
+    const servicio = await querys.detallesTrabajo(id_servicio);
+    const employeeUbication = await querys.ubicacionTrabajador(req.user.id_trabajador);
     res.render('trabajador/detallesTrabajo', { servicio, employeeUbication: employeeUbication[0] });
 });
 
 // CULMINAR TRABAJO
 router.get('/culminar-trabajo/:id_servicio/:nombre_labor', isLoggedInEmployee, async (req, res) => {
     const { id_servicio, nombre_labor } = req.params;
-    const precio = await (await pool.query('SELECT precioxhora FROM laborvstrabajador WHERE trabajador_id=$1 AND nombre_labor=$2', [req.user.id_trabajador, nombre_labor])).rows[0].precioxhora;
-    const servicio = await (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario)AS U ON usuario_numero=usuario_numero WHERE id_servicio=$1', [id_servicio])).rows[0];
+    const precio = await querys.laborPrecio(req.user.id_trabajador, nombre_labor);
+    const servicio = await querys.servicioInformacion(id_servicio);
     res.render('trabajador/terminarTrabajo', { servicio: servicio, precio: precio });
 });
 
 router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, done) => {
     const { id_servicio } = req.params;
     const { pago_valor } = req.body;
-    await pool.query('UPDATE servicio SET servicio_estado=2, servicio_final=CURRENT_TIMESTAMP WHERE id_servicio=$1', [id_servicio]);
-    await pool.query('UPDATE trabajador SET trabajador_disponibilidad=true WHERE id_trabajador=$1', [req.user.id_trabajador]);
-    await pool.query('INSERT INTO pago(servicio_id, pago_valor) VALUES ($1, $2)', [id_servicio, pago_valor]);
+    querys.culminarTrabajo(id_servicio, req.user.id_trabajador, pago_valor);
     done(null, req.flash('success', 'El trabajo se culminó con éxito!'));
     res.redirect('/trabajador/trabajos-activos');
 });
@@ -139,22 +127,20 @@ router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, don
 // TRABAJOS PENDIENTES DE PAGO
 router.get('/trabajos-pendientes', isLoggedInEmployee, async (req, res) => {
     const id_trabajador = req.user.id_trabajador;
-    const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON id_usuario=usuario_id WHERE trabajador_id=$1 AND servicio_estado=2', [id_trabajador])).rows;
+    const servicios = await querys.trabajosSinPagar(id_trabajador);
     res.render('trabajador/trabajosPendientes', { servicios });
 });
 
 //HISTORIAL DE TRABAJOS
 router.get('/trabajos-historial', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador;
-    const servicios = await (await pool.query('SELECT * FROM usuario JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON id_servicio=servicio_id) AS S ON id_usuario=usuario_id WHERE trabajador_id=$1 AND servicio_estado=3', [id_trabajador])).rows;
+    const servicios = await querys.historialTrabajos(req.user.id_trabajador);
     res.render('trabajador/trabajosHistorial', { servicios });
 });
 
 
 // PERFIL
 router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
-    const employee = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM direccion) AS D ON id_trabajador=id_direccion WHERE id_trabajador=$1', [req.user.id_trabajador])).rows[0];
-    console.log(employee);
+    employee = await querys.trabajadorPerfil(req.user.id_trabajador);
     res.render('trabajador/perfil', { employee });
 });
 
@@ -172,8 +158,7 @@ router.post('/perfil', async (req, res, done) => {
 });
 
 router.get('/borrar-cuenta', isLoggedInEmployee, async (req, res, done) => {
-    await pool.query('UPDATE trabajador SET eliminado=true WHERE id_trabajador=$1', [req.user.id_trabajador]);
-    console.log(req.user.fechanacimiento);
+    querys.borrarTrabajador(req.user.id_trabajador);
     res.redirect('/trabajador/cerrar-sesion');
 });
 
