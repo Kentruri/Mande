@@ -43,8 +43,9 @@ router.post('/addLabor', async (req, res, done) => {
     if (nombre_labor!='') {
         await pool.query('INSERT INTO laborvstrabajador(trabajador_id, nombre_labor, precioxhora) VALUES($1, $2, $3)', [id_trabajador, nombre_labor, precioxhora]);
         done(null, req.flash('success', 'Labor añadida exitosamente. Agrega otra!'));
+    }else {
+        done(null, req.flash('message', 'Debes escoger una labor'));
     }
-    done(null, req.flash('message', 'Debes escoger una labor'));
     res.redirect('/trabajador/addLabor');
 });
 
