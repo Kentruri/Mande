@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/mensaje.css">
 <link rel="stylesheet" href="/css/Fondo.css">
+<link rel="stylesheet" href="/css/labores.css">
 {{> navigationTrabajador}}
 <div class="imagenActivos">
 
@@ -21,20 +22,28 @@
 <div class="container p-4">
     <div class="row">
         {{#each servicios}}
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h3 class="card-title text-uppercase">
-                        {{nombre_labor}}
-                    </h3>
-                    <p class="m-2">Cliente: <br> {{usuario_nombre}}</p>
-                    <p class="m-2">Descripción: <br>{{servicio_descipcion}}</p>
-                    <p class="m-2">Fecha: {{NormalDate servicio_inicio}}</p>
-                    <a href="/trabajador/detalles/{{id_servicio}}" class="btn btn-primary">Detalles</a>
+        
+<div class="labores-container">
+	<div class="laborDos">
+		<div class="labor-preview">
+            <br>
+			<h6>Labor:</h6>
+			<h2>{{nombre_labor}}</h2>
+			
+		</div>
+		<div class="labor-info">
+      <h2>Cliente: {{usuario_nombre}}</h2>
+      <h2>Descripcion: {{servicio_descipcion}}</h2>
+      <h2>Fecha de activacion:  {{NormalDate servicio_inicio}}</h2>
+      <br>
+		<a href="/trabajador/detalles/{{id_servicio}}" class="btn btn-primary">Detalles</a>
                     <a href="/trabajador/culminar-trabajo/{{id_servicio}}/{{nombre_labor}}" class="btn btn-success">Culminar</a>
-                </div>
-            </div>
-        </div>
+					
+		</div>
+		
+	</div>
+</div>
+
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="tarjeta_mensaje card-body text-center">

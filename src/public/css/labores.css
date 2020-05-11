@@ -28,6 +28,8 @@ body {
     height: 150px;
 }
 
+
+
 .labor h6 {
 	opacity: 0.6;
 	margin: 0;
@@ -74,3 +76,48 @@ body {
   text-decoration:  none;
   
 }
+
+.laborDos {
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	max-width: 100%;
+	margin: 20px;
+	overflow: hidden;
+    width: 800px;
+	height: 3
+	50px;
+}
+
+.laborDos h6 {
+	opacity: 0.6;
+	margin: 0;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.laborDos h2 {
+	
+  
+    font-size: 20px;
+}
+
+.labor-preview {
+	background-color: #232f3b;
+	color: #fff;
+	padding: 30px;
+	max-width: 250px;
+}
+
+
+
+.labor-info {
+	padding: 30px;
+  position: relative;
+ 
+	width: 100%;
+}
+
+
+

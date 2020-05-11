@@ -190,8 +190,8 @@ querys.pagarServicio = async(trabajador_id, id_servicio, nombre_labor, calificac
     await pool.query('UPDATE pago SET pago_estado=true, pago_fecha=CURRENT_TIMESTAMP WHERE servicio_id=$1', [id_servicio]);
 }
 
-querys.historialServicios = async() => {
-    servicios = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON servicio_id = id_servicio WHERE usuario_id=$1 AND servicio_estado=3)AS S ON id_trabajador=trabajador_id', [num_usuario])).rows;
+querys.historialServicios = async(id_usuario) => {
+    servicios = await (await pool.query('SELECT * FROM trabajador JOIN (SELECT * FROM servicio JOIN (SELECT * FROM pago) AS P ON servicio_id = id_servicio WHERE usuario_id=$1 AND servicio_estado=3)AS S ON id_trabajador=trabajador_id', [id_usuario])).rows;
     return servicios;
 }
 
