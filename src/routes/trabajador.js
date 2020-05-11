@@ -39,10 +39,10 @@ router.get('/addLabor', isLoggedInEmployee, async (req, res) => {
 
 router.post('/addLabor', async (req, res, done) => {
     const { nombre_labor, precioxhora } = req.body;
-    if (nombre_labor!='') {
+    if (nombre_labor != '') {
         querys.addLabor(req.user.id_trabajador, nombre_labor, precioxhora);
         done(null, req.flash('success', 'Labor añadida exitosamente. Agrega otra!'));
-    }else {
+    } else {
         done(null, req.flash('message', 'Debes escoger una labor'));
     }
     res.redirect('/trabajador/addLabor');
@@ -57,7 +57,8 @@ router.get('/mis-labores', isLoggedInEmployee, async (req, res) => {
 // BORAR LABOR
 router.get('/borrar-labor/:id', isLoggedInEmployee, async (req, res, done) => {
     const { id } = req.params;
-    querys.borrarLabor(id);
+    mensaje = await querys.borrarLabor(id, req.user.id_trabajador);
+    mensaje == 'failed'? done(null, req.flash('message', 'No puedes borrar una labor con la que tienes un trabajo activo')): 
     done(null, req.flash('success', 'Labor eliminada con éxito'));
     res.redirect('/trabajador/mis-labores');
 });
@@ -70,14 +71,16 @@ router.get('/editar-labor/:id', isLoggedInEmployee, async (req, res) => {
     res.render('trabajador/editLabor', { labor: labor[0], labores });
 });
 
-router.post('/editar-labor/:id', async (req, res) => {
+router.post('/editar-labor/:id', async (req, res, done) => {
     const { id } = req.params;
     const { nombre_labor, precioxhora } = req.body;
     const laborActual = await querys.laborParaEditar(id);
     if (nombre_labor == '') {
-        querys.editarLabor(laborActual[0].nombre_labor, precioxhora, id);
+        mensaje = await querys.editarLabor(laborActual[0].nombre_labor, precioxhora, id, req.user.id_trabajador);
+        mensaje =='failed'? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) : done(null, req.flash('success', 'Labor editada con éxito'));
     } else {
-        querys.editarLabor(nombre_labor, precioxhora, id);
+        mesanje = await querys.editarLabor(nombre_labor, precioxhora, id, req.user.id_trabajador);
+        mensaje == 'failed'? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) : done(null, req.flash('success', 'Labor editada con éxito'));
     }
     res.redirect('/trabajador/mis-labores');
 });
@@ -112,7 +115,7 @@ router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
 router.get('/culminar-trabajo/:id_servicio/:nombre_labor', isLoggedInEmployee, async (req, res) => {
     const { id_servicio, nombre_labor } = req.params;
     const precio = await querys.laborPrecio(req.user.id_trabajador, nombre_labor);
-    const servicio = await querys.servicioInformacion(id_servicio);
+    const servicio = await querys.trabajoInformacion(id_servicio);
     res.render('trabajador/terminarTrabajo', { servicio: servicio, precio: precio });
 });
 
@@ -145,15 +148,10 @@ router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
 });
 
 router.post('/perfil', async (req, res, done) => {
-    try {
-        const id_trabajador = req.user.id_trabajador;
-        const { trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
-        await pool.query('UPDATE trabajador SET trabajador_nombre=$1, trabajador_foto=$2, trabajador_documento=$3, trabajador_username=$4, trabajador_password=$5 WHERE id_trabajador=$6', [trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password, id_trabajador]);
-        await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, id_trabajador]);
-        done(null, req.flash('success', 'Actualización exitosa!'));
-    } catch (error) {
-        done(null, req.flash('message', 'Ya hay alguien registrado con ese usuario'));
-    }
+    const id_trabajador = req.user.id_trabajador;
+    const { trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+    mensaje = await querys.actualizarTrabajador(trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password, id_trabajador);
+    mensaje == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese usuario'));
     res.redirect('/trabajador/perfil');
 });
 

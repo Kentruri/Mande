@@ -2,20 +2,28 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const pool = require('../database');
 const helpers = require('./helpers');
+const querys = require('../lib/querys');
 
 passport.use('usuario.signup', new LocalStrategy(
     {
         usernameField: 'usuario_username',
         passwordField: 'usuario_password',
         passReqToCallback: true
-    }, async (req, username, password, done) => 
-    {
+    }, async (req, username, password, done) => {
         const {id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard} = req.body;
         const newUser = {id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard};
         newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
-        await pool.query('INSERT INTO usuario (id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard, usuario_recibo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', [id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard, usuario_recibo]);
-        await pool.query('INSERT INTO direccion VALUES ($1, $2, $3, $4, $5)', [id_usuario, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud]);
-        return done(null, newUser);
+        crear = await querys.crearUsuario(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard);
+        if(crear == 'success') {
+            done(null, req.flash('success','Solicita tu primer servicio!'));
+            return done(null, newUser);
+        }else if(crear == 'usuario_usuario_username_key') {
+            done(null, req.flash('message', 'Ya hay alguien registrado con ese usario'));
+        }else if(crear == 'usuario_usuario_numero_key') {
+            done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular'));
+        }else {
+            done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
+        }
     }
 ));
 

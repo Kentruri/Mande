@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const pool = require('../database');
+const querys = require('../lib/querys');
 
 passport.use('trabajador.signup', new LocalStrategy(
     {
@@ -8,22 +9,18 @@ passport.use('trabajador.signup', new LocalStrategy(
         passwordField: 'trabajador_password',
         passReqToCallback: true
     }, async (req, username, password, done) => {
-    try {
         const { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
         const newEmployee = { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password };
-        await pool.query('INSERT INTO trabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password) VALUES ($1, $2, $3, $4, $5, $6, $7)', [id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password]);
-        await pool.query('INSERT INTO direccion VALUES ($1, $2, $3, $4, $5)', [id_trabajador, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud]);
-        done(null, req.flash('success', 'Agrega labores a tu perfil!'));
-        return done(null, newEmployee);
-    } catch (error) {
-        var restriccion = error.constraint;
-        if(restriccion=='trabajador_pkey') {
+        crear = await querys.crearTrabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password);
+        if (crear == 'success') {
+            done(null, req.flash('success', 'Agrega labores a tu perfil!'));
+            return done(null, newEmployee);
+        } else if (crear == 'trabajador_pkey') {
             done(null, false, req.flash('message', 'Ya hay alguien registrado con tu mismo número de documento'));
-        }else if(restriccion=='trabajador_trabajador_username_key'){
+        } else {
             done(null, false, req.flash('message', 'Ya hay alguien registrado con ese mismo usuario'));
         }
     }
-}
 ));
 
 passport.use('trabajador_signin', new LocalStrategy(
@@ -32,14 +29,14 @@ passport.use('trabajador_signin', new LocalStrategy(
         passwordField: 'trabajador_password',
         passReqToCallback: true
     }, async (req, trabajador_username, trabajador_password, done) => {
-    const rows = await (await pool.query('SELECT * FROM trabajador WHERE trabajador_username=$1 AND trabajador_password=$2 AND eliminado=false', [trabajador_username, trabajador_password])).rows;
-    if (rows.length > 0) {
-        const employee = rows[0];
-        done(null, employee, req.flash('success', 'Bienvenido ' + employee.trabajador_username));
-    } else {
-        done(null, false, req.flash('message', 'Usuario o contraseña inválida'));
+        const rows = await (await pool.query('SELECT * FROM trabajador WHERE trabajador_username=$1 AND trabajador_password=$2 AND eliminado=false', [trabajador_username, trabajador_password])).rows;
+        if (rows.length > 0) {
+            const employee = rows[0];
+            done(null, employee, req.flash('success', 'Bienvenido ' + employee.trabajador_username));
+        } else {
+            done(null, false, req.flash('message', 'Usuario o contraseña inválida'));
+        }
     }
-}
 ));
 
 passport.serializeUser((employee, done) => {
