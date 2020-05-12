@@ -33,8 +33,8 @@ router.post('/inicio-sesion', (req, res, next) => {
 
 // AÑADIR LABOR
 router.get('/addLabor', isLoggedInEmployee, async (req, res) => {
-    const labores = await querys.laboresSinAgregar(req.user.id_trabajador);
-    res.render('trabajador/addLabor', { labores });
+    const labores = await querys.laboresSinAgregar(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
+    res.render('trabajador/addLabor', { labores, trabajador_nombre });
 });
 
 router.post('/addLabor', async (req, res, done) => {
@@ -50,8 +50,8 @@ router.post('/addLabor', async (req, res, done) => {
 
 // LISTA DE LABORES
 router.get('/mis-labores', isLoggedInEmployee, async (req, res) => {
-    const labores = await querys.misLabores(req.user.id_trabajador);
-    res.render('trabajador/misLabores', { labores });
+    const labores = await querys.misLabores(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
+    res.render('trabajador/misLabores', { labores, trabajador_nombre });
 });
 
 // BORAR LABOR
@@ -65,16 +65,16 @@ router.get('/borrar-labor/:id', isLoggedInEmployee, async (req, res, done) => {
 
 // EDITAR LABOR
 router.get('/editar-labor/:id', isLoggedInEmployee, async (req, res) => {
-    const { id } = req.params;
-    const labor = await querys.laborParaEditar(id);
-    const labores = await querys.laboresSinAgregar(req.user.id_trabajador);
-    res.render('trabajador/editLabor', { labor: labor[0], labores });
+    const { id } = req.params, trabajador_nombre = req.user.trabajador_nombre,
+    labor = await querys.laborParaEditar(id),
+    labores = await querys.laboresSinAgregar(req.user.id_trabajador);
+    res.render('trabajador/editLabor', { labor: labor[0], labores, trabajador_nombre });
 });
 
 router.post('/editar-labor/:id', async (req, res, done) => {
-    const { id } = req.params;
-    const { nombre_labor, precioxhora } = req.body;
-    const laborActual = await querys.laborParaEditar(id);
+    const { id } = req.params,
+    {nombre_labor, precioxhora} = req.body,
+    laborActual = await querys.laborParaEditar(id);
     if (nombre_labor == '') {
         mensaje = await querys.editarLabor(laborActual[0].nombre_labor, precioxhora, id, req.user.id_trabajador);
         mensaje =='failed'? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) : done(null, req.flash('success', 'Labor editada con éxito'));
@@ -99,29 +99,29 @@ router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
 
 // TRABAJOS ACTIVOS
 router.get('/trabajos-activos', isLoggedInEmployee, async (req, res) => {
-    const servicios = await querys.trabajosActivos(req.user.id_trabajador);
-    res.render('trabajador/trabajosActivos', { servicios });
+    const servicios = await querys.trabajosActivos(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
+    res.render('trabajador/trabajosActivos', { servicios,  trabajador_nombre});
 });
 
 // DETALLES DE UN TRABAJO
 router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
-    const { id_servicio } = req.params;
-    const servicio = await querys.detallesTrabajo(id_servicio);
-    const employeeUbication = await querys.ubicacionTrabajador(req.user.id_trabajador);
-    res.render('trabajador/detallesTrabajo', { servicio, employeeUbication: employeeUbication[0] });
+    const { id_servicio } = req.params, trabajador_nombre = req.user.trabajador_nombre,
+    servicio = await querys.detallesTrabajo(id_servicio),
+    employeeUbication = await querys.ubicacionTrabajador(req.user.id_trabajador);
+    res.render('trabajador/detallesTrabajo', { servicio, employeeUbication: employeeUbication[0], trabajador_nombre});
 });
 
 // CULMINAR TRABAJO
 router.get('/culminar-trabajo/:id_servicio/:nombre_labor', isLoggedInEmployee, async (req, res) => {
-    const { id_servicio, nombre_labor } = req.params;
-    const precio = await querys.laborPrecio(req.user.id_trabajador, nombre_labor);
-    const servicio = await querys.trabajoInformacion(id_servicio);
-    res.render('trabajador/terminarTrabajo', { servicio: servicio, precio: precio });
+    const { id_servicio, nombre_labor } = req.params, trabajador_nombre = req.user.trabajador_nombre,
+    precio = await querys.laborPrecio(req.user.id_trabajador, nombre_labor),
+    servicio = await querys.trabajoInformacion(id_servicio);
+    res.render('trabajador/terminarTrabajo', { servicio, precio, trabajador_nombre });
 });
 
 router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, done) => {
-    const { id_servicio } = req.params;
-    const { pago_valor } = req.body;
+    const { id_servicio } = req.params,
+    { pago_valor } = req.body;
     querys.culminarTrabajo(id_servicio, req.user.id_trabajador, pago_valor);
     done(null, req.flash('success', 'El trabajo se culminó con éxito!'));
     res.redirect('/trabajador/trabajos-activos');
@@ -129,22 +129,22 @@ router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, don
 
 // TRABAJOS PENDIENTES DE PAGO
 router.get('/trabajos-pendientes', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador;
-    const servicios = await querys.trabajosSinPagar(id_trabajador);
-    res.render('trabajador/trabajosPendientes', { servicios });
+    const id_trabajador = req.user.id_trabajador, trabajador_nombre = req.user.trabajador_nombre,
+    servicios = await querys.trabajosSinPagar(id_trabajador);
+    res.render('trabajador/trabajosPendientes', { servicios, trabajador_nombre });
 });
 
 //HISTORIAL DE TRABAJOS
 router.get('/trabajos-historial', isLoggedInEmployee, async (req, res) => {
-    const servicios = await querys.historialTrabajos(req.user.id_trabajador);
-    res.render('trabajador/trabajosHistorial', { servicios });
+    const servicios = await querys.historialTrabajos(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
+    res.render('trabajador/trabajosHistorial', { servicios, trabajador_nombre });
 });
 
 
 // PERFIL
 router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
-    employee = await querys.trabajadorPerfil(req.user.id_trabajador);
-    res.render('trabajador/perfil', { employee });
+    const employee = await querys.trabajadorPerfil(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
+    res.render('trabajador/perfil', { employee, trabajador_nombre });
 });
 
 router.post('/perfil', async (req, res, done) => {

@@ -34,30 +34,30 @@ router.post('/inicio-sesion', (req, res, next) => {
 
 // ESCOGER TIPO DE SERVICIO
 router.get('/tipo-servicio', isLoggedInUser, async (req, res, done) => {
-    const deuda = await querys.serviciosPorPagar(req.user.id_usuario);
-    const labores = await querys.serviciosDisponibles();
+    const deuda = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre,
+    labores = await querys.serviciosDisponibles();
     if (deuda.length > 0) {
         done(null, req.flash('success', 'No puedes solicitar servicios mientras tengas pagos pendientes'));
         res.redirect('/usuario/servicios-pagar');
     } else {
-        res.render('usuario/tipoServicio', { labores });
+        res.render('usuario/tipoServicio', { labores, usuario_nombre });
     }
 });
 
 router.post('/tipo-servicio', async (req, res) => {
-    const { nombre_labor, servicio_descipcion } = req.body, id_usuario = req.user.id_usuario;
-    const userLocation = await querys.localidadUsuario(id_usuario);
-    const userUbication = await querys.ubicacionTrabajador(id_usuario);
-    const trabajadores = await querys.trabajadoresDisponibles(nombre_labor, userLocation);
-    res.render('usuario/trabajadores', { nombre_labor: nombre_labor, servicio_descipcion: servicio_descipcion, userUbication: userUbication[0], trabajadores });
+    const { nombre_labor, servicio_descipcion } = req.body, id_usuario = req.user.id_usuario, usuario_nombre = req.user.usuario_nombre,
+    userLocation = await querys.localidadUsuario(id_usuario),
+    userUbication = await querys.ubicacionTrabajador(id_usuario),
+    trabajadores = await querys.trabajadoresDisponibles(nombre_labor, userLocation);
+    res.render('usuario/trabajadores', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajadores, usuario_nombre });
 });
 
 //PERFIL DE UN TRABAJADOR
 router.get('/trabajador-perfil/:trabajador_id/:nombre_labor/:servicio_descipcion', isLoggedInUser, async (req, res) => {
-    const { trabajador_id, nombre_labor, servicio_descipcion } = req.params;
-    const userUbication = await querys.ubicacionUsuario(req.user.id_usuario);
-    const trabajador = await querys.trabajadorPerfilProfesional(nombre_labor, trabajador_id);
-    res.render('usuario/trabajadorPerfil', { nombre_labor: nombre_labor, servicio_descipcion: servicio_descipcion, userUbication: userUbication[0], trabajador });
+    const { trabajador_id, nombre_labor, servicio_descipcion } = req.params, usuario_nombre = req.user.usuario_nombre,
+    userUbication = await querys.ubicacionUsuario(req.user.id_usuario),
+    trabajador = await querys.trabajadorPerfilProfesional(nombre_labor, trabajador_id);
+    res.render('usuario/trabajadorPerfil', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajador, usuario_nombre });
 });
 
 // CONTRATAR TRABAJADOR
@@ -70,21 +70,21 @@ router.get('/contratar-trabajador/:trabajador_id/:nombre_labor/:servicio_descipc
 
 // SERVIVICIOS ACTIVOS
 router.get('/servicios-activos', isLoggedInUser, async (req, res) => {
-    const servicios = await querys.serviciosActivos(req.user.id_usuario);
-    res.render('usuario/serviciosActivos', { servicios });
+    const servicios = await querys.serviciosActivos(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
+    res.render('usuario/serviciosActivos', { servicios, usuario_nombre });
 });
 
 // SERVICIOS POR PAGAR
 router.get('/servicios-pagar', isLoggedInUser, async (req, res) => {
-    const servicios = await querys.serviciosPorPagar(req.user.id_usuario);
-    res.render('usuario/serviciosPagar', { servicios });
+    const servicios = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
+    res.render('usuario/serviciosPagar', { servicios, usuario_nombre });
 });
 
 // PAGAR SERVICIO
 router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', isLoggedInUser, async (req, res) => {
-    const { id_servicio, id_pago, trabajador_id } = req.params;
-    const servicio = await querys.servicioInformacion(req.user.id_usuario, id_servicio);
-    res.render('usuario/pagarServicio', { servicio });
+    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre,
+    servicio = await querys.servicioInformacion(req.user.id_usuario, id_servicio);
+    res.render('usuario/pagarServicio', { servicio, usuario_nombre });
 });
 
 router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', async (req, res, done) => {
@@ -97,8 +97,8 @@ router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor'
 
 // SERVIVICIOS PAGADOS
 router.get('/servicios-historial', isLoggedInUser, async (req, res) => {
-    const servicios = await querys.historialServicios(req.user.id_usuario)
-    res.render('usuario/serviciosHistorial', { servicios });
+    const servicios = await querys.historialServicios(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
+    res.render('usuario/serviciosHistorial', { servicios, usuario_nombre });
 });
 
 // INGRESO 
@@ -119,8 +119,8 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
 
 // PERFIL
 router.get('/perfil', isLoggedInUser, async (req, res, done) => {
-    const user = await querys.usuarioPerfil(req.user.id_usuario);
-    res.render('usuario/perfil', { user });
+    const user = await querys.usuarioPerfil(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
+    res.render('usuario/perfil', { user, usuario_nombre  });
 });
 
 router.post('/perfil', async (req, res, done) => {
