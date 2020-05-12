@@ -4,6 +4,7 @@ const passport = require('passport');
 const pool = require('../database');
 const querys = require('../lib/querys');
 const helpers = require('../lib/helpers');
+const stripe = require('stripe')('sk_test_V4ma8MKhvEFqZpKu2CCNQHCd00tHQ3g0Xv');
 const { isLoggedInUser, isNotLoggedInUser } = require('../lib/auth');
 
 // REGISTRO 
@@ -35,7 +36,7 @@ router.post('/inicio-sesion', (req, res, next) => {
 // ESCOGER TIPO DE SERVICIO
 router.get('/tipo-servicio', isLoggedInUser, async (req, res, done) => {
     const deuda = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre,
-    labores = await querys.serviciosDisponibles();
+        labores = await querys.serviciosDisponibles();
     if (deuda.length > 0) {
         done(null, req.flash('success', 'No puedes solicitar servicios mientras tengas pagos pendientes'));
         res.redirect('/usuario/servicios-pagar');
@@ -46,17 +47,17 @@ router.get('/tipo-servicio', isLoggedInUser, async (req, res, done) => {
 
 router.post('/tipo-servicio', async (req, res) => {
     const { nombre_labor, servicio_descipcion } = req.body, id_usuario = req.user.id_usuario, usuario_nombre = req.user.usuario_nombre,
-    userLocation = await querys.localidadUsuario(id_usuario),
-    userUbication = await querys.ubicacionTrabajador(id_usuario),
-    trabajadores = await querys.trabajadoresDisponibles(nombre_labor, userLocation);
+        userLocation = await querys.localidadUsuario(id_usuario),
+        userUbication = await querys.ubicacionTrabajador(id_usuario),
+        trabajadores = await querys.trabajadoresDisponibles(nombre_labor, userLocation);
     res.render('usuario/trabajadores', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajadores, usuario_nombre });
 });
 
 //PERFIL DE UN TRABAJADOR
 router.get('/trabajador-perfil/:trabajador_id/:nombre_labor/:servicio_descipcion', isLoggedInUser, async (req, res) => {
     const { trabajador_id, nombre_labor, servicio_descipcion } = req.params, usuario_nombre = req.user.usuario_nombre,
-    userUbication = await querys.ubicacionUsuario(req.user.id_usuario),
-    trabajador = await querys.trabajadorPerfilProfesional(nombre_labor, trabajador_id);
+        userUbication = await querys.ubicacionUsuario(req.user.id_usuario),
+        trabajador = await querys.trabajadorPerfilProfesional(nombre_labor, trabajador_id);
     res.render('usuario/trabajadorPerfil', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajador, usuario_nombre });
 });
 
@@ -82,14 +83,14 @@ router.get('/servicios-pagar', isLoggedInUser, async (req, res) => {
 
 // PAGAR SERVICIO
 router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', isLoggedInUser, async (req, res) => {
-    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre,
-    servicio = await querys.servicioInformacion(req.user.id_usuario, id_servicio);
-    res.render('usuario/pagarServicio', { servicio, usuario_nombre });
+    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre, usuario_email=req.user.usuario_email,
+        servicio = await querys.servicioInformacion(req.user.id_usuario, id_servicio);
+    res.render('usuario/pagarServicio', { servicio, usuario_nombre, usuario_email });
 });
 
 router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', async (req, res, done) => {
-    const { id_servicio, id_pago, trabajador_id, nombre_labor } = req.params;
-    const { calificacion } = req.body;
+    const { id_servicio, id_pago, trabajador_id, nombre_labor } = req.params,
+        { calificacion } = req.body;
     querys.pagarServicio(trabajador_id, id_servicio, nombre_labor, calificacion);
     done(null, req.flash('success', 'Pago exitoso!'));
     res.redirect('/usuario/servicios-historial');
@@ -103,9 +104,9 @@ router.get('/servicios-historial', isLoggedInUser, async (req, res) => {
 
 // INGRESO 
 router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
-    const id_usuario = req.user.id_usuario;
-    const deuda = await querys.serviciosPorPagar(id_usuario);
-    const user = await querys.usuarioPerfil(id_usuario);
+    const id_usuario = req.user.id_usuario,
+        deuda = await querys.serviciosPorPagar(id_usuario),
+        user = await querys.usuarioPerfil(id_usuario);
 
     if (deuda.length > 0) {
         done(null, user, req.flash('success', '¡' + user.usuario_nombre + '! Tienes un pago pendiente'));
@@ -120,17 +121,17 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
 // PERFIL
 router.get('/perfil', isLoggedInUser, async (req, res, done) => {
     const user = await querys.usuarioPerfil(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
-    res.render('usuario/perfil', { user, usuario_nombre  });
+    res.render('usuario/perfil', { user, usuario_nombre });
 });
 
 router.post('/perfil', async (req, res, done) => {
-    const id_usuario = req.user.id_usuario;
-    const { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body;
-    const newUser = { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard };
+    const id_usuario = req.user.id_usuario,
+        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body,
+        newUser = { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard };
     newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
     restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard);
-    restriccion=='success'? done(null, req.flash('success', 'Actualización exitosa!')) : restriccion=='usuario_usuario_username_key'? done(null, req.flash('message', 'Ya hay alguien registrado con ese usario')) : 
-    restriccion=='usuario_usuario_numero_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
+    restriccion == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : restriccion == 'usuario_usuario_username_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese usario')) :
+        restriccion == 'usuario_usuario_numero_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
     res.redirect('/usuario/perfil');
 });
 
