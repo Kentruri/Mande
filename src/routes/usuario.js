@@ -135,7 +135,7 @@ router.post('/perfil', async (req, res, done) => {
 router.post('/set-passoword', async (req, res, done) => {
     const { old_password, new_password } = req.body,
         validPassword = await helpers.matchPassword(old_password, req.user.usuario_password);
-        console.log(req.body);
+    console.log(req.body);
     if (validPassword) {
         encrypt = await helpers.encryptPassword(new_password);
         querys.contraseñaUsuario(encrypt, req.user.id_usuario)
@@ -147,8 +147,13 @@ router.post('/set-passoword', async (req, res, done) => {
 });
 
 router.get('/borrar-cuenta', isLoggedInUser, async (req, res, done) => {
-    querys.borrarUsuario(req.user.id_usuario);
-    res.redirect('/usuario/cerrar-sesion');
+    borrar = await querys.borrarUsuario(req.user.id_usuario);
+    if (borrar) {
+        res.redirect('/usuario/cerrar-sesion');
+    } else {
+        done(null, req.flash('message', 'No puedes eliminar tu cuenta mientras tengas servicios sin culminar'))
+        res.redirect('/usuario/perfil');
+    }
 });
 
 // CERRAR SESIÓN

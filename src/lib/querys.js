@@ -120,7 +120,13 @@ querys.contraseñaTrabajador = async (trabajador_password, id_trabajador) => {
 }
 
 querys.borrarTrabajador = async(id_trabajador) => {
-    await pool.query('UPDATE trabajador SET eliminado=true WHERE id_trabajador=$1', [id_trabajador]);
+    activo = (await pool.query('SELECT * FROM servicio WHERE trabajador_id=$1 AND servicio_estado=1', [id_trabajador])).rows;
+    if(activo.length>0){
+        return false;
+    }else{
+        await pool.query('UPDATE trabajador SET eliminado=true WHERE id_trabajador=$1', [id_trabajador]);
+        return true;
+    }
 }
 
 
@@ -220,7 +226,13 @@ querys.contraseñaUsuario = async (usuario_password, id_usuario) => {
 }
 
 querys.borrarUsuario = async(id_usuario) => {
-    await pool.query('UPDATE usuario SET eliminado=true WHERE id_usuario=$1', [id_usuario]);
+    activo = (await pool.query('SELECT * FROM servicio WHERE usuario_id=$1 AND servicio_estado=1 OR servicio_estado=2', [id_usuario])).rows;
+    if(activo.length>0){
+        return false;
+    }else{
+        await pool.query('UPDATE usuario SET eliminado=true WHERE id_usuario=$1', [id_usuario]);
+        return true;
+    }
 }
 
 module.exports = querys;
