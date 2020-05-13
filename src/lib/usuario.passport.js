@@ -13,7 +13,6 @@ passport.use('usuario.signup', new LocalStrategy(
         const { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password } = req.body;
         const newUser = { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password };
         newUser.usuario_password = await helpers.encryptPassword(password);
-        console.log(newUser.usuario_password);
         crear = await querys.crearUsuario(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, newUser.usuario_password);
         if (crear == 'success') {
             done(null, req.flash('success', 'Solicita tu primer servicio!'));

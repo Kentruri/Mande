@@ -149,10 +149,23 @@ router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
 
 router.post('/perfil', async (req, res, done) => {
     const id_trabajador = req.user.id_trabajador, 
-    { trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
-    encrypt = await helpers.encryptPassword(trabajador_password);
-    mensaje = await querys.actualizarTrabajador(trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, encrypt, id_trabajador);
+    { trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+    mensaje = await querys.actualizarTrabajador(trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, id_trabajador);
     mensaje == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese usuario'));
+    res.redirect('/trabajador/perfil');
+});
+
+router.post('/set-passoword', async (req, res, done) => {
+    const { old_password, new_password } = req.body,
+        validPassword = await helpers.matchPassword(old_password, req.user.trabajador_password);
+        console.log(req.body);
+    if (validPassword) {
+        encrypt = await helpers.encryptPassword(new_password);
+        querys.contraseñaTrabajador(encrypt, req.user.id_trabajador)
+        done(null, req.flash('success', 'Actualización exitosa!'));
+    } else {
+        done(null, req.flash('message', 'La contraseña antigua no es válida'))
+    }
     res.redirect('/trabajador/perfil');
 });
 

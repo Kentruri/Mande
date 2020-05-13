@@ -83,7 +83,7 @@ router.get('/servicios-pagar', isLoggedInUser, async (req, res) => {
 
 // PAGAR SERVICIO
 router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', isLoggedInUser, async (req, res) => {
-    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre, usuario_email=req.user.usuario_email,
+    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre, usuario_email = req.user.usuario_email,
         servicio = await querys.servicioInformacion(req.user.id_usuario, id_servicio);
     res.render('usuario/pagarServicio', { servicio, usuario_nombre, usuario_email });
 });
@@ -125,11 +125,24 @@ router.get('/perfil', isLoggedInUser, async (req, res, done) => {
 
 router.post('/perfil', async (req, res, done) => {
     const id_usuario = req.user.id_usuario,
-        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password } = req.body,
-    encrypt = await helpers.encryptPassword(usuario_password);
-    restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, encrypt);
+        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username } = req.body,
+        restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username);
     restriccion == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : restriccion == 'usuario_usuario_username_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese usario')) :
         restriccion == 'usuario_usuario_numero_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
+    res.redirect('/usuario/perfil');
+});
+
+router.post('/set-passoword', async (req, res, done) => {
+    const { old_password, new_password } = req.body,
+        validPassword = await helpers.matchPassword(old_password, req.user.usuario_password);
+        console.log(req.body);
+    if (validPassword) {
+        encrypt = await helpers.encryptPassword(new_password);
+        querys.contraseñaUsuario(encrypt, req.user.id_usuario)
+        done(null, req.flash('success', 'Actualización exitosa!'));
+    } else {
+        done(null, req.flash('message', 'La contraseña antigua no es válida'))
+    }
     res.redirect('/usuario/perfil');
 });
 

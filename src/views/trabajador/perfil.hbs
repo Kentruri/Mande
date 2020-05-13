@@ -28,6 +28,7 @@
     </div>
 </div>
 {{/if}}
+
 <div class="row no-gutters bg-dark">
     <div class="col-xl-5 col-lg-12 register-bg">
         <div class="opaco"></div>
@@ -35,9 +36,8 @@
     </div>
     <div class="col-xl-7 col-lg-12 d-flex">
         <div class="container align-self-center p-6">
-            <h1 class="font-weight-bold mb-3">Perfil</h1>
-
-            <p class="text-muted mb-5">Actualiza tus datos.</p>
+            <h1 class="font-weight-bold mb-3">Perfil público</h1>
+            <hr width="100%" style="border-color:black">
 
             <form action="/trabajador/perfil" method="POST">
 
@@ -71,25 +71,18 @@
                         value="{{employee.direccion_localidad}}" />
                 </div>
 
-                <div class="form-group mb-3">
-                    <label>No. Documento</label>
-                    <input type="text" class="form-control" name="id_trabajador" required
-                        value="{{employee.id_trabajador}}" disabled>
-                </div>
-
-
                 <div class="form-row mb-2">
+
+                    <div class="form-group col-md-7">
+                        <label>No. Documento</label>
+                        <input type="text" class="form-control" name="id_trabajador" required
+                            value="{{employee.id_trabajador}}" disabled>
+                    </div>
 
                     <div class="form-group col-md-5">
                         <label class="font-weight-bold">Usuario</label>
                         <input type="text" class="form-control" name="trabajador_username" autocomplete="off" required
                             value="{{employee.trabajador_username}}">
-                    </div>
-
-                    <div class="form-group col-md-7">
-                        <label class="font-weight-bold">Contraseña </label>
-                        <input type="password" class="form-control" name="trabajador_password" autocomplete="off"
-                            required value="{{employee.trabajador_password}}">
                     </div>
 
                 </div>
@@ -109,13 +102,39 @@
                     <img src="{{employee.trabajador_foto}}" id="img_preview">
                 </div>
 
-
-
-
-
-                <button class="btn btn-primary width-100"><i class="fas fa-user-edit"></i> Actualizar</button>
-                <a href="/trabajador/borrar-cuenta" class="btn btn-danger width-100"><i class="fas fa-user-times"></i> Eliminar cuenta</i></a>
+                <button class="btn btn-primary width-100"><i class="fas fa-user-edit"></i> Actualizar perfil</button>
             </form>
+            <br>
+            <h1 class="font-weight-bold mb-3">Cambiar contraseña</h1>
+            <hr width="100%" style="border-color:black">
+            <form action="/trabajador/set-passoword" method="POST">
+                <div class="form-row mb-3">
+
+                    <label class="font-weight-bold">Contraseña antigua</label>
+                    <input type="password" class="form-control" name="old_password" autocomplete="off" required>
+
+                </div>
+                <div class="form-row mb-3">
+
+                    <label class="font-weight-bold">Contraseña nueva</label>
+                    <input type="password" class="form-control" name="new_password" id="newP" autocomplete="off"
+                        required>
+
+                </div>
+                <div class="form-row mb-3">
+
+                    <label class="font-weight-bold">Repetir contraseña </label>
+                    <input type="password" class="form-control" id="reP" autocomplete="off" required
+                        onchange="comparar()">
+                </div>
+                <button class="btn btn-primary width-100"><i class="fas fa-lock"></i> Actualizar contraseña</button>
+            </form>
+            <br>
+            <h1 class="font-weight-bold mb-3">Borrar cuenta</h1>
+            <hr width="100%" style="border-color:black">
+            <p class="text-muted">Una vez que elimine su cuenta, no hay vuelta atrás. Por favor, esté seguro.</p>
+            <a href="/trabajador/borrar-cuenta" class="btn btn-danger width-100"><i class="fas fa-user-times"></i>
+                Eliminar cuenta</i></a>
             <small class="d-inline-block text-muted mt-5">© Mande Corp 2020</small>
         </div>
     </div>
@@ -210,4 +229,13 @@
         docPreview.src = res.data.secure_url;
         document.getElementById('documento').value = res.data.secure_url;
     });
+
+    //COMPARAR CONTRASEÑAS
+    const newPass = document.getElementById('newP');
+    const repPass = document.getElementById('reP');
+    function comparar() {
+        if (newP.value != repPass.value) {
+            repPass.setCustomValidity('Las contraseñas no coinciden');
+        }
+    };
 </script>

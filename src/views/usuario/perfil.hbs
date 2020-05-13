@@ -29,15 +29,15 @@
     </div>
 </div>
 {{/if}}
+
 <div class="row no-gutters bg-dark">
     <div class="col-xl-5 col-lg-12 register-bg">
         <div class="opaco"> </div>
     </div>
     <div class="col-xl-7 col-lg-12 d-flex">
         <div class="container align-self-center p-6">
-            <h1 class="font-weight-bold mb-3">Perfil</h1>
-
-            <p class="text-muted mb-5">Estos son tus datos.</p>
+            <h1 class="font-weight-bold mb-3">Perfil público</h1>
+            <hr width="100%" style="border-color:black">
 
             <form action="/usuario/perfil" method="POST">
 
@@ -47,7 +47,8 @@
                         <label class="font-weight-bold">Nombre </label>
                         <input type="text" class="form-control" name="usuario_nombre" autocomplete="off" required
                             pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
-                            oninvalid="this.setCustomValidity('Solo se permiten letras')" value="{{user.usuario_nombre}}">
+                            oninvalid="this.setCustomValidity('Solo se permiten letras')"
+                            value="{{user.usuario_nombre}}">
                     </div>
 
                     <div class="form-group col-md-5">
@@ -81,32 +82,24 @@
                     <label>Dirección</label>
                     <input type="text" class="form-control" id="search_input" name="usuario_direccion" required
                         value="{{user.direccion_address}}">
-                    <input type="hidden" name="usuario_latitud" id="latitude" value="{{user.direccion_latitud}}"/>
-                    <input type="hidden" name="usuario_longitud" id="longitude" value="{{user.direccion_longitud}}"/>
-                    <input type="hidden" name="usuario_localidad" id="localidad" value="{{user.direccion_localidad}}"/>
+                    <input type="hidden" name="usuario_latitud" id="latitude" value="{{user.direccion_latitud}}" />
+                    <input type="hidden" name="usuario_longitud" id="longitude" value="{{user.direccion_longitud}}" />
+                    <input type="hidden" name="usuario_localidad" id="localidad" value="{{user.direccion_localidad}}" />
                 </div>
 
 
                 <div class="form-row mb-2">
+
+                    <div class="form-group col-md-7">
+                        <label class="font-weight-bold">Documento de identidad </label>
+                        <input type="number" class="form-control" disabled value="{{user.id_usuario}}">
+                    </div>
 
                     <div class="form-group col-md-5">
                         <label class="font-weight-bold">Usuario</label>
                         <input type="text" class="form-control" name="usuario_username" autocomplete="off" required
                             value="{{user.usuario_username}}">
                     </div>
-
-                    <div class="form-group col-md-7">
-                        <label class="font-weight-bold">Contraseña </label>
-                        <input type="password" class="form-control" name="usuario_password" autocomplete="off" required
-                            value="{{user.usuario_password}}">
-                    </div>
-
-                </div>
-
-                <div class="form-row mb-3">
-
-                        <label class="font-weight-bold">Documento de identidad </label>
-                        <input type="number" class="form-control" disabled value="{{user.id_usuario}}">
 
                 </div>
 
@@ -120,9 +113,37 @@
                 </div>
 
 
-                <button class="btn btn-primary width-100"><i class="fas fa-user-edit"></i> Actualizar</button>
-                <a href="/usuario/borrar-cuenta" class="btn btn-danger width-100"><i class="fas fa-user-times"></i> Eliminar cuenta</a>
+                <button class="btn btn-primary width-100"><i class="fas fa-user-edit"></i> Actualizar perfil</button>
             </form>
+            <br>
+            <h1 class="font-weight-bold mb-3">Cambiar contraseña</h1>
+            <hr width="100%" style="border-color:black">
+            <form action="/usuario/set-passoword" method="POST">
+                <div class="form-row mb-3">
+
+                    <label class="font-weight-bold">Contraseña antigua</label>
+                    <input type="password" class="form-control" name="old_password" autocomplete="off" required>
+
+                </div>
+                <div class="form-row mb-3">
+
+                    <label class="font-weight-bold">Contraseña nueva</label>
+                    <input type="password" class="form-control" name="new_password" id="newP" autocomplete="off" required>
+
+                </div>
+                <div class="form-row mb-3">
+
+                    <label class="font-weight-bold">Repetir contraseña </label>
+                    <input type="password" class="form-control" id="reP" autocomplete="off" required onchange="comparar()">
+                </div>
+                <button class="btn btn-primary width-100"><i class="fas fa-lock"></i> Actualizar contraseña</button>
+            </form>
+            <br>
+            <h1 class="font-weight-bold mb-3">Borrar cuenta</h1>
+            <hr width="100%" style="border-color:black">
+            <p class="text-muted">Una vez que elimine su cuenta, no hay vuelta atrás. Por favor, esté seguro.</p>
+            <a href="/usuario/borrar-cuenta" class="btn btn-danger width-100"><i class="fas fa-user-times"></i>
+                Eliminar cuenta</a>
             <small class="d-inline-block text-muted mt-5">© Mande Corp 2020</small>
         </div>
     </div>
@@ -187,4 +208,14 @@
         imagePreview.src = res.data.secure_url;
         document.getElementById('recibo').value = res.data.secure_url;
     });
+
+    //COMPARAR CONTRASEÑAS
+    const newPass = document.getElementById('newP');
+    const repPass = document.getElementById('reP');
+    function comparar() {
+        if(newP.value!=repPass.value) {
+            repPass.setCustomValidity('Las contraseñas no coinciden');
+        }
+    };
+
 </script>

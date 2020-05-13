@@ -105,14 +105,18 @@ querys.trabajadorPerfil = async(id_trabajador) => {
     return perfil;
 }
 
-querys.actualizarTrabajador = async(trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password, id_trabajador) => {
+querys.actualizarTrabajador = async(trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, id_trabajador) => {
     try {
-        await pool.query('UPDATE trabajador SET trabajador_nombre=$1, trabajador_foto=$2, trabajador_documento=$3, trabajador_username=$4, trabajador_password=$5 WHERE id_trabajador=$6', [trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_username, trabajador_password, id_trabajador]);
+        await pool.query('UPDATE trabajador SET trabajador_nombre=$1, trabajador_foto=$2, trabajador_documento=$3, trabajador_username=$4 WHERE id_trabajador=$5', [trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_username, id_trabajador]);
         await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, id_trabajador]);
         return 'success';
     } catch (error) {
         return 'error';
     }
+}
+
+querys.contraseñaTrabajador = async (trabajador_password, id_trabajador) => {
+    await pool.query('UPDATE trabajador SET trabajador_password=$1 WHERE id_trabajador=$2', [trabajador_password, id_trabajador]);
 }
 
 querys.borrarTrabajador = async(id_trabajador) => {
@@ -200,15 +204,19 @@ querys.usuarioPerfil = async(id_usuario) => {
     return datos;
 }
 
-querys.actualizarUsuario = async(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password) => {
+querys.actualizarUsuario = async(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username) => {
     try {
-        await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_recibo=$6 WHERE id_usuario=$7', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_recibo, id_usuario]);
+        await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_recibo=$5 WHERE id_usuario=$6', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_recibo, id_usuario]);
         await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, id_usuario]);
         return 'success';
     } catch (error) {
         var restriccion = error.constraint;
         return restriccion;
     }
+}
+
+querys.contraseñaUsuario = async (usuario_password, id_usuario) => {
+    await pool.query('UPDATE usuario SET usuario_password=$1 WHERE id_usuario=$2', [usuario_password, id_usuario]);
 }
 
 querys.borrarUsuario = async(id_usuario) => {
