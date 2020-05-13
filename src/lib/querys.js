@@ -121,9 +121,9 @@ querys.borrarTrabajador = async(id_trabajador) => {
 
 
 // USUARIO
-querys.crearUsuario = async(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard) => {
+querys.crearUsuario = async(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password) => {
     try {
-        await pool.query('INSERT INTO usuario (id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard, usuario_recibo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', [id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard, usuario_recibo]);
+        await pool.query('INSERT INTO usuario (id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_recibo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_recibo]);
         await pool.query('INSERT INTO direccion VALUES ($1, $2, $3, $4, $5)', [id_usuario, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud]);
         return 'success';
     } catch (error) {
@@ -200,9 +200,9 @@ querys.usuarioPerfil = async(id_usuario) => {
     return datos;
 }
 
-querys.actualizarUsuario = async(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard) => {
+querys.actualizarUsuario = async(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password) => {
     try {
-        await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_numCard=$6, usuario_recibo=$7 WHERE id_usuario=$8', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard, usuario_recibo, id_usuario]);
+        await pool.query('UPDATE usuario SET usuario_nombre=$1, usuario_email=$2, usuario_numero=$3, usuario_username=$4, usuario_password=$5, usuario_recibo=$6 WHERE id_usuario=$7', [usuario_nombre, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_recibo, id_usuario]);
         await pool.query('UPDATE direccion SET direccion_address=$1, direccion_localidad=$2, direccion_latitud=$3, direccion_longitud=$4 WHERE id_direccion=$5', [usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, id_usuario]);
         return 'success';
     } catch (error) {

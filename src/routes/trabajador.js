@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const pool = require('../database');
+const helpers = require('../lib/helpers');
 const querys = require('../lib/querys');
 const { isLoggedInEmployee, isNotLoggedInEmployee } = require('../lib/auth');
 
@@ -89,7 +90,6 @@ router.post('/editar-labor/:id', async (req, res, done) => {
 router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
     const employee = await querys.trabajadorDisponibilidad(req.user.id_trabajador);
     if (employee.trabajador_disponibilidad) {
-        done(null, employee, req.flash('success', 'Bienvenido ' + employee.trabajador_username));
         res.redirect('/trabajador/mis-labores');
     } else {
         done(null, employee, req.flash('success', '¡' + employee.trabajador_nombre + '! Tienes trabajo activo'));
@@ -148,9 +148,10 @@ router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
 });
 
 router.post('/perfil', async (req, res, done) => {
-    const id_trabajador = req.user.id_trabajador;
-    const { trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
-    mensaje = await querys.actualizarTrabajador(trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password, id_trabajador);
+    const id_trabajador = req.user.id_trabajador, 
+    { trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+    encrypt = await helpers.encryptPassword(trabajador_password);
+    mensaje = await querys.actualizarTrabajador(trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, encrypt, id_trabajador);
     mensaje == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese usuario'));
     res.redirect('/trabajador/perfil');
 });

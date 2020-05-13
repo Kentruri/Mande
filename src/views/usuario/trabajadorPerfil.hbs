@@ -1,32 +1,50 @@
+<link rel="stylesheet" href="/css/perfil.css">
 {{> navigationUser}}
 
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <div class="card">
-                <div class="card-header" style="text-align: center;">
-                    <h3><b>{{nombre_labor}}</b></h3>
-                </div>
-                <div class="card-body">
-                    <img src={{trabajador.trabajador_foto}} width="158px" height="204px"
-                        class="rounded mx-auto d-block "><br>
-                    <p class="m-2"><b>Nombre:</b> {{trabajador.trabajador_nombre}}</p>
-                    <p class="m-2"><b>Edad:</b><a class="m-2" id="age"></a></p>
-                    <p class="m-2"><b>Experiencia como {{nombre_labor}}:</b> {{trabajador.trabajoshechos}} trabajos realizados con éxito</p>
-                    <p class="m-2"><b>Calificación:</b> {{trabajador.promedio}}</p>
-                    <p class="m-2"><b>Distancia:</b> {{Dist trabajador.direccion_latitud trabajador.direccion_longitud userUbication.direccion_latitud userUbication.direccion_longitud}} km's</p>
-                    <p class="m-2"><b>Ubicación de {{trabajador.trabajador_nombre}}:</b></p>
-                    <div id="map"></div><br>
-                    <div class="text-center">
-                        <a class="btn btn-secondary" onclick="volver()">Volver</a>
-                        <a href="/usuario/contratar-trabajador/{{trabajador.id_trabajador}}/{{nombre_labor}}/{{servicio_descipcion}}"
-                            class="btn btn-success">Contratar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="perfil">
+  
+    
+      
+      <a href="#"><img src={{trabajador.trabajador_foto}} width="180" height="230" alt="cover" class="fotoTrabajador" /></a>
+          
+      <div class="mapa"> <div id="map"></div>
+              
+        <div class="details">
+        
+           
+          
+        </div> 
+        
+      </div>
+      
+      <div class="description">
+        
+        <div class="column1">
+            <br>
+          <h1>{{trabajador.trabajador_nombre}} </h1>
+          <br>
+          <a href="/usuario/contratar-trabajador/{{trabajador.id_trabajador}}/{{nombre_labor}}/{{servicio_descipcion}}"
+                            class="btn btn-success">Contratar</a> 
+
+                            <a href="#" onclick="volver()" class="btn btn-danger" >Volver </a>
+          
+          
+        </div> 
+        
+        <div class="column2">
+            
+  
+          <div class="title1">Descripcion como: {{nombre_labor}}</div>   
+         <div class="title2">edad:<a class="m-2" id="age"> años </div>   
+         <div class="title2">Distancia: A {{Dist trabajador.direccion_latitud trabajador.direccion_longitud userUbication.direccion_latitud userUbication.direccion_longitud}} de ti</div>   
+         <div class="title2">Experiencia como {{nombre_labor}}: {{trabajador.trabajoshechos}} trabajos realizados con éxito </div>   
+         <div class="title2">Calificacion: {{trabajador.promedio}} *</div>   
+
+        </div> 
+      </div> 
+      
+  
+  </div> 
 
 <input type="hidden" value="{{trabajador.trabajador_fechanacimiento}}" id="birth">
 

@@ -1,6 +1,7 @@
 <!-- Bootstrap CSS -->
-<link href="/css/registro.css" rel="stylesheet">
+
 {{> navigation}}
+<link href="/css/registro.css" rel="stylesheet">
 {{#if message}}
 <div class="container p-2">
     <div class="row">
@@ -48,13 +49,13 @@
                 <div class="form-row mb-2">
 
                     <div class="form-group col-md-7">
-                        <label class="font-weight-bold">Correo electronico<span class="text-danger">*</span></label>
+                        <label class="font-weight-bold">Correo electronico</label>
                         <input type="email" class="form-control" name="usuario_email" autocomplete="off" required
                             placeholder="Tu correo electronico">
                     </div>
 
                     <div class="form-group col-md-5">
-                        <label class="font-weight-bold">Numero de celular <span class="text-danger">*</span></label>
+                        <label class="font-weight-bold">Numero de celular </label>
                         <input type="number" class="form-control" name="usuario_numero" autocomplete="off" required
                             min="0" step="1" placeholder="Tu numero de celular">
                     </div>
@@ -90,20 +91,12 @@
 
                 </div>
 
-                <div class="form-row mb-2">
+                <div class="form-row mb-3">
 
-                    <div class="form-group col-md-5">
-                        <label>Numero de tarjeta</label>
-                        <input type="number" class="form-control" name="usuario_numCard" autocomplete="off" required
-                            placeholder="Crédito / Débito">
-                    </div>
-
-                    <div class="form-group col-md-7">
                         <label class="font-weight-bold">Documento de identidad </label>
                         <input type="number" class="form-control" name="id_usuario" autocomplete="off" required
                             min="1" step="1" placeholder="Número de documento">
-                    </div>
-
+                            
                 </div>
 
                 <div class="form-group mb-4"></div>

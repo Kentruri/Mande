@@ -1,17 +1,17 @@
 const bcrypt = require('bcryptjs');
 const helpers = {};
 
-helpers.encryptNumCard = async (numCard) =>
+helpers.encryptPassword = async (password) =>
 {
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(numCard, salt);
+    const hash = await bcrypt.hash(password, salt);
     return hash;
 };
 
-helpers.matchNumCard = async(numCard, savedNum) =>
+helpers.matchPassword = async(password, saved) =>
 {
     try {
-        return await bcrypt.compare(numCard, savedNum);
+        return await bcrypt.compare(password, saved);
     } catch (error) {
         console.log(error);
     }

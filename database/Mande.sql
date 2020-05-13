@@ -14,7 +14,7 @@ CREATE TABLE trabajador(
     trabajador_documento TEXT NOT NULL,
     trabajador_disponibilidad BOOLEAN NOT NULL DEFAULT 'true',
     trabajador_username VARCHAR(40) UNIQUE,
-    trabajador_password VARCHAR(40),
+    trabajador_password TEXT,
     eliminado BOOLEAN NOT NULL DEFAULT 'false'
 );
 
@@ -45,8 +45,7 @@ CREATE TABLE usuario(
     usuario_email VARCHAR NOT NULL UNIQUE,
     usuario_numero NUMERIC UNIQUE,
     usuario_username VARCHAR(40) UNIQUE,
-    usuario_password VARCHAR(40),
-    usuario_numCard TEXT,
+    usuario_password TEXT,
     usuario_recibo TEXT NOT NULL,
     eliminado BOOLEAN NOT NULL DEFAULT 'false'
 );

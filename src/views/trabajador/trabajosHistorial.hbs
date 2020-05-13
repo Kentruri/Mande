@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/mensaje.css">
 <link rel="stylesheet" href="/css/Fondo.css">
+<link rel="stylesheet" href="/css/historial.css">
 {{> navigationTrabajador}}
 <div class="imagenActivos">
 
@@ -21,23 +22,32 @@
 <div class="container p-4">
     <div class="row">
         {{#each servicios}}
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h3 class="card-title text-uppercase">
-                        {{nombre_labor}}
-                    </h3>
-                    <p class="m-2"><b>Cliente: </b><br> {{usuario_nombre}}</p>
-                    <p class="m-2"><b>Descripción: </b><br>{{servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha de inicio: </b><br>{{NormalDate servicio_inicio}}</p>
-                    <p class="m-2"><b>Fecha de culminación: </b>{{NormalDate servicio_final}}</p>
-                    <p class="m-2"><b>Fecha de pago: </b><br>{{NormalDate pago_fecha}}</p>
-                    <p class="m-2"><b>Valor: </b><br>${{FormatPrice pago_valor}}</p>
-                    <p class="m-2"><b>Calificación: </b>{{servicio_calificacion}}☆</p>
-                    <p class="m-2"><b><i>Pago realizado</i></b></p>
-                </div>
-            </div>
-        </div>
+        
+<div class="labores-container">
+	<div class="labor">
+		<div class="labor-preview">         
+			<h6>Labor:</h6>          
+			<h2>{{nombre_labor}}</h2>
+            <br>
+            <h6>Calificacion:</h6>
+            <h2>{{servicio_calificacion}}☆</h2>
+			
+		</div>
+		<div class="labor-info">
+            <h2><b>Descripcion:</b> {{servicio_descipcion}}  </h2>
+            
+            <h2><b>Fecha de inicio: </b>{{NormalDate servicio_inicio}}.<b>Fecha de culminacion: </b>{{NormalDate servicio_final}} </h2>
+            <h2><b>Cliente:</b> {{usuario_nombre}}</h2>
+            <h2><b>Costo del servicio:</b> ${{FormatPrice pago_valor}}</h2>
+            <h2><b>Fecha del pago:</b> {{NormalDate pago_fecha}}</h2>
+
+      <br>
+			
+					
+		</div>
+		
+	</div>
+</div>
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="tarjeta_mensaje card-body text-center">

@@ -109,7 +109,6 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
         user = await querys.usuarioPerfil(id_usuario);
 
     if (deuda.length > 0) {
-        done(null, user, req.flash('success', '¡' + user.usuario_nombre + '! Tienes un pago pendiente'));
         res.redirect('/usuario/servicios-pagar');
     } else {
         done(null, user, req.flash('success', 'Bienvenido ' + user.usuario_nombre));
@@ -126,10 +125,9 @@ router.get('/perfil', isLoggedInUser, async (req, res, done) => {
 
 router.post('/perfil', async (req, res, done) => {
     const id_usuario = req.user.id_usuario,
-        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard } = req.body,
-        newUser = { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, usuario_numCard };
-    newUser.usuario_numCard = await helpers.encryptNumCard(usuario_numCard);
-    restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password, newUser.usuario_numCard);
+        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password } = req.body,
+    encrypt = await helpers.encryptPassword(usuario_password);
+    restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, encrypt);
     restriccion == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : restriccion == 'usuario_usuario_username_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese usario')) :
         restriccion == 'usuario_usuario_numero_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
     res.redirect('/usuario/perfil');

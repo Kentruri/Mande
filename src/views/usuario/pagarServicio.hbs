@@ -1,6 +1,9 @@
 <link rel="stylesheet" type="text/css"
+
     href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/css/estrellas.css">
+<link rel="stylesheet" href="/css/Fondo.css">
+<div class="imagenActivos">
 {{> navigationUser}}
 {{#if success}}
 <div class="container p-4">
@@ -54,7 +57,7 @@
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                 valor=document.getElementById('valor').value;
                                 data-key="pk_test_fkSHdPcqLPukkIcaxlxCkCnw00tMlysfr9" data-name="Mande"
-                                data-image="https://res.cloudinary.com/mattezl/image/upload/v1589279540/Logo_zbyaov.png"
+                                data-image="https://res.cloudinary.com/mattezl/image/upload/v1589320673/Mande/Logo_ewnbyh.png   "
                                 data-amount="{{valor}}" data-currency="cop">
                             </script>
                             <script>
@@ -62,9 +65,10 @@
                             </script>
                             <button class="btn btn-success btn-block"><i class="fas fa-shopping-cart"></i> Pagar
                             </button>
-                            <small>
-                                <a href="/usuario/servicios-pagar">Cancelar</a>
-                            </small>
+                            <br>
+                                <a class="btn btn-danger" href="/usuario/servicios-pagar">⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀‎Cancelar⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</a>
+
+                           
                         </div>
                     </form>
                 </div>
