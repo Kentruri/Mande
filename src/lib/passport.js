@@ -55,25 +55,24 @@ passport.use('local.signin', new LocalStrategy(
             if (rows.length > 0) {
                 const employee = rows[0];
                 employee.NewField = 'role';
-                employee.role='trabajador'
+                employee.role = 'trabajador'
                 const validPassword = await helpers.matchPassword(password, employee.trabajador_password);
-                validPassword ? done(null, employee, req.flash('success', 'Bienvenido ' + employee.trabajador_username)) : done(null, false, req.flash('message', 'Contraseña inválida'));
+                validPassword ? done(null, employee, req.flash('success', 'Bienvenido ' + employee.trabajador_username)) : done(null, false, req.flash('message', 'Contraseña incorrecta'));
             } else {
-                done(null, false, req.flash('message', 'Usuario inválido'));
+                done(null, false, req.flash('message', 'El trabajador no existe'));
             }
         } else if (role == 'usuario') {
             const filas = await (await pool.query('SELECT * FROM usuario WHERE usuario_username=$1 AND eliminado=false OR usuario_numero=$2 AND eliminado=false ', [username, parseInt(username)])).rows;
             if (filas.length > 0) {
                 const user = filas[0];
                 user.NewField = 'role';
-                user.role='usuario'
+                user.role = 'usuario'
                 const validPassword = await helpers.matchPassword(password, user.usuario_password);
-                validPassword ? done(null, user, req.flash('success', 'Bienvenido ' + user.usuario_username)) : done(null, false, req.flash('message', 'Constraseña inválida'));
+                validPassword ? done(null, user, req.flash('success', 'Bienvenido ' + user.usuario_username)) : done(null, false, req.flash('message', 'Constraseña incorrecta'));
             } else {
-                done(null, false, req.flash('message', 'Usuario inválido'));
+                done(null, false, req.flash('message', 'El usuario no existe'));
             }
         }
-
     }
 ));
 

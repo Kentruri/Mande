@@ -78,10 +78,12 @@ router.post('/editar-labor/:id', async (req, res, done) => {
         laborActual = await querys.laborParaEditar(id);
     if (nombre_labor == '') {
         mensaje = await querys.editarLabor(laborActual[0].nombre_labor, precioxhora, id, req.user.id_trabajador);
-        mensaje == 'failed' ? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) : done(null, req.flash('success', 'Labor editada con éxito'));
+        mensaje == 'failed' ? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) :
+            done(null, req.flash('success', 'Labor editada con éxito'));
     } else {
         mesanje = await querys.editarLabor(nombre_labor, precioxhora, id, req.user.id_trabajador);
-        mensaje == 'failed' ? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) : done(null, req.flash('success', 'Labor editada con éxito'));
+        mensaje == 'failed' ? done(null, req.flash('message', 'No puedes editar una labor con la que tienes un trabajo activo')) :
+            done(null, req.flash('success', 'Labor editada con éxito'));
     }
     res.redirect('/trabajador/mis-labores');
 });
@@ -149,7 +151,7 @@ router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
 
 router.post('/perfil', async (req, res, done) => {
     const id_trabajador = req.user.id_trabajador,
-        { trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+        { trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username } = req.body;
     mensaje = await querys.actualizarTrabajador(trabajador_nombre, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, id_trabajador);
     mensaje == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese usuario'));
     res.redirect('/trabajador/perfil');

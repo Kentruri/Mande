@@ -2,49 +2,54 @@
 {{> navigationUser}}
 
 <div class="perfil">
-  
-    
-      
-      <a href="#"><img src={{trabajador.trabajador_foto}} width="180" height="230" alt="cover" class="fotoTrabajador" /></a>
-          
-      <div class="mapa"> <div id="map"></div>
-              
+
+
+
+    <a href="#"><img src={{trabajador.trabajador_foto}} width="180" height="230" alt="cover"
+            class="fotoTrabajador" /></a>
+
+    <div class="mapa">
+        <div id="map"></div>
+
         <div class="details">
-        
-           
-          
-        </div> 
-        
-      </div>
-      
-      <div class="description">
-        
+
+
+
+        </div>
+
+    </div>
+
+    <div class="description">
+
         <div class="column1">
             <br>
-          <h1>{{trabajador.trabajador_nombre}} </h1>
-          <br>
-          <a href="/usuario/contratar-trabajador/{{trabajador.id_trabajador}}/{{nombre_labor}}/{{servicio_descipcion}}"
-                            class="btn btn-success">Contratar</a> 
+            <h1>{{trabajador.trabajador_nombre}} </h1>
+            <br>
+            <a href="/usuario/contratar-trabajador/{{trabajador.id_trabajador}}/{{nombre_labor}}/{{servicio_descipcion}}"
+                class="btn btn-success">Contratar</a>
 
-                            <a href="#" onclick="volver()" class="btn btn-danger" >Volver </a>
-          
-          
-        </div> 
-        
+            <a href="#" onclick="volver()" class="btn btn-danger">Volver </a>
+
+
+        </div>
+
         <div class="column2">
-            
-  
-          <div class="title1">Descripcion como: {{nombre_labor}}</div>   
-         <div class="title2">edad:<a class="m-2" id="age"> años </div>   
-         <div class="title2">Distancia: A {{Dist trabajador.direccion_latitud trabajador.direccion_longitud userUbication.direccion_latitud userUbication.direccion_longitud}} de ti</div>   
-         <div class="title2">Experiencia como {{nombre_labor}}: {{trabajador.trabajoshechos}} trabajos realizados con éxito </div>   
-         <div class="title2">Calificacion: {{trabajador.promedio}} *</div>   
 
-        </div> 
-      </div> 
-      
-  
-  </div> 
+
+            <div class="title1">Descripcion como: {{nombre_labor}}</div>
+            <div class="title2">edad:<a class="m-2" id="age"> años </div>
+            <div class="title2">Distancia: A
+                {{calcularDistancia trabajador.direccion_latitud trabajador.direccion_longitud userUbication.direccion_latitud userUbication.direccion_longitud}}
+                de ti</div>
+            <div class="title2">Experiencia como {{nombre_labor}}: {{trabajador.trabajoshechos}} trabajos realizados con
+                éxito </div>
+            <div class="title2">Calificacion: {{trabajador.promedio}} ✩</div>
+
+        </div>
+    </div>
+
+
+</div>
 
 <input type="hidden" value="{{trabajador.trabajador_fechanacimiento}}" id="birth">
 
@@ -62,7 +67,7 @@
             zoom: 15,
             center: coordT
         });
-            var marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
             position: coordT,
             map: map
         });
@@ -75,13 +80,12 @@
         var today = new Date();
         var currentYear = today.getFullYear();
         var currentmonth = today.getMonth();
-        if(currentmonth>birthMonth)
-        {
-            document.getElementById("age").innerText=(currentYear-birthYear);
-        }else{
-            document.getElementById("age").innerText=(currentYear-birthYear)-1;
+        if (currentmonth > birthMonth) {
+            document.getElementById("age").innerText = (currentYear - birthYear);
+        } else {
+            document.getElementById("age").innerText = (currentYear - birthYear) - 1;
         }
-    }          
+    }
 
     //VOLVER A LA LISTA LOS TRABAJADORES
     function volver() {

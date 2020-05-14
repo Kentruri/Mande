@@ -1,133 +1,134 @@
 <link rel="stylesheet" type="text/css"
-
     href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/css/estrellas.css">
 <link rel="stylesheet" href="/css/Fondo.css">
 <div class="imagenActivos">
-{{> navigationUser}}
-{{#if success}}
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-4 mx-auto">
-            <div class="alert alert-success alert-dismissible fade show" role="=alert">
-                {{success}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    {{> navigationUser}}
+    {{#if success}}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="=alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{{/if}}
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-4 mx-auto">
-            <div class="card">
-                <div class="card-header" style="text-align: center;">
-                    <h3><b>{{servicio.nombre_labor}}</b></h3>
-                </div>
-                <div class="card-body">
-                    <p class="m-2"><b>Trabajador:</b> <br>{{servicio.trabajador_nombre}}</p>
-                    <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
-                    <p class="m-2"><b>Fecha de inicio:</b> <br>{{NormalDate servicio.servicio_inicio}}</p>
-                    <p class="m-2"><b>Fecha de culminación:</b> <br>{{NormalDate servicio.servicio_final}}</p>
-                    <p class="m-2"><b>Valor:</b> ${{FormatPrice servicio.pago_valor}}</p>
+    {{/if}}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="card">
+                    <div class="card-header" style="text-align: center;">
+                        <h3><b>{{servicio.nombre_labor}}</b></h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="m-2"><b>Trabajador:</b> <br>{{servicio.trabajador_nombre}}</p>
+                        <p class="m-2"><b>Descripción:</b><br>{{servicio.servicio_descipcion}}</p>
+                        <p class="m-2"><b>Fecha de inicio:</b> <br>{{formatearFecha servicio.servicio_inicio}}</p>
+                        <p class="m-2"><b>Fecha de culminación:</b> <br>{{formatearFecha servicio.servicio_final}}</p>
+                        <p class="m-2"><b>Valor:</b> ${{formatearPrecio servicio.pago_valor}}</p>
 
 
-                    <form
-                        action="/usuario/pagar-servicio/{{servicio.id_servicio}}/{{servicio.id_pago}}/{{servicio.trabajador_id}}/{{servicio.nombre_labor}}"
-                        method="POST">
+                        <form
+                            action="/usuario/pagar-servicio/{{servicio.id_servicio}}/{{servicio.id_pago}}/{{servicio.trabajador_id}}/{{servicio.nombre_labor}}"
+                            method="POST">
 
 
-                        <div class="rating-box">
+                            <div class="rating-box">
 
-                            <div class="ratings">
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <br>
+                                <div class="ratings">
+                                    <span class="far fa-star"></span>
+                                    <span class="far fa-star"></span>
+                                    <span class="far fa-star"></span>
+                                    <span class="far fa-star"></span>
+                                    <span class="far fa-star"></span>
+                                    <br>
+                                </div>
+                                <p class="m-2"><b>Calificación: <input type="text" id="rating-value" name="calificacion"
+                                            class="sinborde" required
+                                            oninvalid="this.setCustomValidity('Por favor califica al trabajador')"> </b>
+                                </p>
                             </div>
-                            <p class="m-2"><b>Calificación: <input type="text" id="rating-value" name="calificacion"
-                                        class="sinborde" required
-                                        oninvalid="this.setCustomValidity('Por favor califica al trabajador')"> </b></p>
-                        </div>
-                        <div class="form-group">
-                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                valor=document.getElementById('valor').value;
-                                data-key="pk_test_fkSHdPcqLPukkIcaxlxCkCnw00tMlysfr9" data-name="Mande"
-                                data-image="https://res.cloudinary.com/mattezl/image/upload/v1589320673/Mande/Logo_ewnbyh.png   "
-                                data-amount="{{valor}}" data-currency="cop">
-                            </script>
-                            <script>
-                                document.getElementsByClassName('stripe-button-el')[0].style.display = 'none';
-                            </script>
-                            <button class="btn btn-success btn-block"><i class="fas fa-shopping-cart"></i> Pagar
-                            </button>
-                            <br>
-                                <a class="btn btn-danger" href="/usuario/servicios-pagar">⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀‎Cancelar⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</a>
+                            <div class="form-group">
+                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    valor=document.getElementById('valor').value;
+                                    data-key="pk_test_fkSHdPcqLPukkIcaxlxCkCnw00tMlysfr9" data-name="Mande"
+                                    data-image="https://res.cloudinary.com/mattezl/image/upload/v1589320673/Mande/Logo_ewnbyh.png   "
+                                    data-amount="{{valor}}" data-currency="cop">
+                                    </script>
+                                <script>
+                                    document.getElementsByClassName('stripe-button-el')[0].style.display = 'none';
+                                </script>
+                                <button class="btn btn-success btn-block"><i class="fas fa-shopping-cart"></i> Pagar
+                                </button>
+                                <br>
+                                <a class="btn btn-danger" href="/usuario/servicios-pagar">⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                                    ⠀‎Cancelar⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</a>
 
-                           
-                        </div>
-                    </form>
+
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
+    <script>
 
-    const stars = document.querySelector(".ratings").children;
-    const ratingValue = document.querySelector("#rating-value");
-    let fijo;
-    let index;
-    for (let i = 0; i < stars.length; i++) {
-        stars[i].addEventListener("mouseover", function () {
+        const stars = document.querySelector(".ratings").children;
+        const ratingValue = document.querySelector("#rating-value");
+        let fijo;
+        let index;
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].addEventListener("mouseover", function () {
 
-            for (let j = 0; j < stars.length; j++) {
-                stars[j].classList.remove("fas");
-                stars[j].classList.remove("fa-star");
-                stars[j].classList.add("far");
-                stars[j].classList.add("fa-star");
-            }
+                for (let j = 0; j < stars.length; j++) {
+                    stars[j].classList.remove("fas");
+                    stars[j].classList.remove("fa-star");
+                    stars[j].classList.add("far");
+                    stars[j].classList.add("fa-star");
+                }
 
-            for (let j = 0; j <= i; j++) {
-                stars[j].classList.remove("far");
-                stars[j].classList.remove("fa-star");
-                stars[j].classList.add("fas");
-                stars[j].classList.add("fa-star");
-            }
+                for (let j = 0; j <= i; j++) {
+                    stars[j].classList.remove("far");
+                    stars[j].classList.remove("fa-star");
+                    stars[j].classList.add("fas");
+                    stars[j].classList.add("fa-star");
+                }
 
-        })
+            })
 
-        stars[i].addEventListener("click", function () {
-
-
-            ratingValue.value = i + 1;
-            fijo = i;
-        })
+            stars[i].addEventListener("click", function () {
 
 
-        stars[i].addEventListener("mouseout", function () {
+                ratingValue.value = i + 1;
+                fijo = i;
+            })
 
-            for (let j = 0; j < stars.length; j++) {
-                stars[j].classList.remove("fas");
-                stars[j].classList.remove("fa-star");
-                stars[j].classList.add("far");
-                stars[j].classList.add("fa-star");
-            }
 
-            for (let j = 0; j <= fijo; j++) {
-                stars[j].classList.remove("far");
-                stars[j].classList.remove("fa-star");
-                stars[j].classList.add("fas");
-                stars[j].classList.add("fa-star");
-            }
+            stars[i].addEventListener("mouseout", function () {
 
-        })
+                for (let j = 0; j < stars.length; j++) {
+                    stars[j].classList.remove("fas");
+                    stars[j].classList.remove("fa-star");
+                    stars[j].classList.add("far");
+                    stars[j].classList.add("fa-star");
+                }
 
-    }
+                for (let j = 0; j <= fijo; j++) {
+                    stars[j].classList.remove("far");
+                    stars[j].classList.remove("fa-star");
+                    stars[j].classList.add("fas");
+                    stars[j].classList.add("fa-star");
+                }
 
-</script>
+            })
+
+        }
+
+    </script>

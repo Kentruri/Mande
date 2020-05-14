@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const hbs = require('handlebars');
+const helpers = require('./lib/helpers');
 
 // Initializations
 const app = express();
@@ -25,33 +26,14 @@ app.engine('.hbs', exphbs(
 app.set('view engine', '.hbs');
 
 // Helpers
-hbs.registerHelper("Dist", function (latT, lonT, latU, lonU) { //Calcular la distancia entre el usuario y el trabajador
-
-    rad = function (x) { return x * Math.PI / 180; }
-
-    var R = 6378.137;                          //Radio de la tierra en km
-    var dLat = rad(latT - latU);
-    var dLong = rad(lonT - lonU);
-
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(latU)) * Math.cos(rad(latT)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
-
-    return d.toFixed(1);                      //Retorna un decimal
+hbs.registerHelper("distancia", function (latT, lonT, latU, lonU) {
+    return helpers.calcularcalcularDistancia(latT, lonT, latU, lonU);
 });
-
-hbs.registerHelper("NormalDate", function (str) { // Formatear fecha
-    var date = new Date(str),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-    hor = ("0" + date.getHours()).slice(-2);
-    min = ("0" + date.getMinutes()).slice(-2);
-    return [day, "-", mnth, "-", date.getFullYear(), " a las ", hor, ":", min].join("");
+hbs.registerHelper("formatearFecha", function (str) {
+    return helpers.formatearFecha(str);
 });
-
-hbs.registerHelper("FormatPrice", function format(number) { // Formatear precio
-    price = new Intl.NumberFormat().format(number);
-    return price;
+hbs.registerHelper("formatearPrecio", function format(price) {
+    return helpers.formatearPrecio(price);
 });
 
 // Middlewares
@@ -79,8 +61,8 @@ app.use((req, res, next) => {
 
 // Routes
 app.use(require('./routes/index.routes'));
-app.use('/usuario', require('./routes/usuario'));
-app.use('/trabajador', require('./routes/trabajador'))
+app.use('/usuario', require('./routes/usuario.routes'));
+app.use('/trabajador', require('./routes/trabajador.routes'))
 
 
 // Public

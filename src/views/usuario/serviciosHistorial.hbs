@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/css/Tarjetas.css">
 <link rel="stylesheet" href="/css/Fondo.css">
 <link rel="stylesheet" href="/css/mensaje.css">
- <div class="imagenActivos"></div>
+<div class="imagenActivos"></div>
 {{> navigationUser}}
 {{#if success}}
 <div class="container p-4">
@@ -31,9 +31,9 @@
                         <span class="left"></span>
                         <span class="right"></span>
                     </a>
-                     <h2>
+                    <h2>
                         {{trabajador_nombre}}
-                       
+
                         <br>
                         <small> {{nombre_labor}}</small>
                     </h2>
@@ -42,19 +42,19 @@
                     <div class="card-description">
 
                         <h3>
-                            Fecha de inicio: {{NormalDate servicio_inicio}}
+                            Fecha de inicio: {{formatearFecha servicio_inicio}}
                         </h3>
 
                         <h3>
-                        Fecha de culminación: {{NormalDate servicio_final}}
-                        </h3>
-                        
-                        <h3>
-                        Fecha de pago: {{NormalDate pago_fecha}}
+                            Fecha de culminación: {{formatearFecha servicio_final}}
                         </h3>
 
                         <h3>
-                            Costo: ${{FormatPrice pago_valor}}
+                            Fecha de pago: {{formatearFecha pago_fecha}}
+                        </h3>
+
+                        <h3>
+                            Costo: ${{formatearPrecio pago_valor}}
                         </h3>
 
                         <h3>
@@ -75,17 +75,17 @@
                     </div>
                 </div>
             </div>
-        
 
 
-        {{else}}
-        <div class="col-md-4 mx-auto">
-            <div class="tarjeta_mensaje_dos card-body bg-light mb-3 text-center">
-                <br>
-                <p>Aun no has contratado servicios</p>
-                <a href="/usuario/tipo-servicio">¡Solicita un servicio!</a>
+
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="tarjeta_mensaje_dos card-body bg-light mb-3 text-center">
+                    <br>
+                    <p>Aun no has contratado servicios</p>
+                    <a href="/usuario/tipo-servicio">¡Solicita un servicio!</a>
+                </div>
             </div>
-        </div>
         </div>
         {{/each}}
     </div>
