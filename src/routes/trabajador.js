@@ -11,7 +11,7 @@ router.get('/registro', isNotLoggedInEmployee, (req, res) => {
     res.render('trabajador/registro');
 });
 
-router.post('/registro', passport.authenticate('trabajador.signup',
+router.post('/registro', passport.authenticate('local.signup',
     {
         successRedirect: '/trabajador/addLabor',
         failureRedirect: '/trabajador/registro',
@@ -24,7 +24,7 @@ router.get('/inicio-sesion', isNotLoggedInEmployee, (req, res) => {
 });
 
 router.post('/inicio-sesion', (req, res, next) => {
-    passport.authenticate('trabajador_signin',
+    passport.authenticate('local.signin',
         {
             successRedirect: '/trabajador/ingreso',
             failureRedirect: '/trabajador/inicio-sesion',

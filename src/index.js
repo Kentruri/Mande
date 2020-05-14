@@ -9,8 +9,7 @@ const hbs = require('handlebars');
 
 // Initializations
 const app = express();
-require('./lib/trabajador.passport');
-require('./lib/usuario.passport');
+require('./lib/passport');
 
 
 // Settings

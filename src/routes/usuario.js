@@ -12,7 +12,7 @@ router.get('/registro', isNotLoggedInUser, (req, res) => {
     res.render('usuario/registro');
 });
 
-router.post('/registro', passport.authenticate('usuario.signup',
+router.post('/registro', passport.authenticate('local.signup',
     {
         successRedirect: '/usuario/tipo-servicio',
         failureRedirect: '/usuario/registro',
@@ -25,7 +25,7 @@ router.get('/inicio-sesion', isNotLoggedInUser, (req, res) => {
 });
 
 router.post('/inicio-sesion', (req, res, next) => {
-    passport.authenticate('usuario.signin',
+    passport.authenticate('local.signin',
         {
             successRedirect: '/usuario/ingreso',
             failureRedirect: '/usuario/inicio-sesion',
