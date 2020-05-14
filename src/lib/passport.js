@@ -6,13 +6,13 @@ const querys = require('./querys');
 
 passport.use('local.signup', new LocalStrategy(
     {
-        usernameField: 'trabajador_username',
-        passwordField: 'trabajador_password',
+        usernameField: 'username',
+        passwordField: 'password',
         roleField: 'role',
         passReqToCallback: true
     }, async (req, username, password, role, done) => {
         if (role == 'trabajador') {
-            const { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, trabajador_username, trabajador_password } = req.body;
+            const { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud } = req.body;
             const newEmployee = { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, username, trabajador_password, role };
             newEmployee.trabajador_password = await helpers.encryptPassword(password);
             crear = await querys.crearTrabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, username, newEmployee.trabajador_password);
