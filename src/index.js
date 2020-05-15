@@ -26,8 +26,8 @@ app.engine('.hbs', exphbs(
 app.set('view engine', '.hbs');
 
 // Helpers
-hbs.registerHelper("distancia", function (latT, lonT, latU, lonU) {
-    return helpers.calcularcalcularDistancia(latT, lonT, latU, lonU);
+hbs.registerHelper("calcularDistancia", function (latT, lonT, latU, lonU) {
+    return helpers.calcularDistancia(latT, lonT, latU, lonU);
 });
 hbs.registerHelper("formatearFecha", function (str) {
     return helpers.formatearFecha(str);
