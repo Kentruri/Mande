@@ -29,6 +29,7 @@ CREATE TABLE laborvstrabajador(
     promedio  NUMERIC NOT NULL DEFAULT 0
 );
 
+-- TABLA DIRECCION
 CREATE TABLE direccion(
     id_direccion NUMERIC NOT NULL,
     direccion_address TEXT NOT NULL,
@@ -62,6 +63,7 @@ CREATE TABLE servicio(
     servicio_calificacion NUMERIC
 );
 
+-- TABLA PAGO
 CREATE TABLE pago(
     id_pago SERIAL PRIMARY KEY,
     servicio_id INTEGER REFERENCES servicio(id_servicio),
@@ -69,6 +71,53 @@ CREATE TABLE pago(
     pago_estado BOOLEAN NOT NULL DEFAULT 'FALSE',
     pago_fecha TIMESTAMP
 );
+
+-- TABLA AUDITORIA
+CREATE TABLE tbl_audit (
+	Id SERIAL PRIMARY KEY,
+	table_name VARCHAR(30),
+	operation CHAR(1),
+	old_value VARCHAR(250),
+	new_value VARCHAR(250),
+	user_name VARCHAR(30),
+	date_oper TIMESTAMP WITHOUT TIME ZONE)
+
+-- FUNCION DE LA TABLA AUDITORIA
+CREATE OR REPLACE FUNCTION regis_audit() RETURNS TRIGGER AS $$
+            
+            BEGIN
+            
+            IF(TG_OP = 'DELETE') THEN
+             INSERT INTO tbl_audit (table_name, operation, old_value, new_value, user_name, date_oper)
+             VALUES(TG_TABLE_NAME, 'D', OLD, NULL, USER, now());
+             RETURN OLD;
+            END IF;
+            IF(TG_OP = 'UPDATE') THEN
+             INSERT INTO tbl_audit (table_name, operation, old_value, new_value, user_name, date_oper)
+             VALUES(TG_TABLE_NAME, 'U', OLD, NEW, USER, now());
+             RETURN NEW;
+            END IF;
+            IF(TG_OP = 'INSERT') THEN
+             INSERT INTO tbl_audit (table_name, operation, old_value, new_value, user_name, date_oper)
+             VALUES(TG_TABLE_NAME, 'I', NULL, NEW, USER, now());
+             RETURN NEW;
+            END IF;
+            RETURN NULL;
+            
+            END
+            $$ LANGUAGE plpgsql;
+
+--TRIGGERS DE TABLA AUDITORIA X TODO LO DEMÁS
+CREATE TRIGGER tbl_usuario_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON usuario FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_trabajador_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON trabajador FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_labor_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON labor FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_servicio_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON servicio FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_pago_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON pago FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_direccion_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON direccion FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_lvst_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON laborvstrabajador FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_lvstid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON laborvstrabajador_id_traba_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_pagoid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON pago_id_pago_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+CREATE TRIGGER tbl_servicioid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON servicio_id_servicio_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
 
 -- LISTA PREDEFINIDA DE LABORES
 INSERT INTO labor(labor_nombre) VALUES
