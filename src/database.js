@@ -4,7 +4,7 @@ const pool = new Pool({
     // BASE DE DATOS LOCAL
     // host: 'localhost',
     // user: 'postgres',
-    // password: 'C0m3g4ll3t4s',
+    // password: '123',
     // database: 'mande',
     // port: '5432'
 

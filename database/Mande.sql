@@ -115,9 +115,9 @@ CREATE TRIGGER tbl_servicio_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON servic
 CREATE TRIGGER tbl_pago_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON pago FOR EACH ROW EXECUTE PROCEDURE regis_audit();
 CREATE TRIGGER tbl_direccion_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON direccion FOR EACH ROW EXECUTE PROCEDURE regis_audit();
 CREATE TRIGGER tbl_lvst_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON laborvstrabajador FOR EACH ROW EXECUTE PROCEDURE regis_audit();
-CREATE TRIGGER tbl_lvstid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON laborvstrabajador_id_traba_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
-CREATE TRIGGER tbl_pagoid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON pago_id_pago_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
-CREATE TRIGGER tbl_servicioid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON servicio_id_servicio_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+--CREATE TRIGGER tbl_lvstid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON laborvstrabajador_id_traba_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+--CREATE TRIGGER tbl_pagoid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON pago_id_pago_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
+--CREATE TRIGGER tbl_servicioid_tbl_audit AFTER INSERT OR UPDATE OR DELETE ON servicio_id_servicio_seq FOR EACH ROW EXECUTE PROCEDURE regis_audit();
 
 -- LISTA PREDEFINIDA DE LABORES
 INSERT INTO labor(labor_nombre) VALUES
