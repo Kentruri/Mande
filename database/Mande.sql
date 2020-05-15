@@ -77,8 +77,8 @@ CREATE TABLE tbl_audit (
 	Id SERIAL PRIMARY KEY,
 	table_name VARCHAR(30),
 	operation CHAR(1),
-	old_value VARCHAR(250),
-	new_value VARCHAR(250),
+	old_value TEXT,
+	new_value TEXT,
 	user_name VARCHAR(30),
 	date_oper TIMESTAMP WITHOUT TIME ZONE);
 

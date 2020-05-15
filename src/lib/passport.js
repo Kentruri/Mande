@@ -14,8 +14,8 @@ passport.use('local.signup', new LocalStrategy(
         if (role == 'trabajador') {
             const { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud } = req.body;
             const newEmployee = { id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, username, password, role };
-            newEmployee.trabajador_password = await helpers.encryptPassword(password);
-            crear = await querys.crearTrabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, username, newEmployee.trabajador_password);
+            newEmployee.password = await helpers.encryptPassword(password);
+            crear = await querys.crearTrabajador(id_trabajador, trabajador_nombre, trabajador_fechaNacimiento, trabajador_foto, trabajador_documento, trabajador_direccion, trabajador_localidad, trabajador_latitud, trabajador_longitud, username, newEmployee.password);
             if (crear == 'success') {
                 done(null, req.flash('success', 'Agrega labores a tu perfil!'));
                 return done(null, newEmployee);
@@ -25,10 +25,11 @@ passport.use('local.signup', new LocalStrategy(
                 done(null, false, req.flash('message', 'Ya hay alguien registrado con ese mismo usuario'));
             }
         } else if (role == 'usuario') {
-            const { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username, usuario_password } = req.body;
-            const newUser = { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, username, usuario_password, role };
-            newUser.usuario_password = await helpers.encryptPassword(password);
-            crear = await querys.crearUsuario(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, username, newUser.usuario_password);
+            const { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero} = req.body;
+            const newUser = { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, username, password, role };
+            newUser.password = await helpers.encryptPassword(password);
+            crear = await querys.crearUsuario(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, username, newUser.password);
+            console.log(crear);
             if (crear == 'success') {
                 done(null, req.flash('success', 'Solicita tu primer servicio!'));
                 return done(null, newUser);
