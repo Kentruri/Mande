@@ -30,8 +30,8 @@ CREATE TABLE laborvstrabajador(
 );
 
 -- TABLA DIRECCION
-CREATE TABLE direccion(
-    id_direccion NUMERIC NOT NULL,
+CREATE TABLE direccionvstrabajador(
+    id_direccion NUMERIC NOT NULL PRIMARY KEY,
     direccion_address TEXT NOT NULL,
     direccion_localidad TEXT NOT NULL,
     direccion_latitud NUMERIC NOT NULL,
@@ -48,7 +48,16 @@ CREATE TABLE usuario(
     usuario_username VARCHAR(40) UNIQUE,
     usuario_password TEXT,
     usuario_recibo TEXT NOT NULL,
+    usuario_foto TEXT NOT NULL,
     eliminado BOOLEAN NOT NULL DEFAULT 'false'
+);
+
+CREATE TABLE direccionvsusuario(
+    id_direccion NUMERIC NOT NULL PRIMARY KEY,
+    direccion_address TEXT NOT NULL,
+    direccion_localidad TEXT NOT NULL,
+    direccion_latitud NUMERIC NOT NULL,
+    direccion_longitud NUMERIC NOT NULL
 );
 
 CREATE TABLE servicio(

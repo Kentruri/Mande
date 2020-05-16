@@ -34,8 +34,8 @@ router.post('/inicio-sesion', (req, res, next) => {
 
 // AÑADIR LABOR
 router.get('/addLabor', isLoggedInEmployee, async (req, res) => {
-    const labores = await querys.laboresSinAgregar(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
-    res.render('trabajador/addLabor', { labores, trabajador_nombre });
+    const labores = await querys.laboresSinAgregar(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto;
+    res.render('trabajador/addLabor', { labores, trabajador_nombre, trabajador_foto });
 });
 
 router.post('/addLabor', async (req, res, done) => {
@@ -51,8 +51,8 @@ router.post('/addLabor', async (req, res, done) => {
 
 // LISTA DE LABORES
 router.get('/mis-labores', isLoggedInEmployee, async (req, res) => {
-    const labores = await querys.misLabores(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
-    res.render('trabajador/misLabores', { labores, trabajador_nombre });
+    const labores = await querys.misLabores(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto;
+    res.render('trabajador/misLabores', { labores, trabajador_nombre, trabajador_foto });
 });
 
 // BORAR LABOR
@@ -66,10 +66,10 @@ router.get('/borrar-labor/:id', isLoggedInEmployee, async (req, res, done) => {
 
 // EDITAR LABOR
 router.get('/editar-labor/:id', isLoggedInEmployee, async (req, res) => {
-    const { id } = req.params, trabajador_nombre = req.user.trabajador_nombre,
+    const { id } = req.params, trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto,
         labor = await querys.laborParaEditar(id),
         labores = await querys.laboresSinAgregar(req.user.id_trabajador);
-    res.render('trabajador/editLabor', { labor: labor[0], labores, trabajador_nombre });
+    res.render('trabajador/editLabor', { labor: labor[0], labores, trabajador_nombre, trabajador_foto });
 });
 
 router.post('/editar-labor/:id', async (req, res, done) => {
@@ -101,24 +101,24 @@ router.get('/ingreso', isLoggedInEmployee, async (req, res, done) => {
 
 // TRABAJOS ACTIVOS
 router.get('/trabajos-activos', isLoggedInEmployee, async (req, res) => {
-    const servicios = await querys.trabajosActivos(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
-    res.render('trabajador/trabajosActivos', { servicios, trabajador_nombre });
+    const servicios = await querys.trabajosActivos(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto;;
+    res.render('trabajador/trabajosActivos', { servicios, trabajador_nombre, trabajador_foto });
 });
 
 // DETALLES DE UN TRABAJO
 router.get('/detalles/:id_servicio', isLoggedInEmployee, async (req, res) => {
-    const { id_servicio } = req.params, trabajador_nombre = req.user.trabajador_nombre,
+    const { id_servicio } = req.params, trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto;
         servicio = await querys.detallesTrabajo(id_servicio),
         employeeUbication = await querys.ubicacionTrabajador(req.user.id_trabajador);
-    res.render('trabajador/detallesTrabajo', { servicio, employeeUbication: employeeUbication[0], trabajador_nombre });
+    res.render('trabajador/detallesTrabajo', { servicio, employeeUbication: employeeUbication[0], trabajador_nombre, trabajador_foto });
 });
 
 // CULMINAR TRABAJO
 router.get('/culminar-trabajo/:id_servicio/:nombre_labor', isLoggedInEmployee, async (req, res) => {
-    const { id_servicio, nombre_labor } = req.params, trabajador_nombre = req.user.trabajador_nombre,
+    const { id_servicio, nombre_labor } = req.params, trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto,
         precio = await querys.laborPrecio(req.user.id_trabajador, nombre_labor),
         servicio = await querys.trabajoInformacion(id_servicio);
-    res.render('trabajador/terminarTrabajo', { servicio, precio, trabajador_nombre });
+    res.render('trabajador/terminarTrabajo', { servicio, precio, trabajador_nombre, trabajador_foto });
 });
 
 router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, done) => {
@@ -131,22 +131,22 @@ router.post('/culminar-trabajo/:id_servicio/:nombre_labor', async (req, res, don
 
 // TRABAJOS PENDIENTES DE PAGO
 router.get('/trabajos-pendientes', isLoggedInEmployee, async (req, res) => {
-    const id_trabajador = req.user.id_trabajador, trabajador_nombre = req.user.trabajador_nombre,
+    const id_trabajador = req.user.id_trabajador, trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto,
         servicios = await querys.trabajosSinPagar(id_trabajador);
-    res.render('trabajador/trabajosPendientes', { servicios, trabajador_nombre });
+    res.render('trabajador/trabajosPendientes', { servicios, trabajador_nombre, trabajador_foto });
 });
 
 //HISTORIAL DE TRABAJOS
 router.get('/trabajos-historial', isLoggedInEmployee, async (req, res) => {
-    const servicios = await querys.historialTrabajos(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
-    res.render('trabajador/trabajosHistorial', { servicios, trabajador_nombre });
+    const servicios = await querys.historialTrabajos(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre,  trabajador_foto = req.user.trabajador_foto;
+    res.render('trabajador/trabajosHistorial', { servicios, trabajador_nombre, trabajador_foto});
 });
 
 
 // PERFIL
 router.get('/perfil', isLoggedInEmployee, async (req, res, done) => {
-    const employee = await querys.trabajadorPerfil(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre;
-    res.render('trabajador/perfil', { employee, trabajador_nombre });
+    const employee = await querys.trabajadorPerfil(req.user.id_trabajador), trabajador_nombre = req.user.trabajador_nombre, trabajador_foto = req.user.trabajador_foto;
+    res.render('trabajador/perfil', { employee, trabajador_nombre, trabajador_foto});
 });
 
 router.post('/perfil', async (req, res, done) => {

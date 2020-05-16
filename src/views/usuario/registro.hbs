@@ -101,11 +101,17 @@
 
                 <div class="form-group mb-4"></div>
                 <label>Recibo de Servicios</label><br>
-                <input type="file" id="img_uploader" required><br><br>
+                <input type="file" id="rec_uploader" required><br><br>
                 <input type="hidden" id="recibo" name="usuario_recibo">
                 <div class="card" id="espacio_foto">
-                    <img id="img_preview">
+                    <img id="rec_preview">
+                </div>
 
+                <label>Foto de perfil</label><br>
+                <input type="file" id="img_uploader" required><br><br>
+                <input type="hidden" id="foto" name="usuario_foto">
+                <div class="card" id="espacio_foto">
+                    <img id="img_preview">
                 </div>
 
                 <input type="hidden" name="role" value="usuario">
@@ -118,7 +124,7 @@
     </div>
 </div>
 <script>
-    // ADDRESS
+    // DIRECCIÓN
     var searchInput = 'search_input';
 
     var componentForm = {
@@ -126,12 +132,14 @@
         administrative_area_level_1: 'short_name',
         country: 'long_name'
     };
+
     $(document).ready(function () {
         var autocomplete;
         autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)),
             {
                 types: ['geocode']
             });
+
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             var near_place = autocomplete.getPlace();
             var all = "";
@@ -152,17 +160,22 @@
 
         });
     });
+
     $(document).on('change', '#' + searchInput, function () {
         document.getElementById('latitude').value = '';
         document.getElementById('longitude').value = '';
     });
-    // RECIBO
+
+    // FOTO
     const imagePreview = document.getElementById('img_preview');
     const imageUploader = document.getElementById('img_uploader');
+
     const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/mattezl/image/upload';
     const CLOUDINARY_UPLOAD_PRESET = 'bz4oq8ph';
+
     imageUploader.addEventListener('change', async (e) => {
         const file = e.target.files[0];
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -175,6 +188,28 @@
             });
         console.log(res);
         imagePreview.src = res.data.secure_url;
+        document.getElementById('foto').value = res.data.secure_url;
+    });
+
+    // RECIBO
+    const recPreview = document.getElementById('rec_preview');
+    const recUploader = document.getElementById('rec_uploader');
+
+    recUploader.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+        const res = await axios.post(CLOUDINARY_URL, formData,
+            {
+                headers:
+                {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        console.log(res);
+        recPreview.src = res.data.secure_url;
         document.getElementById('recibo').value = res.data.secure_url;
     });
 </script>

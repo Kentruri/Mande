@@ -35,30 +35,31 @@ router.post('/inicio-sesion', (req, res, next) => {
 
 // ESCOGER TIPO DE SERVICIO
 router.get('/tipo-servicio', isLoggedInUser, async (req, res, done) => {
-    const deuda = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre,
+    const deuda = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto,
         labores = await querys.serviciosDisponibles();
     if (deuda.length > 0) {
         done(null, req.flash('success', 'No puedes solicitar servicios mientras tengas pagos pendientes'));
         res.redirect('/usuario/servicios-pagar');
     } else {
-        res.render('usuario/tipoServicio', { labores, usuario_nombre });
+        res.render('usuario/tipoServicio', { labores, usuario_nombre, usuario_foto });
     }
 });
 
 router.post('/tipo-servicio', async (req, res) => {
-    const { nombre_labor, servicio_descipcion } = req.body, id_usuario = req.user.id_usuario, usuario_nombre = req.user.usuario_nombre,
+    const { nombre_labor, servicio_descipcion } = req.body, id_usuario = req.user.id_usuario, usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto,
         userLocation = await querys.localidadUsuario(id_usuario),
-        userUbication = await querys.ubicacionTrabajador(id_usuario),
+        userUbication = await querys.ubicacionUsuario(id_usuario),
         trabajadores = await querys.trabajadoresDisponibles(nombre_labor, userLocation);
-    res.render('usuario/trabajadores', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajadores, usuario_nombre });
+        console.log(userLocation);
+    res.render('usuario/trabajadores', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajadores, usuario_nombre, usuario_foto });
 });
 
 //PERFIL DE UN TRABAJADOR
 router.get('/trabajador-perfil/:trabajador_id/:nombre_labor/:servicio_descipcion', isLoggedInUser, async (req, res) => {
-    const { trabajador_id, nombre_labor, servicio_descipcion } = req.params, usuario_nombre = req.user.usuario_nombre,
+    const { trabajador_id, nombre_labor, servicio_descipcion } = req.params, usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto,
         userUbication = await querys.ubicacionUsuario(req.user.id_usuario),
         trabajador = await querys.trabajadorPerfilProfesional(nombre_labor, trabajador_id);
-    res.render('usuario/trabajadorPerfil', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajador, usuario_nombre });
+    res.render('usuario/trabajadorPerfil', { nombre_labor, servicio_descipcion, userUbication: userUbication[0], trabajador, usuario_nombre, usuario_foto });
 });
 
 // CONTRATAR TRABAJADOR
@@ -71,21 +72,21 @@ router.get('/contratar-trabajador/:trabajador_id/:nombre_labor/:servicio_descipc
 
 // SERVIVICIOS ACTIVOS
 router.get('/servicios-activos', isLoggedInUser, async (req, res) => {
-    const servicios = await querys.serviciosActivos(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
-    res.render('usuario/serviciosActivos', { servicios, usuario_nombre });
+    const servicios = await querys.serviciosActivos(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto;
+    res.render('usuario/serviciosActivos', { servicios, usuario_nombre, usuario_foto });
 });
 
 // SERVICIOS POR PAGAR
 router.get('/servicios-pagar', isLoggedInUser, async (req, res) => {
-    const servicios = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
-    res.render('usuario/serviciosPagar', { servicios, usuario_nombre });
+    const servicios = await querys.serviciosPorPagar(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto;
+    res.render('usuario/serviciosPagar', { servicios, usuario_nombre, usuario_foto });
 });
 
 // PAGAR SERVICIO
 router.get('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', isLoggedInUser, async (req, res) => {
-    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre, usuario_email = req.user.usuario_email,
+    const { id_servicio, id_pago, trabajador_id } = req.params, usuario_nombre = req.user.usuario_nombre, usuario_email = req.user.usuario_email, usuario_foto = req.user.usuario_foto,
         servicio = await querys.servicioInformacion(req.user.id_usuario, id_servicio);
-    res.render('usuario/pagarServicio', { servicio, usuario_nombre, usuario_email });
+    res.render('usuario/pagarServicio', { servicio, usuario_nombre, usuario_email, usuario_foto });
 });
 
 router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor', async (req, res, done) => {
@@ -98,8 +99,8 @@ router.post('/pagar-servicio/:id_servicio/:id_pago/:trabajador_id/:nombre_labor'
 
 // SERVIVICIOS PAGADOS
 router.get('/servicios-historial', isLoggedInUser, async (req, res) => {
-    const servicios = await querys.historialServicios(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
-    res.render('usuario/serviciosHistorial', { servicios, usuario_nombre });
+    const servicios = await querys.historialServicios(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto;
+    res.render('usuario/serviciosHistorial', { servicios, usuario_nombre, usuario_foto });
 });
 
 // INGRESO 
@@ -119,14 +120,14 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
 
 // PERFIL
 router.get('/perfil', isLoggedInUser, async (req, res, done) => {
-    const user = await querys.usuarioPerfil(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre;
-    res.render('usuario/perfil', { user, usuario_nombre });
+    const user = await querys.usuarioPerfil(req.user.id_usuario), usuario_nombre = req.user.usuario_nombre, usuario_foto = req.user.usuario_foto;
+    res.render('usuario/perfil', { user, usuario_nombre, usuario_foto });
 });
 
 router.post('/perfil', async (req, res, done) => {
     const id_usuario = req.user.id_usuario,
-        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username } = req.body,
-        restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, usuario_username);
+        { usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_foto, usuario_email, usuario_numero, usuario_username } = req.body,
+        restriccion = await querys.actualizarUsuario(id_usuario, usuario_nombre, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_foto, usuario_email, usuario_numero, usuario_username);
     restriccion == 'success' ? done(null, req.flash('success', 'Actualización exitosa!')) : restriccion == 'usuario_usuario_username_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese usario')) :
         restriccion == 'usuario_usuario_numero_key' ? done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular')) : done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
     res.redirect('/usuario/perfil');

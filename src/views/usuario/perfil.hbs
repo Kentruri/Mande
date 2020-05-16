@@ -105,13 +105,18 @@
 
                 <div class="form-group mb-4"></div>
                 <label>Recibo de Servicios</label><br>
-                <input type="file" id="img_uploader"><br><br>
+                <input type="file" id="rec_uploader"><br><br>
                 <input type="hidden" id="recibo" name="usuario_recibo" value="{{user.usuario_recibo}}">
                 <div class="card" id="espacio_foto">
-                    <img src="{{user.usuario_recibo}}" id="img_preview">
-
+                    <img src="{{user.usuario_recibo}}" id="rec_preview">
                 </div>
 
+                <label>Foto de perfil</label><br>
+                <input type="file" id="img_uploader"><br><br>
+                <input type="hidden" id="foto" name="usuario_foto" value="{{user.usuario_foto}}">
+                <div class="card" id="espacio_foto">
+                    <img src="{{user.usuario_foto}}" id="img_preview">
+                </div>
 
                 <button class="btn btn-primary width-100"><i class="fas fa-user-edit"></i> Actualizar perfil</button>
             </form>
@@ -188,11 +193,11 @@
         document.getElementById('longitude').value = '';
     });
     // RECIBO
-    const imagePreview = document.getElementById('img_preview');
-    const imageUploader = document.getElementById('img_uploader');
+    const recPreview = document.getElementById('rec_preview');
+    const recUploader = document.getElementById('rec_uploader');
     const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/mattezl/image/upload';
     const CLOUDINARY_UPLOAD_PRESET = 'bz4oq8ph';
-    imageUploader.addEventListener('change', async (e) => {
+    recUploader.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('file', file);
@@ -205,8 +210,30 @@
                 }
             });
         console.log(res);
-        imagePreview.src = res.data.secure_url;
+        recPreview.src = res.data.secure_url;
         document.getElementById('recibo').value = res.data.secure_url;
+    });
+
+    // FOTO
+    const imagePreview = document.getElementById('img_preview');
+    const imageUploader = document.getElementById('img_uploader');
+
+    imageUploader.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+        const res = await axios.post(CLOUDINARY_URL, formData,
+            {
+                headers:
+                {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        console.log(res);
+        imagePreview.src = res.data.secure_url;
+        document.getElementById('foto').value = res.data.secure_url;
     });
 
     //COMPARAR CONTRASEÑAS

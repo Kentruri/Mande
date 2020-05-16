@@ -25,11 +25,10 @@ passport.use('local.signup', new LocalStrategy(
                 done(null, false, req.flash('message', 'Ya hay alguien registrado con ese mismo usuario'));
             }
         } else if (role == 'usuario') {
-            const { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero} = req.body;
-            const newUser = { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, username, password, role };
+            const { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_foto, usuario_email, usuario_numero} = req.body;
+            const newUser = { id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_foto, usuario_email, usuario_numero, username, password, role };
             newUser.password = await helpers.encryptPassword(password);
-            crear = await querys.crearUsuario(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_email, usuario_numero, username, newUser.password);
-            console.log(crear);
+            crear = await querys.crearUsuario(id_usuario, usuario_nombre, usuario_fechaNacimiento, usuario_direccion, usuario_localidad, usuario_latitud, usuario_longitud, usuario_recibo, usuario_foto, usuario_email, usuario_numero, username, newUser.password);
             if (crear == 'success') {
                 done(null, req.flash('success', 'Solicita tu primer servicio!'));
                 return done(null, newUser);
@@ -38,6 +37,7 @@ passport.use('local.signup', new LocalStrategy(
             } else if (crear == 'usuario_usuario_numero_key') {
                 done(null, req.flash('message', 'Ya hay alguien registrado con ese número celular'));
             } else {
+                console.log(crear);
                 done(null, req.flash('message', 'Ya hay alguien registrado con ese correo electrónico'));
             }
         }
