@@ -80,7 +80,7 @@ querys.laborPrecio = async (id_trabajador, nombre_labor) => {
 };
 
 querys.trabajoInformacion = async (id_servicio) => {
-    servicio = (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario)AS U ON usuario_numero=usuario_numero WHERE id_servicio=$1', [id_servicio])).rows[0];
+    servicio = (await pool.query('SELECT * FROM servicio JOIN (SELECT * FROM usuario)AS U ON usuario_id=id_usuario WHERE id_servicio=$1', [id_servicio])).rows[0];
     return servicio;
 };
 
