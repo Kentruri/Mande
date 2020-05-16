@@ -19,6 +19,8 @@
 
   .tarjeta_mensaje_dos
   {
+
+    display:inline-block;
      width: 280px;
      height: 170px;
      border-radius: 5px;
@@ -27,7 +29,6 @@
      overflow: hidden;
      text-align: center;
      transition: all 0.25s;
-    margin-left: 180px;
     font-size: 18px;
     
     
