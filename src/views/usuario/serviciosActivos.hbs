@@ -3,7 +3,12 @@
 <link rel="stylesheet" href="/css/Fondo.css">
 <link rel="stylesheet" href="/css/mensaje.css">
 <link rel="stylesheet" href="/css/Tarjetas.css">
-{{#if success}}
+
+
+
+
+<div class="container">
+    {{#if success}}
 <div class="container p-4">
     <div class="row">
         <div class="col-md-4 mx-auto">
@@ -17,10 +22,6 @@
     </div>
 </div>
 {{/if}}
-
-
-
-<div class="container">
     <div class="row">
         <div class="cards">
             {{#each servicios}}
@@ -63,8 +64,9 @@
         
         
     </div>
+
     <div class="col-md-4  mx-auto">
-            <div class="tarjeta_mensaje_dos card-body bg-light mb-3 text-center">
+            <div class="tarjeta_mensaje_dos card-body bg-light text-center">
                 <p>No tienes ningun servicio activo en este momento.</p>
                 <a href="/usuario/tipo-servicio">¡Solicita uno!</a>
             </div>
