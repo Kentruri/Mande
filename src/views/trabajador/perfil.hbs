@@ -48,7 +48,7 @@
                         <input type="text" class="form-control" name="trabajador_nombre" autocomplete="off" required
                             pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
                             oninvalid="this.setCustomValidity('Solo se permiten letras')"
-                            value="{{employee.trabajador_nombre}}">
+                            oninput="setCustomValidity('')" value="{{employee.trabajador_nombre}}">
                     </div>
 
                     <div class="form-group col-md-5">
@@ -61,8 +61,8 @@
 
                 <div class="form-group mb-3">
                     <label>Dirección</label>
-                    <input type="text" class="form-control" id="search_input" name="trabajador_direccion" required
-                        value="{{employee.direccion_address}}">
+                    <input type="text" class="form-control" id="search_input" name="trabajador_direccion"
+                        oninput="setCustomValidity('')" required value="{{employee.direccion_address}}">
                     <input type="hidden" name="trabajador_latitud" id="latitude"
                         value="{{employee.direccion_latitud}}" />
                     <input type="hidden" name="trabajador_longitud" id="longitude"
@@ -125,7 +125,7 @@
 
                     <label class="font-weight-bold">Repetir contraseña </label>
                     <input type="password" class="form-control" id="reP" autocomplete="off" required
-                        onchange="comparar()">
+                        onchange="comparar()" oninput="setCustomValidity('')">
                 </div>
                 <button class="btn btn-primary width-100"><i class="fas fa-lock"></i> Actualizar contraseña</button>
             </form>

@@ -4,18 +4,15 @@
 
 
 <div class="row no-gutters bg-dark">
- 
     <div class="col-xl-5 col-lg-12 register-bg">
-        
-        <div class="opaco"> </div>
+        <div class="opaco"></div>
     </div>
-    
     <div class="col-xl-7 col-lg-12 d-flex">
         <div class="container align-self-center p-6">
             {{#if success}}
             <div class="container">
-            
-                <div >
+
+                <div>
                     <div class="alert alert-success alert-dismissible fade show" role="=alert">
                         {{success}}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -23,12 +20,12 @@
                         </button>
                     </div>
                 </div>
-            
+
             </div>
             {{/if}}
             {{#if message}}
             <div class="container">
-            
+
                 <div>
                     <div class="alert alert-danger alert-dismissable fade show" role="alert">
                         {{message}}
@@ -37,11 +34,11 @@
                         </button>
                     </div>
                 </div>
-            
+
             </div>
             {{/if}}
             <h1 class="font-weight-bold mb-3">Perfil público</h1>
-            
+
             <hr width="100%" style="border-color:black">
 
             <form action="/usuario/perfil" method="POST">
@@ -53,7 +50,7 @@
                         <input type="text" class="form-control" name="usuario_nombre" autocomplete="off" required
                             pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
                             oninvalid="this.setCustomValidity('Solo se permiten letras')"
-                            value="{{user.usuario_nombre}}">
+                            oninput="setCustomValidity('')" value="{{user.usuario_nombre}}">
                     </div>
 
                     <div class="form-group col-md-5">
@@ -86,7 +83,7 @@
                 <div class="form-group mb-3">
                     <label>Dirección</label>
                     <input type="text" class="form-control" id="search_input" name="usuario_direccion" required
-                        value="{{user.direccion_address}}">
+                        value="{{user.direccion_address}}" oninput="setCustomValidity('')">
                     <input type="hidden" name="usuario_latitud" id="latitude" value="{{user.direccion_latitud}}" />
                     <input type="hidden" name="usuario_longitud" id="longitude" value="{{user.direccion_longitud}}" />
                     <input type="hidden" name="usuario_localidad" id="localidad" value="{{user.direccion_localidad}}" />
@@ -138,13 +135,15 @@
                 <div class="form-row mb-3">
 
                     <label class="font-weight-bold">Contraseña nueva</label>
-                    <input type="password" class="form-control" name="new_password" id="newP" autocomplete="off" required>
+                    <input type="password" class="form-control" name="new_password" id="newP" autocomplete="off"
+                        required>
 
                 </div>
                 <div class="form-row mb-3">
 
                     <label class="font-weight-bold">Repetir contraseña </label>
-                    <input type="password" class="form-control" id="reP" autocomplete="off" required onchange="comparar()">
+                    <input type="password" class="form-control" id="reP" autocomplete="off"
+                        oninput="setCustomValidity('')" onchange="comparar()" required>
                 </div>
                 <button class="btn btn-primary width-100"><i class="fas fa-lock"></i> Actualizar contraseña</button>
             </form>
@@ -245,7 +244,7 @@
     const newPass = document.getElementById('newP');
     const repPass = document.getElementById('reP');
     function comparar() {
-        if(newP.value!=repPass.value) {
+        if (newP.value != repPass.value) {
             repPass.setCustomValidity('Las contraseñas no coinciden');
         }
     };
