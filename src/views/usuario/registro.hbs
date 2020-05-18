@@ -34,7 +34,8 @@
                         <label class="font-weight-bold">Nombre </label>
                         <input type="text" class="form-control" name="usuario_nombre" autocomplete="off" required
                             pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
-                            oninvalid="this.setCustomValidity('Solo se permiten letras')" placeholder="Tu nombre">
+                            oninvalid="this.setCustomValidity('Solo se permiten letras')"
+                            oninput="setCustomValidity('')" placeholder="Tu nombre">
                     </div>
 
                     <div class="form-group col-md-5">
@@ -68,7 +69,7 @@
                 <div class="form-group mb-3">
                     <label>Dirección</label>
                     <input type="text" class="form-control" id="search_input" name="usuario_direccion" required
-                        placeholder="Tu direccion de domicilio">
+                        placeholder="Tu direccion de domicilio" oninput="setCustomValidity('')">
                     <input type="hidden" name="usuario_latitud" id="latitude" />
                     <input type="hidden" name="usuario_longitud" id="longitude" />
                     <input type="hidden" name="usuario_localidad" id="localidad" />
