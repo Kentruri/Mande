@@ -19,8 +19,9 @@
 
   .tarjeta_mensaje_dos
   {
-
+    margin-top: 1rem;
     display:inline-block;
+
      width: 280px;
      height: 170px;
      border-radius: 5px;

@@ -1,12 +1,6 @@
-*{
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
 
 body{
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
+    color: var(--color-light);
 }
 
 .wave{
@@ -152,7 +146,7 @@ a{
 	text-align: right;
 	text-decoration: none;
 	color: #232f3b;
-	font-size: 0.9rem;
+	font-size: 1rem;
 	transition: .3s;
 }
 
