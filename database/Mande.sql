@@ -135,4 +135,7 @@ INSERT INTO labor(labor_nombre) VALUES
     ('Cerrajero'),
     ('Profesor de Ingles'),
     ('Paseador de perros'),
+    ('Profesor de matematicas'),
+    ('Servicios varios'),
+    ('Carpintero'),
     ('Cocinero');

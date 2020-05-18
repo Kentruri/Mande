@@ -15,12 +15,12 @@ querys.crearTrabajador = async (id_trabajador, trabajador_nombre, trabajador_fec
 };
 
 querys.laboresSinAgregar = async (id_trabajador) => {
-    lista = await (await pool.query('SELECT labor_nombre FROM labor LEFT JOIN (SELECT nombre_labor FROM laborvstrabajador WHERE trabajador_id=$1) AS laboresOf ON labor_nombre = nombre_labor WHERE nombre_labor is null', [id_trabajador])).rows;
+    lista = await (await pool.query('SELECT labor_nombre FROM labor LEFT JOIN (SELECT nombre_labor FROM laborvstrabajador WHERE trabajador_id=$1) AS laboresOf ON labor_nombre = nombre_labor WHERE nombre_labor is null ORDER BY labor_nombre', [id_trabajador])).rows;
     return lista;
 };
 
 querys.misLabores = async (id_trabajador) => {
-    lista = await (await pool.query('SELECT * FROM laborvstrabajador WHERE trabajador_id=$1', [id_trabajador])).rows;
+    lista = await (await pool.query('SELECT * FROM laborvstrabajador WHERE trabajador_id=$1 ORDER BY nombre_labor', [id_trabajador])).rows;
     return lista;
 };
 
@@ -148,7 +148,7 @@ querys.serviciosPorPagar = async (id_usuario) => {
 };
 
 querys.serviciosDisponibles = async () => {
-    servicios = await (await pool.query('SELECT * FROM labor')).rows;
+    servicios = await (await pool.query('SELECT * FROM labor ORDER BY labor_nombre')).rows;
     return servicios;
 };
 
