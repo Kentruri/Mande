@@ -1,0 +1,46 @@
+#Comando para crear la red
+
+docker network create --driver bridge pgnetwork
+
+#Descargar la imagen de postgres
+
+docker pull postgres
+
+#Comando para crear el contenedor de postgres
+
+docker run --name postgres -p 5432:5432 --hostname=postgres --network=pgnetwork -e POSTGRES_PASSWORD=123 -d postgres
+
+#Cambiar la zona horaria
+SET TIME ZONE 'America/Bogota';
+
+#Comando para ingresar al contenedor con la BD
+
+docker exec -it postgres(nombre-contenedor) psql -U postgres(usuario)
+
+#Comando para crear la base de datos
+
+CREATE DATABASE mande;
+
+#Comando para ingresar en una BD
+\c DATABASE
+
+#Copien todo lo del .sql(exeptuando el "create database mande") en esa BD
+
+#Comando para ver las tablas
+\d
+
+\dt
+
+Para salir del contenedor postgres \q
+
+#Ingresar a la carpeta en la que esta el proyecto
+cd RUTA
+
+#Construir la imagen 
+
+docker build -t mande .
+
+#Construir el contenedor del proyecto
+
+docker run -it --name mande -p 5000:5000 --link postgres:mande --network=pgnetwork mande
+
