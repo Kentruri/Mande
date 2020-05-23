@@ -4,7 +4,7 @@ const passport = require('passport');
 const pool = require('../database');
 const querys = require('../lib/querys');
 const helpers = require('../lib/helpers');
-const stripe = require('stripe')('sk_test_V4ma8MKhvEFqZpKu2CCNQHCd00tHQ3g0Xv');
+const stripe = require('stripe')('sk_test_lj4E03L0P8RqcrShAKBbSNHz00bp13VByX');
 const { isLoggedInUser, isNotLoggedInUser } = require('../lib/auth');
 
 // REGISTRO 
