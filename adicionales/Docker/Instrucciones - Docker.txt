@@ -40,7 +40,11 @@ cd RUTA
 
 docker build -t mande .
 
+#ALTERNATIVA: Bajar la imagen desde docker hub
+
+docker pull davidjoan53/mande
+
 #Construir el contenedor del proyecto
 
-docker run -it --name mande -p 5000:5000 --link postgres:mande --network=pgnetwork mande
+docker run -it --name mande -p 5000:5000 --network=pgnetwork mande
 
