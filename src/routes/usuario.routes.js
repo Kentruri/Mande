@@ -110,6 +110,7 @@ router.get('/ingreso', isLoggedInUser, async (req, res, done) => {
         user = await querys.usuarioPerfil(id_usuario);
 
     if (deuda.length > 0) {
+        done(null, req.flash('success', 'Tienes un pago pendiente'));
         res.redirect('/usuario/servicios-pagar');
     } else {
         done(null, user, req.flash('success', 'Bienvenido ' + user.usuario_nombre));
